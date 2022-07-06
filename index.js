@@ -16,7 +16,8 @@ document.addEventListener('keydown', function(evt){
 });
 document.addEventListener('keyup', function(evt){
     keys[evt.code] = false;
-})
+});
+
 
 class Player{
     constructor (x, y, r, c){
@@ -167,7 +168,7 @@ function SpawnObstacle (){
     let sizeY = sizeX / 2;
     let type = RandomIntInRange(0, 1);
     let obstacle = new Obstacle(canvas.width + sizeX, canvas.height - sizeX,
-        sizeX, sizeY, '#2484E4');
+        sizeX, sizeY, '#2661F7');
 
     if (type == 1){
         obstacle.y -= player.originalRad - 10;
@@ -270,6 +271,20 @@ function Update () {
 
     gameSpeed += 0.002;
 }
+
+/* var imgTag = new Image();
+
+imgTag.onload = animateCloud;
+imgTag.src = "cloud.png";
+
+function animateCloud() {
+    x = canvas.width;
+    y = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(imgTag, x, y);
+    x -= 4;
+    if (x > 250) requestAnimationFrame(animateCloud);
+} */
 
 Start();
 
