@@ -27,7 +27,7 @@ class Player{
         this.c = c;
 
         this.dy = 0;
-        this.jumpForce = 15;
+        this.jumpForce = 22;
         this.originalRad = r;
         this.grounded = false;
         this.jumpTimer = 0;
@@ -61,8 +61,10 @@ class Player{
     }
     
     Jump () {
+        if (this.r != this.originalRad) return
+
         if (this.grounded && this.jumpTimer == 0){
-            this.jumpTimer = 1;
+            this.jumpTimer = 1.5;
             this.dy = -this.jumpForce;
         } else if (this.jumpTimer > 0 && this.jumpTimer < 15){
             this.jumpTimer++;
@@ -164,7 +166,7 @@ function getDistance(player, obstacle) {
 }*/
 
 function SpawnObstacle (){
-    let sizeX = RandomIntInRange(40, 140);
+    let sizeX = RandomIntInRange(80, 140);
     let sizeY = sizeX / 2;
     let type = RandomIntInRange(0, 1);
     let obstacle = new Obstacle(canvas.width + sizeX, canvas.height - sizeX,
@@ -184,7 +186,7 @@ function Start () {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
-    ctx.font = "20px sans-serif";
+    ctx.font = "40px sans-serif";
 
     gameSpeed = 4;
     gravity = 1;
@@ -197,9 +199,9 @@ function Start () {
 
     player = new Player(100, 0, 50, '#3FFF00');
 
-    scoreText = new Text("Score: " + score, 25, 25, "left", "#212121", "20");
-    highscoreText = new Text("Highscore: " + highscore, canvas.width - 25,
-    25, "right", "#212121", "20")
+    scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", "40");
+    highscoreText = new Text("Highscore: " + highscore, canvas.width - 45,
+    45, "right", "#FFDB51", "40")
 
     requestAnimationFrame(Update);
 }
@@ -215,8 +217,8 @@ function Update () {
         SpawnObstacle();
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
-        if (spawnTimer < 60){
-            spawnTimer = 60;
+        if (spawnTimer < 40){
+            spawnTimer = 40;
         }
     }
 
