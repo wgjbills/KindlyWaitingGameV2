@@ -176,3 +176,32 @@ canvas {
         left: 100%
     }
 }
+
+#ye {
+    width: 200px;
+    height: 140px;
+    position: absolute;
+    top: 200px;
+    z-index: 3;
+    opacity: 0.2;
+
+    background-image: url("img/ye.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    animation: yeFly 40s infinite linear;
+}
+
+@keyframes yeFly{
+    0% {
+        left: 100%;
+    }
+
+    60% {
+        left: 100%;
+    }
+
+    100% {
+        left: -30%;
+    }
+}

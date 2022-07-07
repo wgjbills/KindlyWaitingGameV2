@@ -8,8 +8,16 @@ let highscoreText;
 let player;
 let gravity;
 let obstacles = [];
+/* let rocks = []; */
 let gameSpeed;
 let keys = {};
+
+const obsImg = new Image();
+obsImg.src = "img/chatbubble.png";
+
+const rockImg = new Image();
+rockImg.src = "img/rock.png";
+
 
 document.addEventListener('keydown', function(evt){
     keys[evt.code] = true;
@@ -51,7 +59,7 @@ class Player{
         if (this.y + this.r < canvas.height){
             this.dy += gravity;
             this.grounded = false;
-        }else{
+        } else{
             this.dy = 0;
             this.grounded = true;
             this.y = canvas.height - this.r;
@@ -82,7 +90,19 @@ class Player{
 }
 
 class Obstacle {
-    constructor (x, y, w, h, c){
+    constructor (x, y, w, h, obsImg){
+        this.obsImg = obsImg;
+        this.x = x,
+        this.y = y,
+        this.w = w;
+        this.h = h;
+
+        this.dx = -gameSpeed;
+        obsImg.width = this.w;
+        obsImg.height = this.h;
+    }
+
+    /* constructor (x, y, w, h, c){
         this.x = x;
         this.y = y,
         this.w = w;
@@ -90,7 +110,7 @@ class Obstacle {
         this.c = c;
 
         this.dx = -gameSpeed;
-    }
+    } */
 
     Update (){
         this.x += this.dx;
@@ -100,10 +120,19 @@ class Obstacle {
 
     Draw () {
         ctx.beginPath();
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
+        ctx.fillRect(this.x, this.y, this.w, this.h,);
+        let image = this.obsImg;
+        ctx.drawImage(this.obsImg, this.x, this.y, this.w, this.h);
+        ctx.closePath();
+    }
+    
+    /* Draw () {
+        ctx.beginPath();
         ctx.fillStyle = this.c;
         ctx.fillRect(this.x, this.y, this.w, this.h);
         ctx.closePath();
-    }
+    } */
 
     /*Draw () {
         ctx.beginPath();
@@ -120,6 +149,35 @@ class Obstacle {
         ctx.fill();
         ctx.stroke();
     }*/
+}
+
+class Rock {
+    constructor (x, y, w, h, rockImg){
+        this.rockImg = rockImg;
+        this.x = x,
+        this.y = y,
+        this.w = w;
+        this.h = h;
+
+        this.dx = -gameSpeed;
+        rockImg.width = this.w;
+        rockImg.height = this.h;
+    }
+
+    Update (){
+        this.x += this.dx;
+        this.Draw();
+        this.dx = -gameSpeed;
+    }
+
+    Draw () {
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
+        ctx.fillRect(this.x, this.y, this.w, this.h,);
+        let image = this.rockImg;
+        ctx.drawImage(this.rockImg, this.x, this.y, this.w, this.h);
+        ctx.closePath();
+    }
 }
 
 class Text{
@@ -157,6 +215,21 @@ function getDistance(player, obstacle) {
     return (dx * dx + dy * dy <= (player.r*player.r));
 }
 
+/* function rockDis(player, rock) {
+    var distX = Math.abs(player.x - (rock.x + rock.w / 2));
+    var distY = Math.abs(player.y - (rock.y + rock.h / 2));
+
+    if (distX > (rock.w / 2 + player.r)) { return false; }
+    if (distY > (rock.h / 2 + player.r)) { return false; }
+
+    if (distX <= (rock.w)) { return true; }
+    if (distY <= (rock.h)) { return true; }
+
+    var dx = distX - rock.w / 2;
+    var dy = distY - rock.h / 2;
+    return (dx * dx + dy * dy <= (player.r*player.r));
+} */
+
 /*function getDistance(x1, y1, x2, y2){
     let xDis = x2 - x1;
     let yDis = y2 - y1;
@@ -166,17 +239,49 @@ function getDistance(player, obstacle) {
 }*/
 
 function SpawnObstacle (){
-    let sizeX = RandomIntInRange(80, 140);
+    let sizeX = RandomIntInRange(80, 160);
     let sizeY = sizeX / 2;
-    let type = RandomIntInRange(0, 1);
-    let obstacle = new Obstacle(canvas.width + sizeX, canvas.height - sizeX,
-        sizeX, sizeY, '#2661F7');
-
-    if (type == 1){
+    let type = RandomIntInRange(0, 2);
+    let rock;
+    let obstacle = new Obstacle(
+        x = canvas.width + sizeX, 
+        y = canvas.height - sizeX, 
+        w = sizeX,
+        h = sizeY,
+        obsImg
+        );
+        
+        if (type == 0){
+            obstacle = new Rock(
+                x = canvas.width + sizeX, 
+                y = canvas.height - sizeY, 
+                w = sizeX,
+                h = sizeY,
+                rockImg 
+            );  
+    } else if (type == 1){
         obstacle.y -= player.originalRad - 10;
+    } else if (type == 2){
+        obstacle.y -= canvas.height - sizeX * 5;
     }
+
     obstacles.push(obstacle);
+    /* rocks.push(rock); */
 }
+
+/* function SpawnRock (){
+    let sizeX = RandomIntInRange(80, 160);
+    let sizeY = sizeX / 2;
+    let rock = new Rock(
+        x = canvas.width + sizeX, 
+        y = canvas.innerHeight - sizeY, 
+        w = sizeX,
+        h = sizeY,
+        rockImg
+        );
+
+    rocks.push(rock);
+} */
 
 function RandomIntInRange (min, max){
     return Math.round(Math.random() * (max - min) + min);
@@ -208,6 +313,7 @@ function Start () {
 
 let initialSpawnTimer = 200; 
 let spawnTimer = initialSpawnTimer;
+
 function Update () {
     requestAnimationFrame(Update);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -217,8 +323,8 @@ function Update () {
         SpawnObstacle();
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
-        if (spawnTimer < 40){
-            spawnTimer = 40;
+        if (spawnTimer < 60){
+            spawnTimer = 60;
         }
     }
 
@@ -274,57 +380,4 @@ function Update () {
     gameSpeed += 0.002;
 }
 
-/* var imgTag = new Image();
-
-imgTag.onload = animateCloud;
-imgTag.src = "cloud.png";
-
-function animateCloud() {
-    x = canvas.width;
-    y = 0;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imgTag, x, y);
-    x -= 4;
-    if (x > 250) requestAnimationFrame(animateCloud);
-} */
-
 Start();
-
-
-
-
-
-
-
-/*
-const kindly = document.getElementById("kindly");
-const obstacle = document.getElementById("obstacle");
-console.log(kindly.classList)
-
-function jump(){
-    if (kindly.classList != "jump"){
-       
-        kindly.classList.add("jump");
-
-        setTimeout(function (){
-            kindly.classList.remove("jump");
-        }, 300);
-    }
-}
-
-let isAlive = setInterval(function (){
-    let kindlyTop = parseInt(
-        window.getComputedStyle(kindly).getPropertyValue("top")
-    );
-    let obstacleLeft = parseInt(
-        window.getComputedStyle(obstacle).getPropertyValue("left")
-    );
-
-    if (obstacleLeft < 50 && obstacleLeft >= 0 && kindlyTop >= 140){
-        alert("Game Over!")
-    }
-}, 10);
-
-document.addEventListener("keydown", function (event){
-    jump();
-});**/
