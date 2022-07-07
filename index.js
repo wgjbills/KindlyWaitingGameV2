@@ -324,7 +324,8 @@ function Update () {
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
         if (spawnTimer < 60){
-            spawnTimer = 60;
+            spawnTimer = RandomIntInRange(40, 80);
+            /* spawnTimer = 60; */
         }
     }
 
