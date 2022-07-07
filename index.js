@@ -160,7 +160,7 @@ class Rock {
         this.h = h;
 
         this.dx = -gameSpeed;
-        rockImg.width = this.w;
+        rockImg.width = this.w * 0.95;
         rockImg.height = this.h;
     }
 
