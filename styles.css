@@ -7,17 +7,20 @@
 body {
     overflow: hidden;
 }
-canvas {
+canvas#game {
     display: block;
     background-image: linear-gradient(#DF73FF, #66CCFF);
     z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #cloudLarge {
-    width: 280px;
-    height: 200px;
+    width: 16em;
+    height: 11em;
     position: absolute;
-    top: 180px;
+    top: 20em;
     z-index: 4;
 
     background-image: url("img/cloud.png");
@@ -38,10 +41,10 @@ canvas {
 }
 
 #cloudMedium {
-    width: 200px;
-    height: 140px;
+    width: 10em;
+    height: 6em;
     position: absolute;
-    top: 280px;
+    top: 16em;
     z-index: 3;
 
     background-image: url("img/cloud.png");
@@ -66,10 +69,10 @@ canvas {
 }
 
 #cloudSmall {
-    width: 80px;
-    height: 60px;
+    width: 6em;
+    height: 4em;
     position: absolute;
-    top: 100px;
+    top: 5em;
     z-index: 0;
 
     background-image: url("img/cloud.png");
@@ -94,10 +97,10 @@ canvas {
 }
 
 #cloudSmall2 {
-    width: 80px;
-    height: 60px;
+    width: 6em;
+    height: 4em;
     position: absolute;
-    top: 300px;
+    top: 10em;
     z-index: 0;
 
     background-image: url("img/cloud.png");
@@ -122,10 +125,10 @@ canvas {
 }
 
 #pizza {
-    width: 250px;
-    height: 150px;
+    width: 7em;
+    height: 7em;
     position: absolute;
-    top: 400px;
+    top: 20em;
     z-index: 5;
 
     background-image: url("img/pizza.png");
@@ -150,10 +153,10 @@ canvas {
 }
 
 #airplane {
-    width: 250px;
-    height: 150px;
+    width: 12em;
+    height: 7em;
     position: absolute;
-    top: 100px;
+    top: 4em;
     z-index: 2;
 
     background-image: url("img/airplane.png");
@@ -165,11 +168,11 @@ canvas {
 
 @keyframes airFly{
     0% {
-        left: -30%;
+        left: -40%;
     }
 
     20% {
-        left: -30%;
+        left: -40%;
     }
 
     100% {
@@ -178,10 +181,10 @@ canvas {
 }
 
 #ye {
-    width: 200px;
-    height: 140px;
+    width: 8em;
+    height: 10em;
     position: absolute;
-    top: 200px;
+    top: 18em;
     z-index: 3;
     opacity: 0.2;
 

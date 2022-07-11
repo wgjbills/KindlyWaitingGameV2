@@ -8,9 +8,12 @@ let highscoreText;
 let player;
 let gravity;
 let obstacles = [];
-/* let rocks = []; */
 let gameSpeed;
 let keys = {};
+let heightRatio = 1.5;
+
+ctx.canvas.width = window.innerWidth;
+ctx.canvas.height = canvas.width * heightRatio;
 
 const obsImg = new Image();
 obsImg.src = "img/chatbubble.png";
@@ -160,7 +163,7 @@ class Rock {
         this.h = h;
 
         this.dx = -gameSpeed;
-        rockImg.width = this.w * 0.95;
+        rockImg.width = this.w;
         rockImg.height = this.h;
     }
 
@@ -175,7 +178,7 @@ class Rock {
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
         let image = this.rockImg;
-        ctx.drawImage(this.rockImg, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.rockImg, this.x, this.y, this.w*1.3, this.h*1.5);
         ctx.closePath();
     }
 }
@@ -242,7 +245,6 @@ function SpawnObstacle (){
     let sizeX = RandomIntInRange(80, 160);
     let sizeY = sizeX / 2;
     let type = RandomIntInRange(0, 2);
-    let rock;
     let obstacle = new Obstacle(
         x = canvas.width + sizeX, 
         y = canvas.height - sizeX, 
@@ -251,18 +253,19 @@ function SpawnObstacle (){
         obsImg
         );
         
+        console.log(type);
         if (type == 0){
             obstacle = new Rock(
                 x = canvas.width + sizeX, 
                 y = canvas.height - sizeY, 
                 w = sizeX,
                 h = sizeY,
-                rockImg 
+                rockImg  
             );  
     } else if (type == 1){
-        obstacle.y -= player.originalRad - 10;
+        obstacle.y -= player.originalRad - 30;
     } else if (type == 2){
-        obstacle.y -= canvas.height - sizeX * 5;
+        obstacle.y -= player.originalRad * 3;
     }
 
     obstacles.push(obstacle);
@@ -288,12 +291,12 @@ function RandomIntInRange (min, max){
 }
 
 function Start () {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
 
     ctx.font = "40px sans-serif";
 
-    gameSpeed = 4;
+    gameSpeed = 5;
     gravity = 1;
 
     score = 0;
@@ -308,14 +311,14 @@ function Start () {
     highscoreText = new Text("Highscore: " + highscore, canvas.width - 45,
     45, "right", "#FFDB51", "40")
 
-    requestAnimationFrame(Update);
+    setInterval(Update, 17);
 }
 
 let initialSpawnTimer = 200; 
 let spawnTimer = initialSpawnTimer;
 
 function Update () {
-    requestAnimationFrame(Update);
+    /* setInterval(Update, 60); */
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     spawnTimer--;
@@ -324,7 +327,7 @@ function Update () {
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
         if (spawnTimer < 60){
-            spawnTimer = RandomIntInRange(40, 80);
+            spawnTimer = RandomIntInRange(30, 100);
             /* spawnTimer = 60; */
         }
     }
@@ -344,8 +347,9 @@ function Update () {
             obstacles = [];
             score = 0;
             spawnTimer = initialSpawnTimer;
-            gameSpeed = 4;    
+            gameSpeed = 5;    
             window.localStorage.setItem('highscore', highscore);
+            /* spawnMenu(); */
         }
 
         /*if (player.x - player.r < o.x + o.w &&
