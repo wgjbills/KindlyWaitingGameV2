@@ -24,6 +24,9 @@ obsImg.src = "img/chatbubble.png";
 const rockImg = new Image();
 rockImg.src = "img/rock.png";
 
+const roadblockImg = new Image();
+roadblockImg.src = "img/roadblock.png";
+
 /* const logoImg = new Image();
 const playImg = new Image();
 const exitImg = new Image();
@@ -45,7 +48,7 @@ function showMenu(){
         }
 } */
 
-function runGame() {
+function newGame() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
     document.getElementById("instr").style.display = "none";       
@@ -175,7 +178,6 @@ class Obstacle {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
-        let image = this.obsImg;
         ctx.drawImage(this.obsImg, this.x, this.y, this.w, this.h);
         ctx.closePath();
     }
@@ -227,8 +229,35 @@ class Rock {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
-        let image = this.rockImg;
         ctx.drawImage(this.rockImg, this.x, this.y, this.w*1.3, this.h*1.5);
+        ctx.closePath();
+    }
+}
+
+class Roadblock {
+    constructor (x, y, w, h, roadblockImg){
+        this.roadblockImg = roadblockImg;
+        this.x = x,
+        this.y = y,
+        this.w = w;
+        this.h = h;
+
+        this.dx = -gameSpeed;
+        roadblockImg.width = this.w;
+        roadblockImg.height = this.h;
+    }
+
+    update (){
+        this.x += this.dx;
+        this.draw();
+        this.dx = -gameSpeed;
+    }
+
+    draw () {
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
+        ctx.fillRect(this.x, this.y, this.w, this.h,);
+        ctx.drawImage(this.roadblockImg, this.x, this.y, this.w, this.h*1.1);
         ctx.closePath();
     }
 }
@@ -312,11 +341,17 @@ function spawnObstacle (){
                 h = sizeY,
                 rockImg  
             );  
-    } else if (type == 1){
-        obstacle.y -= player.originalRad - 30;
-    } else if (type == 2){
-        obstacle.y -= player.originalRad * 3;
-    }
+        } else if (type == 1){
+            obstacle.y -= player.originalRad - 30;
+        } else if (type == 2){
+            obstacle = new Roadblock(
+                x = canvas.width + sizeX, 
+                y = canvas.height - sizeY, 
+                w = sizeX,
+                h = sizeY,
+                roadblockImg  
+            );
+        }
 
     obstacles.push(obstacle);
     /* rocks.push(rock); */
@@ -378,7 +413,7 @@ function update () {
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
         if (spawnTimer < 60){
-            spawnTimer = randomIntInRange(50, 100);
+            spawnTimer = randomIntInRange(20, 80);
             /* spawnTimer = 60; */
         }
     }
@@ -393,13 +428,10 @@ function update () {
         
         if (getDistance(player, o)) {
             obstacles = [];
-            score = 0;
             spawnTimer = initialSpawnTimer;
             gameSpeed = 5;    
             window.localStorage.setItem('highscore', highscore);
-            /* ctx.clearRect(0, 0, canvas.width, canvas.height); */
             clearInterval(setIntervalId);
-            score = -1;
             goBack();
         }
 
