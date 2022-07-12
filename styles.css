@@ -6,7 +6,61 @@
 
 body {
     overflow: hidden;
+    /* color: #fff;
+    font-family: sans-serif;
+    font-size: 2em;
+    text-align: center; */
 }
+
+#main {
+    display: none;
+}
+
+#newGame, #instrBtn, #backBtn {
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid goldenrod;
+    border-radius: 7px;
+    background-color: gold;
+    color: orangered;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: "Courier New";
+    width: 5em;
+    margin: 5px auto;
+    position: relative;
+    z-index: 5;
+    /* display: block; */
+}
+
+#instr {
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid goldenrod;
+    border-radius: 7px;
+    background-color: gold;
+    color: orangered;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Courier New";
+    /* width: 5em; */
+    margin: 5px 0;
+    z-index: 5;
+}
+
+#header {
+    margin: auto;
+    color: orange;
+    font-size: 20px;
+    font-family: "Courier New";
+    display: block;
+    position: absolute;
+}
+
+#backBtn {
+    display: none;
+}
+
 canvas#game {
     display: block;
     background-image: linear-gradient(#DF73FF, #66CCFF);

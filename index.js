@@ -1,5 +1,7 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
+const width = canvas.getAttribute('width');
+const height = canvas.getAttribute('height');
 
 let score;
 let highscore;
@@ -11,15 +13,64 @@ let obstacles = [];
 let gameSpeed;
 let keys = {};
 let heightRatio = 1.5;
+/* let origInterval = setInterval(update, 17); */
 
-ctx.canvas.width = window.innerWidth;
-ctx.canvas.height = canvas.width * heightRatio;
+/* ctx.canvas.width = window.innerWidth;
+ctx.canvas.height = window.innerHeight; */
 
 const obsImg = new Image();
 obsImg.src = "img/chatbubble.png";
 
 const rockImg = new Image();
 rockImg.src = "img/rock.png";
+
+/* const logoImg = new Image();
+const playImg = new Image();
+const exitImg = new Image();
+const instrImg = new Image();
+
+logoImg.src = "menuImg/logo.png";
+playImg.src = "menuImg/Play.png";
+exitImg.src = "menuImg/Exit.png";
+instrImg.src = "menuImg/instructions.png";
+
+function showMenu(){
+    if (showMenu){
+        setInterval(update, 0);
+        logoImg.onload = function(){
+            ctx.drawImage(logoImg, 0, 0);
+        }
+    } else{
+        update();
+        }
+} */
+
+const runGame = function(){
+    document.getElementById("newGame").style.display = "none";
+    document.getElementById("header").style.display = "none";
+    
+    document.getElementById("instr").style.display = "none";       
+    document.getElementById("main").style.display = "block";
+    document.getElementById("instrBtn").style.display = "none";
+    start();
+};
+
+const showInstr = function(){
+    document.getElementById("header").style.display = "none";
+    document.getElementById("instrBtn").style.display = "none";
+    document.getElementById("newGame").style.display = "none";
+    document.getElementById("instr").style.display = "block";
+    document.getElementById("instr").style.visibility = "visible";
+    document.getElementById("backBtn").style.display = "block";
+};
+
+const goBack = function(){
+    document.getElementById("backBtn").style.display = "none";
+    document.getElementById("instr").style.display = "none";
+    document.getElementById("header").style.display = "block";
+    document.getElementById("newGame").style.display = "block";
+    document.getElementById("instrBtn").style.display = "block";
+};
 
 
 document.addEventListener('keydown', function(evt){
@@ -44,9 +95,9 @@ class Player{
         this.jumpTimer = 0;
     }
 
-    Animate () {
+    animate () {
         if (keys['Space'] || keys['KeyW']) {
-            this.Jump();
+            this.jump();
         } else{
             this.jumpTimer = 0;
         }
@@ -68,10 +119,10 @@ class Player{
             this.y = canvas.height - this.r;
         }
 
-        this.Draw();
+        this.draw();
     }
     
-    Jump () {
+    jump () {
         if (this.r != this.originalRad) return
 
         if (this.grounded && this.jumpTimer == 0){
@@ -83,7 +134,7 @@ class Player{
         }
     }
 
-    Draw () {
+    draw () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false)
         ctx.fillStyle = this.c;
@@ -115,13 +166,13 @@ class Obstacle {
         this.dx = -gameSpeed;
     } */
 
-    Update (){
+    update (){
         this.x += this.dx;
-        this.Draw();
+        this.draw();
         this.dx = -gameSpeed;
     }
 
-    Draw () {
+    draw () {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
@@ -130,14 +181,14 @@ class Obstacle {
         ctx.closePath();
     }
     
-    /* Draw () {
+    /* draw () {
         ctx.beginPath();
         ctx.fillStyle = this.c;
         ctx.fillRect(this.x, this.y, this.w, this.h);
         ctx.closePath();
     } */
 
-    /*Draw () {
+    /*draw () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false)
         ctx.fillStyle = this.c;
@@ -145,7 +196,7 @@ class Obstacle {
         ctx.closePath();
     }*/
 
-    /*Draw () {
+    /*draw () {
         ctx.beginPath();
         ctx.ellipse(this.x, this.y, this.radX, this.radY, 0, 0, 2 * Math.PI);
         ctx.fillStyle = this.c;
@@ -167,13 +218,13 @@ class Rock {
         rockImg.height = this.h;
     }
 
-    Update (){
+    update (){
         this.x += this.dx;
-        this.Draw();
+        this.draw();
         this.dx = -gameSpeed;
     }
 
-    Draw () {
+    draw () {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
@@ -193,7 +244,7 @@ class Text{
         this.s = s;
     }
 
-    Draw () {
+    draw () {
         ctx.beginPath();
         ctx.fillStyle = this.c;
         ctx.font = this.s + "px sans-serif";
@@ -241,10 +292,10 @@ function getDistance(player, obstacle) {
     return Math.sqrt(Math.pow(xDis, 2) + Math.pow(yDis, 2));
 }*/
 
-function SpawnObstacle (){
-    let sizeX = RandomIntInRange(80, 160);
+function spawnObstacle (){
+    let sizeX = randomIntInRange(80, 160);
     let sizeY = sizeX / 2;
-    let type = RandomIntInRange(0, 2);
+    let type = randomIntInRange(0, 2);
     let obstacle = new Obstacle(
         x = canvas.width + sizeX, 
         y = canvas.height - sizeX, 
@@ -253,7 +304,7 @@ function SpawnObstacle (){
         obsImg
         );
         
-        console.log(type);
+        /* console.log(type); */
         if (type == 0){
             obstacle = new Rock(
                 x = canvas.width + sizeX, 
@@ -273,7 +324,7 @@ function SpawnObstacle (){
 }
 
 /* function SpawnRock (){
-    let sizeX = RandomIntInRange(80, 160);
+    let sizeX = randomIntInRange(80, 160);
     let sizeY = sizeX / 2;
     let rock = new Rock(
         x = canvas.width + sizeX, 
@@ -286,14 +337,14 @@ function SpawnObstacle (){
     rocks.push(rock);
 } */
 
-function RandomIntInRange (min, max){
+function randomIntInRange (min, max){
     return Math.round(Math.random() * (max - min) + min);
 }
 
-function Start () {
+function start () {
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
-
+    
     ctx.font = "40px sans-serif";
 
     gameSpeed = 5;
@@ -311,23 +362,24 @@ function Start () {
     highscoreText = new Text("Highscore: " + highscore, canvas.width - 45,
     45, "right", "#FFDB51", "40")
 
-    setInterval(Update, 17);
+    setInterval(update, 17);
+    console.log(gameSpeed);
 }
 
 let initialSpawnTimer = 200; 
 let spawnTimer = initialSpawnTimer;
 
-function Update () {
-    /* setInterval(Update, 60); */
+function update () {
+    /* setInterval(update, 60); */
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     spawnTimer--;
     if (spawnTimer <= 0){
-        SpawnObstacle();
+        spawnObstacle();
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
         if (spawnTimer < 60){
-            spawnTimer = RandomIntInRange(30, 100);
+            spawnTimer = randomIntInRange(30, 100);
             /* spawnTimer = 60; */
         }
     }
@@ -364,14 +416,14 @@ function Update () {
             window.localStorage.setItem('highscore', highscore);
             }*/
 
-        o.Update()
+        o.update()
     }
 
-    player.Animate();
+    player.animate();
 
     score++;
     scoreText.t = "Score: " + score;
-    scoreText.Draw();
+    scoreText.draw();
 
 
     if (score > highscore){
@@ -380,9 +432,9 @@ function Update () {
         
     }
 
-    highscoreText.Draw();
+    highscoreText.draw();
 
     gameSpeed += 0.002;
 }
 
-Start();
+start();
