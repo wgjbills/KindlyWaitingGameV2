@@ -27,27 +27,6 @@ rockImg.src = "img/rock.png";
 const roadblockImg = new Image();
 roadblockImg.src = "img/roadblock.png";
 
-/* const logoImg = new Image();
-const playImg = new Image();
-const exitImg = new Image();
-const instrImg = new Image();
-
-logoImg.src = "menuImg/logo.png";
-playImg.src = "menuImg/Play.png";
-exitImg.src = "menuImg/Exit.png";
-instrImg.src = "menuImg/instructions.png";
-
-function showMenu(){
-    if (showMenu){
-        setInterval(update, 0);
-        logoImg.onload = function(){
-            ctx.drawImage(logoImg, 0, 0);
-        }
-    } else{
-        update();
-        }
-} */
-
 function newGame() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
@@ -91,7 +70,7 @@ class Player{
         this.c = c;
 
         this.dy = 0;
-        this.jumpForce = 22;
+        this.jumpForce = 18;
         this.originalRad = r;
         this.grounded = false;
         this.jumpTimer = 0;
