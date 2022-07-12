@@ -1,7 +1,7 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
-const width = canvas.getAttribute('width');
-const height = canvas.getAttribute('height');
+/* const width = canvas.getAttribute('width');
+const height = canvas.getAttribute('height'); */
 
 let score;
 let highscore;
@@ -13,10 +13,10 @@ let obstacles = [];
 let gameSpeed;
 let keys = {};
 let heightRatio = 1.5;
-/* let origInterval = setInterval(update, 17); */
+let setIntervalId;
 
-/* ctx.canvas.width = window.innerWidth;
-ctx.canvas.height = window.innerHeight; */
+ctx.canvas.width = window.innerWidth;
+ctx.canvas.height = window.innerHeight;
 
 const obsImg = new Image();
 obsImg.src = "img/chatbubble.png";
@@ -45,17 +45,16 @@ function showMenu(){
         }
 } */
 
-const runGame = function(){
+function runGame() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
-    
     document.getElementById("instr").style.display = "none";       
     document.getElementById("main").style.display = "block";
     document.getElementById("instrBtn").style.display = "none";
     start();
 };
 
-const showInstr = function(){
+function showInstr() {
     document.getElementById("header").style.display = "none";
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("newGame").style.display = "none";
@@ -64,7 +63,7 @@ const showInstr = function(){
     document.getElementById("backBtn").style.display = "block";
 };
 
-const goBack = function(){
+function goBack() {
     document.getElementById("backBtn").style.display = "none";
     document.getElementById("instr").style.display = "none";
     document.getElementById("header").style.display = "block";
@@ -342,6 +341,7 @@ function randomIntInRange (min, max){
 }
 
 function start () {
+    clearInterval(setIntervalId);
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
     
@@ -362,8 +362,7 @@ function start () {
     highscoreText = new Text("Highscore: " + highscore, canvas.width - 45,
     45, "right", "#FFDB51", "40")
 
-    setInterval(update, 17);
-    console.log(gameSpeed);
+    setIntervalId = setInterval(update, 17);
 }
 
 let initialSpawnTimer = 200; 
@@ -390,18 +389,18 @@ function update () {
         if (o.x + o.y < 0){
             obstacles.splice(i, 1);
         }
-        /*if (distX <= (obstacle.w/2)) { return true; } 
-        if (distY <= (obstacle.h/2)) { return true; }*/
 
         
-        if (getDistance(player, o)/* < o.w/2 ||
-        getDistance(player.x, player.y, o.x, o.y) < o.h/2*/) {
+        if (getDistance(player, o)) {
             obstacles = [];
             score = 0;
             spawnTimer = initialSpawnTimer;
             gameSpeed = 5;    
             window.localStorage.setItem('highscore', highscore);
-            /* spawnMenu(); */
+            /* ctx.clearRect(0, 0, canvas.width, canvas.height); */
+            clearInterval(setIntervalId);
+            score = -1;
+            goBack();
         }
 
         /*if (player.x - player.r < o.x + o.w &&
@@ -437,4 +436,4 @@ function update () {
     gameSpeed += 0.002;
 }
 
-start();
+/* start(); */
