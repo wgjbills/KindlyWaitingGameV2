@@ -246,7 +246,7 @@ class Text{
     draw () {
         ctx.beginPath();
         ctx.fillStyle = this.c;
-        ctx.font = this.s + "px sans-serif";
+        ctx.font = this.s + "px";
         ctx.textAlign = this.a;
         ctx.fillText(this.t, this.x, this.y);
         ctx.closePath();
@@ -345,7 +345,7 @@ function start () {
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
     
-    ctx.font = "40px sans-serif";
+    ctx.font = "40px Courier New";
 
     gameSpeed = 5;
     gravity = 1;
@@ -360,7 +360,7 @@ function start () {
 
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", "40");
     highscoreText = new Text("Highscore: " + highscore, canvas.width - 45,
-    45, "right", "#FFDB51", "40")
+    45, "right", "gold", "40")
 
     setIntervalId = setInterval(update, 17);
 }
@@ -378,7 +378,7 @@ function update () {
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
         if (spawnTimer < 60){
-            spawnTimer = randomIntInRange(30, 100);
+            spawnTimer = randomIntInRange(50, 100);
             /* spawnTimer = 60; */
         }
     }

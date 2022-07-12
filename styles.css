@@ -48,14 +48,14 @@ body {
     margin: 5px 0;
     z-index: 5;
     position: absolute;
-    top: 30%;
+    top: 25%;
     left: 40%;
 }
 
 #header {
     text-align: center;
     margin: auto;
-    color: orange;
+    color: gold;
     font-size: 50px;
     font-family: "Courier New";
     display: block;
