@@ -22,13 +22,22 @@ const app = initializeApp(firebaseConfig);
 import {getDatabase, ref, set, child, update, remove} 
 from "https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js";
 
+let newToken;
 const rand = () => Math.random(0).toString(36).substr(2);
 const token = (length) => (rand() + rand() + rand() + rand()).substr(0, length);
 
+
 export async function registerNewHighscore(highscore) {
     const db = getDatabase();
-    console.log(db)
-    const newToken = token(32);
+    if (localStorage.getItem("token") === null){
+        newToken = token(32);
+        console.log("no tokens");
+        localStorage.setItem("token", newToken);
+        console.log("set new token");
+    } else{
+        let userToken = localStorage.getItem("token");
+        newToken = userToken;
+    }
     const username = prompt("Please enter your username", "");
     try {
         set(ref(db, 'users/' + newToken), {

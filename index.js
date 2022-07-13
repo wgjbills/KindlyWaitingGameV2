@@ -479,7 +479,7 @@ function update () {
             gameSpeed = 6;    
             window.localStorage.setItem('highscore', highscore);
             clearInterval(setIntervalId);
-            registerNewHighscore();
+            registerNewHighscore(highscore);
             goBack();
         }
 
