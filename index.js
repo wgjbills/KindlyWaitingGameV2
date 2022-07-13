@@ -1,3 +1,7 @@
+import {registerNewHighscore} from "./globalHs.js";
+/* import('globalHs'); */
+/* import globalHs.js; */
+
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 /* const width = canvas.getAttribute('width');
@@ -41,7 +45,7 @@ newGameBtn.addEventListener('click', function() {
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
     start();
-})
+});
 
 
 seeInstrBtn.addEventListener('click', function(){
@@ -54,7 +58,7 @@ seeInstrBtn.addEventListener('click', function(){
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
     document.getElementById("backBtn").style.top = "50%";
-})
+});
 
 
 seeHsBtn.addEventListener('click', function(){
@@ -66,8 +70,11 @@ seeHsBtn.addEventListener('click', function(){
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("backBtn").style.top = "60%";
-})
+});
 
+goBackBtn.addEventListener('click', function() {
+    goBack();
+});
 
 function goBack() {
     document.getElementById("backBtn").style.display = "none";
@@ -79,9 +86,6 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
-goBackBtn.addEventListener('click', function() {
-    goBack();
-})
 
 
 document.addEventListener('keydown', function(evt){
@@ -329,7 +333,7 @@ function getDistance(player, obstacle) {
     return Math.sqrt(Math.pow(xDis, 2) + Math.pow(yDis, 2));
 }*/
 
-function spawnObstacle (){
+/* function spawnObstacle (){
     let sizeX = randomIntInRange(80, 160);
     let sizeY = sizeX / 2;
     let type = randomIntInRange(0, 2);
@@ -341,7 +345,6 @@ function spawnObstacle (){
         obsImg
         );
         
-        /* console.log(type); */
         if (type == 0){
             obstacle = new Rock(
                 x = canvas.width + sizeX, 
@@ -363,22 +366,57 @@ function spawnObstacle (){
         }
 
     obstacles.push(obstacle);
+} */
+
+function spawnObstacle (){
+    let sizeX;
+    let sizeY;
+    let type = randomIntInRange(0, 2);
+    let obstacle = new Obstacle(
+        canvas.width + sizeX, 
+        canvas.height - sizeX, 
+        sizeX,
+        sizeY,
+        obsImg
+        );
+        
+        /* console.log(type); */
+        if (type == 0){
+            sizeX = randomIntInRange(100, 160);
+            sizeY = sizeX / 2;
+            obstacle = new Rock(
+                canvas.width + sizeX, 
+                canvas.height - sizeY, 
+                sizeX,
+                sizeY,
+                rockImg  
+            );  
+        } else if (type == 1){
+            sizeX = randomIntInRange(80, 160);
+            sizeY = sizeX / 2;
+            obstacle = new Obstacle(
+                canvas.width + sizeX, 
+                canvas.height - sizeX, 
+                sizeX,
+                sizeY,
+                obsImg
+                );
+            obstacle.y -= player.originalRad  + randomIntInRange(-30, 150);
+        } else if (type == 2){
+            sizeX = 130;
+            sizeY = sizeX / 2;
+            obstacle = new Roadblock(
+                canvas.width + sizeX, 
+                canvas.height - sizeY, 
+                sizeX,
+                sizeY,
+                roadblockImg  
+            );
+        }
+
+    obstacles.push(obstacle);
     /* rocks.push(rock); */
 }
-
-/* function SpawnRock (){
-    let sizeX = randomIntInRange(80, 160);
-    let sizeY = sizeX / 2;
-    let rock = new Rock(
-        x = canvas.width + sizeX, 
-        y = canvas.innerHeight - sizeY, 
-        w = sizeX,
-        h = sizeY,
-        rockImg
-        );
-
-    rocks.push(rock);
-} */
 
 function randomIntInRange (min, max){
     return Math.round(Math.random() * (max - min) + min);
@@ -441,6 +479,7 @@ function update () {
             gameSpeed = 6;    
             window.localStorage.setItem('highscore', highscore);
             clearInterval(setIntervalId);
+            registerNewHighscore();
             goBack();
         }
 
@@ -476,5 +515,7 @@ function update () {
 
     gameSpeed += 0.002;
 }
+
+
 
 /* start(); */
