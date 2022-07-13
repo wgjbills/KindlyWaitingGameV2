@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* overflow: hidden; */
 }
 
 body {
@@ -17,7 +18,11 @@ body {
     display: none;
 }
 
-#newGame, #instrBtn, #backBtn {
+html {
+    overflow: hidden;
+}
+
+#newGame, #instrBtn, #backBtn, #hsBtn {
     text-align: center;
     vertical-align: middle;
     border: 2px solid goldenrod;
@@ -54,6 +59,25 @@ body {
     padding: 1%;
 }
 
+#hsBoard {
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid goldenrod;
+    border-radius: 7px;
+    background-color: gold;
+    color: orangered;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: "Courier New";
+    width: 20%;
+    margin: 5px 0;
+    z-index: 5;
+    position: absolute;
+    top: 25%;
+    left: 40%;
+    padding: 1%;
+}
+
 #header {
     text-align: center;
     margin: auto;
@@ -65,11 +89,16 @@ body {
     width: 40%;
     top: 20%;
     left: 30%;
-    overflow: none;
+    overflow: hidden;
 }
 
 #instrBtn {
     top: 50%;
+    left: 40%;
+}
+
+#hsBtn {
+    top: 60%;
     left: 40%;
 }
 
@@ -97,23 +126,34 @@ canvas#game {
     width: 27%;
     height: 20%;
     position: absolute;
-    top: 20em;
     z-index: 4;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: large 19s infinite linear;
+    animation: large 70s infinite linear;
 }
 
 @keyframes large{
     0% {
         left: 100%;
+        top: 50%;
+    }
+
+    30% {
+        left: 55%;
+        top: 53%
+    }
+
+    65% {
+        left: 15%;
+        top: 55%
     }
 
     100% {
         left: -30%;
+        top: 50%
     }
 }
 
@@ -121,27 +161,39 @@ canvas#game {
     width: 20%;
     height: 12%;
     position: absolute;
-    top: 34%;
     z-index: 3;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: medium 17s infinite linear;
+    animation: medium 50s infinite linear;
 }
 
 @keyframes medium{
     0% {
         left: 100%;
+        top: 27%;
     }
 
     20% {
         left: 100%;
+        top: 27%;
+    }
+
+    50% {
+        left: 60%;
+        top: 31%;
+    }
+
+    70% {
+        left: 30%;
+        top: 34%;
     }
 
     100% {
         left: -30%;
+        top: 37%;
     }
 }
 
@@ -149,27 +201,34 @@ canvas#game {
     width: 12%;
     height: 8%;
     position: absolute;
-    top: 60%;
     z-index: 0;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: small 30s infinite linear;
+    animation: small 65s infinite linear;
 }
 
 @keyframes small{
     0% {
         left: 100%;
+        top: 62%;
     }
 
     40% {
         left: 100%;
+        top: 62%;
+    }
+
+    70% {
+        left: 40%;
+        top: 57%;
     }
 
     100% {
         left: -30%;
+        top: 55%;
     }
 }
 
@@ -177,50 +236,52 @@ canvas#game {
     width: 12%;
     height: 8%;
     position: absolute;
-    top: 10%;
     z-index: 0;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: small2 30s infinite linear;
+    animation: small2 80s infinite linear;
 }
 
 @keyframes small2{
     0% {
         left: 100%;
+        top: 10%;
     }
 
-    30% {
+    40% {
         left: -30%;
+        top: 15%;
     }
 
     100% {
-        left: -30%
+        left: -30%;
+        top: 10%;
     }
 }
 
-#pizza {
-    width: 14%;
-    height: 14%;
+#ufo {
+    width: 10%;
+    height: 8%;
     position: absolute;
-    top: 55%;
-    z-index: 5;
+    top: 27%;
+    z-index: 0;
 
-    background-image: url("img/pizza.png");
+    background-image: url("img/ufo.png");
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: pizzaFly 60s infinite linear;
+    animation: ufoFly 150s infinite linear;
 }
 
-@keyframes pizzaFly{
+@keyframes ufoFly{
     0% {
         left: 100%;
     }
 
-    60% {
+    97% {
         left: 100%;
     }
 
@@ -240,7 +301,7 @@ canvas#game {
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: airFly 40s infinite linear;
+    animation: airFly 60s infinite linear;
 }
 
 @keyframes airFly{
@@ -270,19 +331,57 @@ canvas#game {
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: yeFly 40s infinite linear;
+    animation: yeFly 140s infinite linear;
 }
 
 @keyframes yeFly{
     0% {
         left: 100%;
+        top: 32%;
     }
 
-    60% {
+    80% {
         left: 100%;
+        top: 32%;
+    }
+
+    82.5% {
+        left: 85%;
+        top: 35%;
+    }
+
+    85% {
+        left: 70%;
+        top: 38%;
+    }
+
+    87.5% {
+        left: 55%;
+        top: 35%;
+    }
+
+    90% {
+        left: 40%;
+        top: 32%;
+    }
+
+    92.5% {
+        left: 25%;
+        top: 35%;
+    }
+
+    95% {
+        left: 10%;
+        top: 38%;
+    }
+
+    97.5% {
+        left: -10%;
+        top: 35%;
     }
 
     100% {
         left: -30%;
+        top: 30%;
     }
 }

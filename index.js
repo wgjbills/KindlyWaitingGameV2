@@ -33,6 +33,8 @@ function newGame() {
     document.getElementById("instr").style.display = "none";       
     document.getElementById("main").style.display = "block";
     document.getElementById("instrBtn").style.display = "none";
+    document.getElementById("hsBtn").style.display = "none";
+    document.getElementById("hsBoard").style.display = "none";
     start();
 };
 
@@ -43,6 +45,20 @@ function showInstr() {
     document.getElementById("instr").style.display = "block";
     document.getElementById("instr").style.visibility = "visible";
     document.getElementById("backBtn").style.display = "block";
+    document.getElementById("hsBtn").style.display = "none";
+    document.getElementById("hsBoard").style.display = "none";
+    document.getElementById("backBtn").style.top = "50%";
+};
+
+function showHighscore() {
+    document.getElementById("header").style.display = "none";
+    document.getElementById("hsBtn").style.display = "none";
+    document.getElementById("newGame").style.display = "none";
+    document.getElementById("instrBtn").style.display = "none";
+    document.getElementById("instr").style.display = "none";
+    document.getElementById("hsBoard").style.display = "block";
+    document.getElementById("backBtn").style.display = "block";
+    document.getElementById("backBtn").style.top = "60%";
 };
 
 function goBack() {
@@ -51,6 +67,8 @@ function goBack() {
     document.getElementById("header").style.display = "block";
     document.getElementById("newGame").style.display = "block";
     document.getElementById("instrBtn").style.display = "block";
+    document.getElementById("hsBtn").style.display = "block";
+    document.getElementById("hsBoard").style.display = "none";
 };
 
 
@@ -361,7 +379,7 @@ function start () {
     
     ctx.font = "40px Courier New";
 
-    gameSpeed = 5;
+    gameSpeed = 6;
     gravity = 1;
 
     score = 0;
@@ -408,7 +426,7 @@ function update () {
         if (getDistance(player, o)) {
             obstacles = [];
             spawnTimer = initialSpawnTimer;
-            gameSpeed = 5;    
+            gameSpeed = 6;    
             window.localStorage.setItem('highscore', highscore);
             clearInterval(setIntervalId);
             goBack();
