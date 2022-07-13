@@ -3,6 +3,11 @@ const ctx = canvas.getContext('2d');
 /* const width = canvas.getAttribute('width');
 const height = canvas.getAttribute('height'); */
 
+const newGameBtn = document.getElementById("newGame");
+const seeInstrBtn = document.getElementById("instrBtn");
+const seeHsBtn = document.getElementById("hsBtn");
+const goBackBtn = document.getElementById("backBtn");
+
 let score;
 let highscore;
 let scoreText;
@@ -27,7 +32,7 @@ rockImg.src = "img/rock.png";
 const roadblockImg = new Image();
 roadblockImg.src = "img/roadblock.png";
 
-function newGame() {
+newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
     document.getElementById("instr").style.display = "none";       
@@ -36,9 +41,10 @@ function newGame() {
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
     start();
-};
+})
 
-function showInstr() {
+
+seeInstrBtn.addEventListener('click', function(){
     document.getElementById("header").style.display = "none";
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("newGame").style.display = "none";
@@ -48,9 +54,10 @@ function showInstr() {
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
     document.getElementById("backBtn").style.top = "50%";
-};
+})
 
-function showHighscore() {
+
+seeHsBtn.addEventListener('click', function(){
     document.getElementById("header").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("newGame").style.display = "none";
@@ -59,7 +66,8 @@ function showHighscore() {
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("backBtn").style.top = "60%";
-};
+})
+
 
 function goBack() {
     document.getElementById("backBtn").style.display = "none";
@@ -70,6 +78,10 @@ function goBack() {
     document.getElementById("hsBtn").style.display = "block";
     document.getElementById("hsBoard").style.display = "none";
 };
+
+goBackBtn.addEventListener('click', function() {
+    goBack();
+})
 
 
 document.addEventListener('keydown', function(evt){

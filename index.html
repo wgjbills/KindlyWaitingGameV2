@@ -9,18 +9,18 @@
 </head>
 <body>
     <div id="header">Kindly Waiting Game</div>
-    <div id="newGame" onclick="newGame()" onmouseover="this.style.backgroundColor = 'goldenrod'"
+    <div id="newGame" onmouseover="this.style.backgroundColor = 'goldenrod'"
     onmouseout="this.style.backgroundColor= 'gold'">New Game</div>
     <div id="instrBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
-    = 'gold'" onclick="showInstr()">Instructions</div>
+    = 'gold'">Instructions</div>
     <div id="hsBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
-    = 'gold'" onclick="showHighscore()">Highscores</div>
+    = 'gold'">Highscores</div>
 
     <div id="instr" style="display: none">Avoid the <br>chatbubbles, <br>roadblocks, <br>and rocks!<br><br>
         Instructions: <br>Space/W: Jump <br>ShiftLeft/S: Shrink</div>
     <div id="hsBoard" style="display: none">Highscores:</div>
     <div id="backBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor
-    = 'gold'" onclick="goBack()">Back</div>
+    = 'gold'">Back</div>
 
     <div id="main"></div>
     <div id="score"></div>
@@ -34,6 +34,7 @@
     <div id="ye"></div>
 
     <canvas id="game" width="640" height="400"></canvas>
+    <script src="highscore.js" type="module"></script>
     <script src="index.js"></script>
 </body>
 </html>
