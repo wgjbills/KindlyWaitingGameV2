@@ -47,6 +47,8 @@ export async function registerNewHighscore(highscore) {
         newUsername = prompt("Please enter your username", "");
     } else if (username.length > 14){
         newUsername = username.slice(0, 14);
+    } else if (username == undefined){
+        newUsername = "WhoAmI";
     }
 
     try {

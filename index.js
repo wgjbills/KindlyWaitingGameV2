@@ -472,7 +472,7 @@ function update () {
             score -= 1;
             highscore -= 1;
             if (score >= highscore){
-                registerNewHighscore(highscore);
+                registerNewHighscore(highscore+1);
             }
             goBack();
         }
