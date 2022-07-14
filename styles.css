@@ -69,13 +69,27 @@ html {
     font-size: 16px;
     font-weight: bold;
     font-family: "Courier New";
-    width: 20%;
+    width: 40%;
     margin: 5px 0;
     z-index: 5;
     position: absolute;
-    top: 25%;
-    left: 40%;
-    padding: 1%;
+    overflow: none;
+    top: 15%;
+    left: 30%;
+    padding: 2%;
+}
+
+#hsBoard p {
+    display: inline;
+    padding: 3%;
+}
+.hsLi {
+    display: flex;
+    justify-content: space-between;
+}
+p.scoreScore {
+    vertical-align: right;
+    text-align: right;
 }
 
 #header {
@@ -122,6 +136,7 @@ canvas#game {
     overflow: hidden;
 }
 
+/* ANIMATIONS */
 #cloudLarge {
     width: 27%;
     height: 20%;

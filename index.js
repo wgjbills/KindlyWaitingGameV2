@@ -1,4 +1,4 @@
-import {registerNewHighscore} from "./globalHs.js";
+import {getData, registerNewHighscore, makeList} from "./globalHs.js";
 /* import('globalHs'); */
 /* import globalHs.js; */
 
@@ -69,7 +69,9 @@ seeHsBtn.addEventListener('click', function(){
     document.getElementById("instr").style.display = "none";
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
-    document.getElementById("backBtn").style.top = "60%";
+    document.getElementById("backBtn").style.top = "80%";
+    /* getData(); */
+    makeList();
 });
 
 goBackBtn.addEventListener('click', function() {
@@ -441,8 +443,8 @@ function start () {
     player = new Player(100, 0, 50, '#3FFF00');
 
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", "40");
-    highscoreText = new Text("Highscore: " + highscore, canvas.width - 45,
-    45, "right", "gold", "40")
+    highscoreText = new Text("Highscore: " + highscore, 45,
+    90, "left", "gold", "40")
 
     setIntervalId = setInterval(update, 17);
 }
@@ -479,7 +481,11 @@ function update () {
             gameSpeed = 6;    
             window.localStorage.setItem('highscore', highscore);
             clearInterval(setIntervalId);
-            registerNewHighscore(highscore);
+            score -= 1;
+            highscore -= 1;
+            if (score >= highscore){
+                registerNewHighscore(highscore);
+            }
             goBack();
         }
 

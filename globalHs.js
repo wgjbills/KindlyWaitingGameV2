@@ -19,7 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-import {getDatabase, ref, set, child, update, remove} 
+import {getDatabase, ref, set, get, child, update, remove, onValue} 
 from "https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js";
 
 let newToken;
@@ -38,7 +38,14 @@ export async function registerNewHighscore(highscore) {
         let userToken = localStorage.getItem("token");
         newToken = userToken;
     }
-    const username = prompt("Please enter your username", "");
+    
+    let username = prompt("Please enter your username", "");
+
+    if (username == null){
+        alert("No username registered for highscore!");
+        username = prompt("Please enter your username", "");
+    } 
+
     try {
         set(ref(db, 'users/' + newToken), {
             username: username,
@@ -49,4 +56,59 @@ export async function registerNewHighscore(highscore) {
     } catch (err) {
         console.log(err, "ERROR! Could not register new high score")
     }
+}
+
+export async function getData(){
+    const db = getDatabase();
+
+    try {
+        const users = await get(ref(db, 'users'));
+        const highscoresFromDb = users.val();
+    
+        const scores = Object.entries(highscoresFromDb).map(function ([key, value]){
+            return {
+                ...value,
+                id: key,
+            }
+        });
+        scores.sort(function (a, b){
+            let keyA = a.highscore;
+            let keyB = b.highscore;
+            
+            if (keyA > keyB) return -1;
+            if (keyA < keyB) return 1;
+            return 0;
+        });
+        return scores;
+    } catch(error){
+        console.log("ERROR! "+error);
+    }
+}
+
+export async function makeList(){
+    const listData = await getData();
+    const listElement = document.createElement('ul');
+    const hsBoardScore = document.getElementById('hsBoard');
+    
+    hsBoardScore.innerHTML = "LEADERBOARD ";
+    document.getElementById('hsBoard').appendChild(listElement);
+
+    
+    for (let i = 0; i < 10 && i < listData.length; i++){
+        const listItem = document.createElement('li');
+        const listName = document.createElement('p');
+        const listScore = document.createElement('p');
+        
+        listItem.classList.add("hsLi");
+        listName.classList.add("scoreName");
+        listScore.classList.add("scoreScore");
+
+        listName.innerHTML = [i+1] + ".  " + listData[i].username;
+        listScore.innerHTML = listData[i].highscore;
+        
+        listItem.appendChild(listName);
+        listItem.appendChild(listScore);
+        listElement.appendChild(listItem);
+    }
+    console.log(listData);
 }
