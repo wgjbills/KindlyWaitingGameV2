@@ -40,15 +40,18 @@ export async function registerNewHighscore(highscore) {
     }
     
     let username = prompt("Please enter your username", "");
+    let newUsername;
 
     if (username == null){
         alert("No username registered for highscore!");
-        username = prompt("Please enter your username", "");
-    } 
+        newUsername = prompt("Please enter your username", "");
+    } else if (username.length > 14){
+        newUsername = username.slice(0, 14);
+    }
 
     try {
         set(ref(db, 'users/' + newToken), {
-            username: username,
+            username: newUsername || username,
             highscore: highscore
         }).then(() => {
             console.log("Successfully registered new high score!");

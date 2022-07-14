@@ -1,11 +1,7 @@
 import {getData, registerNewHighscore, makeList} from "./globalHs.js";
-/* import('globalHs'); */
-/* import globalHs.js; */
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
-/* const width = canvas.getAttribute('width');
-const height = canvas.getAttribute('height'); */
 
 const newGameBtn = document.getElementById("newGame");
 const seeInstrBtn = document.getElementById("instrBtn");
@@ -47,7 +43,6 @@ newGameBtn.addEventListener('click', function() {
     start();
 });
 
-
 seeInstrBtn.addEventListener('click', function(){
     document.getElementById("header").style.display = "none";
     document.getElementById("instrBtn").style.display = "none";
@@ -60,7 +55,6 @@ seeInstrBtn.addEventListener('click', function(){
     document.getElementById("backBtn").style.top = "50%";
 });
 
-
 seeHsBtn.addEventListener('click', function(){
     document.getElementById("header").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
@@ -69,8 +63,7 @@ seeHsBtn.addEventListener('click', function(){
     document.getElementById("instr").style.display = "none";
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
-    document.getElementById("backBtn").style.top = "80%";
-    /* getData(); */
+    document.getElementById("backBtn").style.top = "70%";
     makeList();
 });
 
@@ -88,15 +81,12 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
-
-
 document.addEventListener('keydown', function(evt){
     keys[evt.code] = true;
 });
 document.addEventListener('keyup', function(evt){
     keys[evt.code] = false;
 });
-
 
 class Player{
     constructor (x, y, r, c){

@@ -59,6 +59,7 @@ html {
     padding: 1%;
 }
 
+
 #hsBoard {
     text-align: center;
     vertical-align: middle;
@@ -69,27 +70,35 @@ html {
     font-size: 16px;
     font-weight: bold;
     font-family: "Courier New";
-    width: 40%;
+    width: 30%;
+    height: 65%;
     margin: 5px 0;
     z-index: 5;
     position: absolute;
     overflow: none;
-    top: 15%;
-    left: 30%;
-    padding: 2%;
+    top: 5%;
+    left: 35%;
+    padding-top: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1%;
+}
+
+ul {
+    height: 100%;
+    margin-top: 4%;
 }
 
 #hsBoard p {
     display: inline;
-    padding: 3%;
+    padding: 2%;
+   /*  height: 8%; */
 }
 .hsLi {
     display: flex;
     justify-content: space-between;
-}
-p.scoreScore {
-    vertical-align: right;
-    text-align: right;
+    height: 9%;
+    /* margin-top: 4%; */
 }
 
 #header {
@@ -136,7 +145,7 @@ canvas#game {
     overflow: hidden;
 }
 
-/* ANIMATIONS */
+/* BACKGROUND ANIMATIONS */
 #cloudLarge {
     width: 27%;
     height: 20%;
