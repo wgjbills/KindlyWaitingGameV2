@@ -233,8 +233,8 @@ class Rock {
     draw () {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
-        ctx.fillRect(this.x, this.y, this.w, this.h,);
-        ctx.drawImage(this.rockImg, this.x, this.y, this.w*1.3, this.h*1.5);
+        ctx.fillRect(this.x+20, this.y+40, this.w-20, this.h-40);
+        ctx.drawImage(this.rockImg, this.x-20, this.y, this.w*1.5, this.h*1.5);
         ctx.closePath();
     }
 }
@@ -372,7 +372,6 @@ function spawnObstacle (){
         obsImg
         );
         
-        /* console.log(type); */
         if (type == 0){
             sizeX = randomIntInRange(100, 160);
             sizeY = sizeX / 2;
@@ -407,7 +406,6 @@ function spawnObstacle (){
         }
 
     obstacles.push(obstacle);
-    /* rocks.push(rock); */
 }
 
 function randomIntInRange (min, max){
