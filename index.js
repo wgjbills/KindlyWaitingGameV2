@@ -16,8 +16,8 @@ let player;
 let gravity;
 let obstacles = [];
 let gameSpeed;
-let keys = {};
-let keyPressed = false;
+let keyPressed;
+let isKeyPressed = false
 let heightRatio = 1.5;
 let setIntervalId;
 
@@ -83,10 +83,16 @@ function goBack() {
 };
 
 document.addEventListener('keydown', function(evt) {
+  if (isKeyPressed) return;
+  
+  isKeyPressed = true;
   keyPressed = evt.code;
 
 });
 document.addEventListener('keyup', function(evt) {
+  if (evt.code !== keyPressed) return; // only respond to the key already pressed
+
+  isKeyPressed = false;
   keyPressed = null;
 });
 
