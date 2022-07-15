@@ -17,6 +17,7 @@ let gravity;
 let obstacles = [];
 let gameSpeed;
 let keys = {};
+let keyPressed = false;
 let heightRatio = 1.5;
 let setIntervalId;
 
@@ -81,11 +82,12 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
-document.addEventListener('keydown', function(evt){
-    keys[evt.code] = true;
+document.addEventListener('keydown', function(evt) {
+  keyPressed = evt.code;
+
 });
-document.addEventListener('keyup', function(evt){
-    keys[evt.code] = false;
+document.addEventListener('keyup', function(evt) {
+  keyPressed = null;
 });
 
 class Player{
@@ -103,15 +105,15 @@ class Player{
     }
 
     animate () {
-        if (keys['Space'] || keys['KeyW']) {
-            this.jump();
+        if (['Space', 'KeyW'].includes(keyPressed)) {
+             this.jump();
         } else{
             this.jumpTimer = 0;
         }
 
-        if (keys['ShiftLeft'] || keys['KeyS']){
-            this.r = this.originalRad / 2;
-        } else{
+        if (['ShiftLeft', 'KeyS'].includes(keyPressed)){
+             this.r = this.originalRad / 2;
+        } else {
             this.r = this.originalRad;
         }
 
