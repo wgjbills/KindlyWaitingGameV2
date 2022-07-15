@@ -130,7 +130,9 @@ class Player{
     }
     
     jump () {
-        if (this.r != this.originalRad) return
+        if (this.r != this.originalRad) return;
+        /* if (this.y < canvas.height - this.r) return; */
+        /* if (this.y + this.r < canvas.height) return; */
 
         if (this.grounded && this.jumpTimer == 0){
             this.jumpTimer = 1.5;
@@ -138,12 +140,14 @@ class Player{
         } else if (this.jumpTimer > 0 && this.jumpTimer < 15){
             this.jumpTimer++;
             this.dy = -this.jumpForce - (this.jumpTimer / 50);
-        }
+        } /* else if (this.y < canvas.height - this.r){
+            return
+        } */
     }
 
     draw () {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false)
+        ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false);
         ctx.fillStyle = this.c;
         ctx.fill();
         ctx.closePath();
@@ -183,7 +187,7 @@ class Obstacle {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
-        ctx.drawImage(this.obsImg, this.x, this.y, this.w, this.h);
+        ctx.drawImage(this.obsImg, this.x, this.y, this.w*1.1, this.h);
         ctx.closePath();
     }
     
@@ -392,7 +396,7 @@ function spawnObstacle (){
                 sizeY,
                 obsImg
                 );
-            obstacle.y -= player.originalRad  + randomIntInRange(-30, 150);
+            obstacle.y -= player.originalRad  + randomIntInRange(-50, 150);
         } else if (type == 2){
             sizeX = 130;
             sizeY = sizeX / 2;
@@ -432,7 +436,7 @@ function start () {
 
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", "40");
     highscoreText = new Text("Highscore: " + highscore, 45,
-    90, "left", "gold", "40")
+    90, "left", "gold", "40");
 
     setIntervalId = setInterval(update, 17);
 }

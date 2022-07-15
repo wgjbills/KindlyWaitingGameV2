@@ -8,30 +8,32 @@
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div id="header">The Kindly Game</div>
-    <div id="newGame" onmouseover="this.style.backgroundColor = 'goldenrod'"
-    onmouseout="this.style.backgroundColor= 'gold'">New Game</div>
-    <div id="instrBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
-    = 'gold'">Instructions</div>
-    <div id="hsBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
-    = 'gold'">Highscores</div>
+    <div class="world">
+        <div id="header">The Kindly Game</div>
+        <div id="newGame" onmouseover="this.style.backgroundColor = 'goldenrod'"
+        onmouseout="this.style.backgroundColor= 'gold'">New Game</div>
+        <div id="instrBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
+        = 'gold'">Instructions</div>
+        <div id="hsBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
+        = 'gold'">Highscores</div>
 
-    <div id="instr" style="display: none">Avoid the <br>chatbubbles, <br>roadblocks, <br>and rocks!<br><br>
-        Instructions: <br>Space/W: Jump <br>ShiftLeft/S: Shrink</div>
-    <div id="hsBoard" style="display: none">Highscores:</div>
-    <div id="backBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor
-    = 'gold'">Back</div>
+        <div id="instr" style="display: none">Avoid the <br>chatbubbles, <br>roadblocks, <br>and rocks!<br><br>
+            Instructions: <br>Space/W: Jump <br>ShiftLeft/S: Shrink</div>
+        <div id="hsBoard" style="display: none">Highscores:</div>
+        <div id="backBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor
+        = 'gold'">Back</div>
 
-    <div id="main"></div>
-    <div id="score"></div>
+        <div id="main"></div>
+        <div id="score"></div>
 
-    <div id="cloudLarge"></div>
-    <div id="cloudMedium"></div>
-    <div id="cloudSmall"></div>
-    <div id="cloudSmall2"></div>
-    <div id="ufo"></div>
-    <div id="airplane"></div>
-    <div id="ye"></div>
+        <div id="cloudLarge"></div>
+        <div id="cloudMedium"></div>
+        <div id="cloudSmall"></div>
+        <div id="cloudSmall2"></div>
+        <div id="ufo"></div>
+        <div id="airplane"></div>
+        <div id="ye"></div>
+    </div>
 
     <canvas id="game" width="640" height="400"></canvas>
     <script src="globalHs.js" type="module"></script>
