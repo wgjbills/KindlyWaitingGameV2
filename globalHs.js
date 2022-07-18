@@ -45,10 +45,12 @@ export async function registerNewHighscore(highscore) {
     if (username == null){
         alert("No username registered for highscore!");
         newUsername = prompt("Please enter your username", "");
-    } else if (username.length > 14){
-        newUsername = username.slice(0, 14);
-    } else if (username == undefined){
-        newUsername = "WhoAmI";
+
+        if (username == undefined || newUsername == undefined){
+            newUsername = "WhoAmI";
+        }
+    } else if (username.length > 11){
+        newUsername = username.slice(0, 11);
     }
 
     try {
