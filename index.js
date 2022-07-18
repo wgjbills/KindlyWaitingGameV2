@@ -559,6 +559,7 @@ function update () {
 
 
     rotation+=Math.PI/180 * 2 + gameSpeed * 0.01;
+    console.log(rotation);
     gameSpeed += 0.002;
     
 
