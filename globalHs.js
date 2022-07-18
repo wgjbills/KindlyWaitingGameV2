@@ -97,7 +97,7 @@ export async function makeList(){
     const listElement = document.createElement('ul');
     const hsBoardScore = document.getElementById('hsBoard');
     
-    hsBoardScore.innerHTML = "LEADERBOARD ";
+    hsBoardScore.innerHTML = "LEADERBOARD";
     document.getElementById('hsBoard').appendChild(listElement);
 
     

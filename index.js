@@ -1,4 +1,4 @@
-import {getData, registerNewHighscore, makeList} from "./globalHs.js";
+import {registerNewHighscore, makeList} from "./globalHs.js";
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -18,20 +18,33 @@ let obstacles = [];
 let gameSpeed;
 let keyPressed;
 let isKeyPressed = false
-let heightRatio = 1.5;
 let setIntervalId;
+let rotation = 0;
 
 ctx.canvas.width = window.innerWidth;
 ctx.canvas.height = window.innerHeight;
 
-const obsImg = new Image();
+function createImage(path){
+    let image = new Image();
+    image.src = path;
+    return image;
+}
+
+const obsImg = createImage("img/chatbubble.png");
+const rockImg = createImage("img/rock.png");
+const roadblockImg = createImage("img/roadblock.png");
+const playerImg = createImage("img/logoPlayer.png");
+
+
+
+/* const obsImg = new Image();
 obsImg.src = "img/chatbubble.png";
 
 const rockImg = new Image();
 rockImg.src = "img/rock.png";
 
 const roadblockImg = new Image();
-roadblockImg.src = "img/roadblock.png";
+roadblockImg.src = "img/roadblock.png"; */
 
 newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
@@ -90,24 +103,36 @@ document.addEventListener('keydown', function(evt) {
 
 });
 document.addEventListener('keyup', function(evt) {
-  if (evt.code !== keyPressed) return; // only respond to the key already pressed
-
-  isKeyPressed = false;
-  keyPressed = null;
+    if (evt.code !== keyPressed) return; // only respond to the key already pressed
+    
+    isKeyPressed = false;
+    keyPressed = null;
 });
 
+function randomIntInRange (min, max){
+    return Math.round(Math.random() * (max - min) + min);
+}
+
 class Player{
-    constructor (x, y, r, c){
+    constructor (x, y, r, w, h, playerImg){
+        this.playerImg = playerImg;
         this.x = x;
         this.y = y;
         this.r = r;
-        this.c = c;
+        this.w = r*2;
+        this.h = r*2;
 
         this.dy = 0;
         this.jumpForce = 18;
         this.originalRad = r;
         this.grounded = false;
         this.jumpTimer = 0;
+       /*  playerImg.r = this.r;
+        playerImg.x = this.x;
+        playerImg.y = this.y;
+        playerImg.w = this.w;
+        playerImg.h = this.h; */
+        /* playerImg.height = this.h; */
     }
 
     animate () {
@@ -118,9 +143,14 @@ class Player{
         }
 
         if (['ShiftLeft', 'KeyS'].includes(keyPressed)){
-             this.r = this.originalRad / 2;
+            
+            this.r = this.originalRad / 2;
+            this.w = this.originalRad;
+            this.h = this.originalRad;
         } else {
             this.r = this.originalRad;
+            this.w = this.r * 2;
+            this.h = this.r * 2;
         }
 
         this.y += this.dy;
@@ -133,14 +163,12 @@ class Player{
             this.grounded = true;
             this.y = canvas.height - this.r;
         }
-
+    
         this.draw();
     }
     
     jump () {
         if (this.r != this.originalRad) return;
-        /* if (this.y < canvas.height - this.r) return; */
-        /* if (this.y + this.r < canvas.height) return; */
 
         if (this.grounded && this.jumpTimer == 0){
             this.jumpTimer = 1.5;
@@ -148,17 +176,30 @@ class Player{
         } else if (this.jumpTimer > 0 && this.jumpTimer < 15){
             this.jumpTimer++;
             this.dy = -this.jumpForce - (this.jumpTimer / 50);
-        } /* else if (this.y < canvas.height - this.r){
-            return
-        } */
+        } 
     }
 
     draw () {
-        ctx.beginPath();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(rotation);
+        
+        ctx.translate(-(this.x), -(this.y));
+        ctx.drawImage(this.playerImg, (this.x-this.r), (this.y-this.r), this.w, this.h);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        /* ctx.save();
+        ctx.rotate(gameSpeed);
+        ctx.drawImage(this.playerImg, this.x-this.r, this.y-this.r, this.w, this.h);
+        ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2);
+        ctx.restore(); */
+
+        /* ctx.beginPath();
+        ctx.rotate(gameSpeed);
+        ctx.drawImage(this.playerImg, this.x-this.r, this.y-this.r, this.w, this.h);
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false);
-        ctx.fillStyle = this.c;
         ctx.fill();
-        ctx.closePath();
+        ctx.rotate(-gameSpeed);
+        ctx.closePath(); */
     }
 }
 
@@ -420,9 +461,6 @@ function spawnObstacle (){
     obstacles.push(obstacle);
 }
 
-function randomIntInRange (min, max){
-    return Math.round(Math.random() * (max - min) + min);
-}
 
 function start () {
     clearInterval(setIntervalId);
@@ -440,7 +478,7 @@ function start () {
         highscore = localStorage.getItem('highscore');
     }
 
-    player = new Player(100, 0, 50, '#3FFF00');
+    player = new Player(100, 0, 50, 100, 100, playerImg);
 
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", "40");
     highscoreText = new Text("Highscore: " + highscore, 45,
@@ -519,9 +557,9 @@ function update () {
 
     highscoreText.draw();
 
+
+    rotation+=Math.PI/180 * 2 + gameSpeed * 0.01;
     gameSpeed += 0.002;
+    
+
 }
-
-
-
-/* start(); */
