@@ -127,6 +127,7 @@ class Player{
         this.originalRad = r;
         this.grounded = false;
         this.jumpTimer = 0;
+        /* this.newRotation = 0; */
        /*  playerImg.r = this.r;
         playerImg.x = this.x;
         playerImg.y = this.y;
@@ -143,11 +144,12 @@ class Player{
         }
 
         if (['ShiftLeft', 'KeyS'].includes(keyPressed)){
-            
+            /* this.newRotation = rotation * 2; */
             this.r = this.originalRad / 2;
             this.w = this.originalRad;
             this.h = this.originalRad;
         } else {
+            /* this.newRotation = rotation; */
             this.r = this.originalRad;
             this.w = this.r * 2;
             this.h = this.r * 2;
@@ -559,7 +561,6 @@ function update () {
 
 
     rotation+=Math.PI/180 * 2 + gameSpeed * 0.01;
-    console.log(rotation);
     gameSpeed += 0.002;
     
 
