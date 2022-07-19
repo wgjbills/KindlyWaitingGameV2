@@ -18,7 +18,7 @@ let obstacles = [];
 let gameSpeed;
 let keyPressed;
 let isKeyPressed = false
-let setIntervalId;
+let active = true;
 let rotation = 0;
 
 ctx.canvas.width = window.innerWidth;
@@ -317,7 +317,7 @@ class Roadblock {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h,);
-        ctx.drawImage(this.roadblockImg, this.x, this.y, this.w, this.h*1.1);
+        ctx.drawImage(this.roadblockImg, this.x, this.y, this.w, this.h*1.15);
         ctx.closePath();
     }
 }
@@ -375,45 +375,13 @@ function getDistance(player, obstacle) {
 /*function getDistance(x1, y1, x2, y2){
     let xDis = x2 - x1;
     let yDis = y2 - y1;
-
+    
     //return 
     return Math.sqrt(Math.pow(xDis, 2) + Math.pow(yDis, 2));
 }*/
 
-/* function spawnObstacle (){
-    let sizeX = randomIntInRange(80, 160);
-    let sizeY = sizeX / 2;
-    let type = randomIntInRange(0, 2);
-    let obstacle = new Obstacle(
-        x = canvas.width + sizeX, 
-        y = canvas.height - sizeX, 
-        w = sizeX,
-        h = sizeY,
-        obsImg
-        );
-        
-        if (type == 0){
-            obstacle = new Rock(
-                x = canvas.width + sizeX, 
-                y = canvas.height - sizeY, 
-                w = sizeX,
-                h = sizeY,
-                rockImg  
-            );  
-        } else if (type == 1){
-            obstacle.y -= player.originalRad - 30;
-        } else if (type == 2){
-            obstacle = new Roadblock(
-                x = canvas.width + sizeX, 
-                y = canvas.height - sizeY, 
-                w = sizeX,
-                h = sizeY,
-                roadblockImg  
-            );
-        }
-
-    obstacles.push(obstacle);
-} */
+let initialSpawnTimer = 200; 
+let spawnTimer = initialSpawnTimer;
 
 function spawnObstacle (){
     let sizeX;
@@ -436,8 +404,8 @@ function spawnObstacle (){
                 sizeX,
                 sizeY,
                 rockImg  
-            );  
-        } else if (type == 1){
+                );  
+            } else if (type == 1){
             sizeX = randomIntInRange(80, 160);
             sizeY = sizeX / 2;
             obstacle = new Obstacle(
@@ -449,7 +417,7 @@ function spawnObstacle (){
                 );
             obstacle.y -= player.originalRad  + randomIntInRange(-50, 150);
         } else if (type == 2){
-            sizeX = 130;
+            sizeX = 150;
             sizeY = sizeX / 2;
             obstacle = new Roadblock(
                 canvas.width + sizeX, 
@@ -465,11 +433,12 @@ function spawnObstacle (){
 
 
 function start () {
-    clearInterval(setIntervalId);
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
     
     ctx.font = "40px Courier New";
+
+    active = true;
 
     gameSpeed = 6;
     gravity = 1;
@@ -485,15 +454,17 @@ function start () {
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", "40");
     highscoreText = new Text("Highscore: " + highscore, 45,
     90, "left", "gold", "40");
-
-    setIntervalId = setInterval(update, 17);
+    
+    window.requestAnimationFrame(update);
 }
 
-let initialSpawnTimer = 200; 
-let spawnTimer = initialSpawnTimer;
 
-function update () {
-    /* setInterval(update, 60); */
+let lastTime;
+
+function update (time) {
+    if (lastTime != null) {
+        const delta = time - lastTime;
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     spawnTimer--;
@@ -503,7 +474,6 @@ function update () {
 
         if (spawnTimer < 60){
             spawnTimer = randomIntInRange(40, 80);
-            /* spawnTimer = 60; */
         }
     }
 
@@ -516,11 +486,11 @@ function update () {
 
         
         if (getDistance(player, o)) {
+            active = false;
             obstacles = [];
             spawnTimer = initialSpawnTimer;
             gameSpeed = 6;    
             window.localStorage.setItem('highscore', highscore);
-            clearInterval(setIntervalId);
             score -= 1;
             highscore -= 1;
             if (score >= highscore){
@@ -529,21 +499,14 @@ function update () {
             goBack();
         }
 
-        /*if (player.x - player.r < o.x + o.w &&
-            player.x + player.r > o.x &&
-            player.y - player.r < o.y + o.h &&
-            player.y + player.r > o.y
-            ){
-            obstacles = [];
-            score = 0;
-            spawnTimer = initialSpawnTimer;
-            gameSpeed = 4;    
-            window.localStorage.setItem('highscore', highscore);
-            }*/
-
         o.update()
     }
 
+    lastTime = time;
+    if (active){
+        window.requestAnimationFrame(update);
+    }
+    
     player.animate();
 
     score++;
@@ -558,8 +521,8 @@ function update () {
     }
 
     highscoreText.draw();
-
-
+    
+    
     rotation+=Math.PI/180 * 2 + gameSpeed * 0.01;
     gameSpeed += 0.002;
     
