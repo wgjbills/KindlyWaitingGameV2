@@ -281,7 +281,7 @@ class Roadblock {
     draw () {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
-        ctx.fillRect(this.x, this.y, this.w, this.h,);
+        ctx.fillRect(this.x, this.y+15, this.w, this.h,);
         ctx.drawImage(this.roadblockImg, this.x, this.y, this.w, this.h*1.15);
         ctx.closePath();
     }
@@ -444,8 +444,8 @@ function update (time) {
 
     for (let i = 0; i < obstacles.length; i++){
         let o = obstacles[i];
-        o.draw();
         o.update();
+        o.draw();
 
         if (o.x + o.y < 0){
             obstacles.splice(i, 1);
