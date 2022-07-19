@@ -35,17 +35,6 @@ const rockImg = createImage("img/rock.png");
 const roadblockImg = createImage("img/roadblock.png");
 const playerImg = createImage("img/logoPlayer.png");
 
-
-
-/* const obsImg = new Image();
-obsImg.src = "img/chatbubble.png";
-
-const rockImg = new Image();
-rockImg.src = "img/rock.png";
-
-const roadblockImg = new Image();
-roadblockImg.src = "img/roadblock.png"; */
-
 newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
@@ -128,12 +117,6 @@ class Player{
         this.grounded = false;
         this.jumpTimer = 0;
         /* this.newRotation = 0; */
-       /*  playerImg.r = this.r;
-        playerImg.x = this.x;
-        playerImg.y = this.y;
-        playerImg.w = this.w;
-        playerImg.h = this.h; */
-        /* playerImg.height = this.h; */
     }
 
     animate () {
@@ -218,19 +201,8 @@ class Obstacle {
         obsImg.height = this.h;
     }
 
-    /* constructor (x, y, w, h, c){
-        this.x = x;
-        this.y = y,
-        this.w = w;
-        this.h = h;
-        this.c = c;
-
-        this.dx = -gameSpeed;
-    } */
-
     update (){
         this.x += this.dx;
-        this.draw();
         this.dx = -gameSpeed;
     }
 
@@ -241,14 +213,8 @@ class Obstacle {
         ctx.drawImage(this.obsImg, this.x, this.y, this.w*1.1, this.h);
         ctx.closePath();
     }
-    
-    /* draw () {
-        ctx.beginPath();
-        ctx.fillStyle = this.c;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-        ctx.closePath();
-    } */
 
+    /////// CIRCLE
     /*draw () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false)
@@ -257,6 +223,7 @@ class Obstacle {
         ctx.closePath();
     }*/
 
+    /////// ELLIPSE
     /*draw () {
         ctx.beginPath();
         ctx.ellipse(this.x, this.y, this.radX, this.radY, 0, 0, 2 * Math.PI);
@@ -281,7 +248,6 @@ class Rock {
 
     update (){
         this.x += this.dx;
-        this.draw();
         this.dx = -gameSpeed;
     }
 
@@ -309,7 +275,6 @@ class Roadblock {
 
     update (){
         this.x += this.dx;
-        this.draw();
         this.dx = -gameSpeed;
     }
 
@@ -479,6 +444,8 @@ function update (time) {
 
     for (let i = 0; i < obstacles.length; i++){
         let o = obstacles[i];
+        o.draw();
+        o.update();
 
         if (o.x + o.y < 0){
             obstacles.splice(i, 1);
@@ -498,8 +465,6 @@ function update (time) {
             }
             goBack();
         }
-
-        o.update()
     }
 
     lastTime = time;
@@ -508,7 +473,7 @@ function update (time) {
     }
     
     player.animate();
-
+    
     score++;
     scoreText.t = "Score: " + score;
     scoreText.draw();
@@ -526,5 +491,4 @@ function update (time) {
     rotation+=Math.PI/180 * 2 + gameSpeed * 0.01;
     gameSpeed += 0.002;
     
-
 }
