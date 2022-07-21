@@ -20,9 +20,14 @@ let keyPressed;
 let isKeyPressed = false
 let active = true;
 let rotation = 0;
+const world_width = 900;
+const world_height = 640;
+const worldElem = document.querySelector('[data-world');
 
-ctx.canvas.width = window.innerWidth;
-ctx.canvas.height = window.innerHeight;
+const obsImg = createImage("img/chatbubble.png");
+const rockImg = createImage("img/rock.png");
+const roadblockImg = createImage("img/roadblock.png");
+const playerImg = createImage("img/logoPlayer.png");
 
 function createImage(path){
     let image = new Image();
@@ -30,16 +35,32 @@ function createImage(path){
     return image;
 }
 
-const obsImg = createImage("img/chatbubble.png");
-const rockImg = createImage("img/rock.png");
-const roadblockImg = createImage("img/roadblock.png");
-const playerImg = createImage("img/logoPlayer.png");
+setPixelToWorldScale()
+window.addEventListener("resize", setPixelToWorldScale);
+
+function setPixelToWorldScale() {
+    let worldToPixelScale;
+    if (window.innerWidth / window.innerHeight < world_width / world_height){
+        worldToPixelScale = window.innerWidth / world_width;
+    } else {
+        worldToPixelScale = window.innerHeight / world_height;
+    }
+
+    worldElem.style.width = (world_width * worldToPixelScale)+"px"
+    worldElem.style.height = (world_height * worldToPixelScale)+"px"
+}
+
+
+ctx.canvas.width = document.querySelector(".world").offsetWidth;
+ctx.canvas.height = document.querySelector(".world").offsetHeight;
+
+
 
 newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
     document.getElementById("instr").style.display = "none";       
-    document.getElementById("main").style.display = "block";
+    /* document.getElementById("main").style.display = "block"; */
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
@@ -55,7 +76,7 @@ seeInstrBtn.addEventListener('click', function(){
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
-    document.getElementById("backBtn").style.top = "50%";
+    document.getElementById("backBtn").style.top = "45.6%";
 });
 
 seeHsBtn.addEventListener('click', function(){
@@ -66,7 +87,7 @@ seeHsBtn.addEventListener('click', function(){
     document.getElementById("instr").style.display = "none";
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
-    document.getElementById("backBtn").style.top = "70%";
+    document.getElementById("backBtn").style.top = "82%";
     makeList();
 });
 
@@ -398,8 +419,10 @@ function spawnObstacle (){
 
 
 function start () {
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
+    /* ctx.canvas.width = document.querySelector(".world").offsetWidth;
+    ctx.canvas.height = document.querySelector(".world").offsetHeight; */
+    /* ctx.canvas.width = document.querySelector(".world").width;
+    ctx.canvas.height = document.querySelector(".world").height; */
     
     ctx.font = "40px Courier New";
 
@@ -442,7 +465,7 @@ function update (time) {
         }
     }
 
-    for (let i = 0; i < obstacles.length; i++){
+    for (let i = obstacles.length-1; i >= 0; i--){
         let o = obstacles[i];
         o.update();
         o.draw();
