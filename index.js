@@ -36,7 +36,8 @@ function createImage(path){
 }
 
 setPixelToWorldScale()
-window.addEventListener("resize", setPixelToWorldScale);
+window.onresize = function() { setPixelToWorldScale(); }
+/* window.addEventListener("resize", setPixelToWorldScale); */
 
 function setPixelToWorldScale() {
     let worldToPixelScale;
@@ -46,8 +47,9 @@ function setPixelToWorldScale() {
         worldToPixelScale = window.innerHeight / world_height;
     }
 
-    worldElem.style.width = (world_width * worldToPixelScale)+"px"
-    worldElem.style.height = (world_height * worldToPixelScale)+"px"
+    worldElem.style.width = (world_width * worldToPixelScale)+"px";
+    worldElem.style.height = (world_height * worldToPixelScale)+"px";
+    return worldToPixelScale;
 }
 
 
@@ -60,7 +62,6 @@ newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
     document.getElementById("instr").style.display = "none";       
-    /* document.getElementById("main").style.display = "block"; */
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
