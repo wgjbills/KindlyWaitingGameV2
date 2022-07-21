@@ -89,14 +89,9 @@ canvas#game {
     font-weight: bold;
     font-family: "Courier New";
     min-width: 30%;
-    /* width: 20%; */
-    /* margin: 1% auto; */
-    /* position: absolute; */
-    z-index: 5;
-    /* padding: 1%; */
-    padding: 3%;
-    /* height: 30%; */
-    /* display: block; */
+    z-index: 6;
+    padding: 5%;
+    margin: 2%;
 }
 
 #newGame {
@@ -111,10 +106,12 @@ canvas#game {
     top: 70%;
 }
 
-
 #backBtn {
+    padding: 2%;
+    /* height: 3%; */
     display: none;
     position: absolute;
+    /* margin-top: 2%; */
 }
 
 #instr {
@@ -124,7 +121,7 @@ canvas#game {
     border-radius: 7px;
     background-color: gold;
     color: orangered;
-    font-size: 1.8vw;
+    font-size: 1.7vw;
     font-weight: bold;
     font-family: "Courier New";
     width: 30%;
@@ -143,15 +140,15 @@ canvas#game {
     border-radius: 7px;
     background-color: gold;
     color: orangered;
-    font-size: 1.8vw;
+    font-size: 1.7vw;
     font-weight: bold;
     font-family: "Courier New";
-    width: 40%;
-    height: 65%;
+    min-width: 40%;
+    min-height: 75%;
     z-index: 5;
-    position: absolute;
+    position: relative;
     overflow: none;
-    top: 15%;
+    top: 7%;
     padding-top: 2%;
     padding-left: 3%;
     padding-right: 3%;
