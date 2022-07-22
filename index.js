@@ -38,17 +38,18 @@ function createImage(path){
 }
 
 setPixelToWorldScale();
-window.addEventListener('resize', () => {
-    ratio = setPixelToWorldScale();
-/*     player.setR(ratio*player.getR());
- */    /* player.x *= ratio;
-    player.y *= ratio; */
-    /* player.y *= ratio; */
-    /* Player.draw(ratio),
-    Obstacle.draw(ratio),
-    Rock.draw(ratio),
-    Roadblock.draw(ratio) */
-} );
+// window.addEventListener('resize', () => {
+//     ratio = setPixelToWorldScale();
+    
+// /*     player.setR(ratio*player.getR());
+//  */    /* player.x *= ratio;
+//     player.y *= ratio; */
+//     /* player.y *= ratio; */
+//     /* Player.draw(ratio),
+//     Obstacle.draw(ratio),
+//     Rock.draw(ratio),
+//     Roadblock.draw(ratio) */
+// } );
 
 /* window.onresize = function() { 
     const ratio = setPixelToWorldScale(); 
@@ -147,116 +148,131 @@ function randomIntInRange (min, max){
     return Math.round(Math.random() * (max - min) + min);
 }
 
-class Player{
-    constructor (playerImg, x, y, r, ratio){
-        this.playerImg = playerImg;
-        this.x = x;
-        this.y = y;
-        this.r = r * ratio;
-        this.w = r * 2;
-        this.h = r * 2;
-        this.ratio = ratio;
+class Player {
+  constructor(playerImg, x, y, r, ratio) {
+    this.playerImg = playerImg;
+    this.x = x;
+    this.y = y;
+    this.originalR = r;
+    this.r = r * ratio;
+    this.w = r * 2;
+    this.h = r * 2;
 
-        this.dy = 0;
-        this.jumpForce = 18 * ratio;
-        this.originalRad = r;
-        this.grounded = false;
-        this.jumpTimer = 0;
-        /* this.newRotation = 0; */
+    this.dy = 0;
+    this.originalJumpForce = 18;
+    this.jumpForce = this.originalJumpForce * ratio;
+    this.originalRad = r;
+    this.grounded = false;
+    this.jumpTimer = 0;
+    /* this.newRotation = 0; */
+  }
+
+  updateRatio(ratio) {
+    this.r = this.originalR * ratio;
+    this.jumpForce = 18 * ratio;
+  }
+
+  animate() {
+    if (["Space", "KeyW", "touchstart"].includes(keyPressed)) {
+      this.jump();
+    } else {
+      this.jumpTimer = 0;
     }
 
-    animate () {
-        if (['Space', 'KeyW', 'touchstart'].includes(keyPressed)) {
-             this.jump();
-        } else{
-            this.jumpTimer = 0;
-        }
-
-        if (['ShiftLeft', 'KeyS'].includes(keyPressed)){
-            /* this.newRotation = rotation * 2; */
-            this.r = this.originalRad / 2;
-            this.w = this.originalRad;
-            this.h = this.originalRad;
-        } else {
-            /* this.newRotation = rotation; */
-            this.r = this.originalRad;
-            this.w = this.r * 2;
-            this.h = this.r * 2;
-        }
-
-        this.y += this.dy;
-
-        if (this.y + this.r < canvas.height){
-            this.dy += gravity;
-            this.grounded = false;
-        } else{
-            this.dy = 0;
-            this.grounded = true;
-            this.y = canvas.height - this.r;
-        }
-    
-        this.draw();
-    }
-    
-    getR () {
-        return this.r;
+    if (["ShiftLeft", "KeyS"].includes(keyPressed)) {
+      /* this.newRotation = rotation * 2; */
+      this.r = this.originalRad / 2;
+      this.w = this.originalRad;
+      this.h = this.originalRad;
+    } else {
+      /* this.newRotation = rotation; */
+      this.r = this.originalRad;
+      this.w = this.r * 2;
+      this.h = this.r * 2;
     }
 
-    setR (newR) {
-        return this.r = newR;
+    this.y += this.dy;
+
+    if (this.y + this.r < canvas.height) {
+      this.dy += gravity;
+      this.grounded = false;
+    } else {
+      this.dy = 0;
+      this.grounded = true;
+      this.y = canvas.height - this.r;
     }
 
-    jump () {
-        if (this.r != this.originalRad) return;
+    this.draw();
+  }
 
-        if (this.grounded && this.jumpTimer == 0){
-            this.jumpTimer = 1.5;
-            this.dy = -this.jumpForce;
-        } else if (this.jumpTimer > 0 && this.jumpTimer < 15){
-            this.jumpTimer++;
-            this.dy = -this.jumpForce - (this.jumpTimer / 50);
-        } 
-    }
+  getR() {
+    return this.r;
+  }
 
-    draw () {
-        ctx.translate(this.x, this.y);
-        ctx.rotate(rotation);
-        
-        ctx.translate(-(this.x), -(this.y));
-        ctx.drawImage(this.playerImg, (this.x-this.getR()), (this.y-this.getR()), this.w, this.h);
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
+  setR(newR) {
+    return (this.r = newR);
+  }
+
+  jump() {
+    if (this.r != this.originalRad) return;
+
+    if (this.grounded && this.jumpTimer == 0) {
+      this.jumpTimer = 1.5;
+      this.dy = -this.jumpForce;
+    } else if (this.jumpTimer > 0 && this.jumpTimer < 15) {
+      this.jumpTimer++;
+      this.dy = -this.jumpForce - this.jumpTimer / 50;
     }
+  }
+
+  draw() {
+    ctx.translate(this.x, this.y);
+    ctx.rotate(rotation);
+
+    ctx.translate(-this.x, -this.y);
+    ctx.drawImage(
+      this.playerImg,
+      this.x - this.getR(),
+      this.y - this.getR(),
+      this.w,
+      this.h
+    );
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
 }
 
 class Obstacle {
-    constructor (x, y, w, h, obsImg){
-        this.obsImg = obsImg;
-        this.x = x,
-        this.y = y,
-        this.w = w;
-        this.h = h;
+  constructor(x, y, w, h, obsImg) {
+    this.obsImg = obsImg;
+    (this.x = x), (this.y = y), (this.w = w);
+    this.h = h;
 
-        this.dx = -gameSpeed;
-        obsImg.width = this.w;
-        obsImg.height = this.h;
-    }
+    this.dx = -gameSpeed;
+    obsImg.width = this.w;
+    obsImg.height = this.h;
+  }
 
-    update (){
-        this.x += this.dx;
-        this.dx = -gameSpeed;
-    }
-    
-    
-    draw () {
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 0, 0, 0)";
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-        ctx.drawImage(this.obsImg, this.x, this.y, this.w*1.1, this.h /* 0, 0, imgWidth, imgHeight */);
-        ctx.closePath();
-    }
+  update() {
+    this.x += this.dx;
+    this.dx = -gameSpeed;
+  }
 
-    /////// CIRCLE
-    /*draw () {
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.drawImage(
+      this.obsImg,
+      this.x,
+      this.y,
+      this.w * 1.1,
+      this.h /* 0, 0, imgWidth, imgHeight */
+    );
+    ctx.closePath();
+  }
+
+  /////// CIRCLE
+  /*draw () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false)
         ctx.fillStyle = this.c;
@@ -264,8 +280,8 @@ class Obstacle {
         ctx.closePath();
     }*/
 
-    /////// ELLIPSE
-    /*draw () {
+  /////// ELLIPSE
+  /*draw () {
         ctx.beginPath();
         ctx.ellipse(this.x, this.y, this.radX, this.radY, 0, 0, 2 * Math.PI);
         ctx.fillStyle = this.c;
@@ -275,77 +291,100 @@ class Obstacle {
 }
 
 class Rock {
-    constructor (x, y, w, h, rockImg){
-        this.rockImg = rockImg;
-        this.x = x + (w/4),
-        this.y = y + (h/1.7),
-        this.w = w*ratio;
-        this.h = h*ratio;
+  constructor(x, y, w, h, rockImg) {
+    this.rockImg = rockImg;
+    this.x = x + w / 4;
+    this.y = y + h / 1.7;
+    this.originalW = w;
+    this.originalH = h;
+    this.w = w;
+    this.h = h;
 
-        this.dx = -gameSpeed;
-        rockImg.width = this.w;
-        rockImg.height = this.h;
-    }
+    this.dx = -gameSpeed;
+    rockImg.width = this.w;
+    rockImg.height = this.h;
+  }
 
-    update (){
-        this.x += this.dx;
-        this.dx = -gameSpeed;
-    }
+  updateRatio(ratio) {
+    this.w = this.originalH * ratio;
+    this.h = this.originalW * ratio;
+  }
 
-    draw () {
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 0, 0, 0)";
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-        ctx.drawImage(this.rockImg, this.x-(this.w*0.4), this.y-(this.h*0.4), this.w+(this.w*0.7), this.h+(this.h*0.5));
-        ctx.closePath();
-    }
+  update() {
+    this.x += this.dx;
+    this.dx = -gameSpeed;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.drawImage(
+      this.rockImg,
+      this.x - this.w * 0.4,
+      this.y - this.h * 0.4,
+      this.w + this.w * 0.7,
+      this.h + this.h * 0.5
+    );
+    ctx.closePath();
+  }
 }
 
 class Roadblock {
-    constructor (x, y, w, h, roadblockImg){
-        this.roadblockImg = roadblockImg;
-        this.x = x,
-        this.y = y,
-        this.w = w;
-        this.h = h;
+  constructor(x, y, w, h, roadblockImg) {
+    this.roadblockImg = roadblockImg;
+    (this.x = x), (this.y = y), (this.w = w);
+    this.h = h;
 
-        this.dx = -gameSpeed;
-        roadblockImg.width = this.w;
-        roadblockImg.height = this.h;
-    }
+    this.dx = -gameSpeed;
+    roadblockImg.width = this.w;
+    roadblockImg.height = this.h;
+  }
 
-    update (){
-        this.x += this.dx;
-        this.dx = -gameSpeed;
-    }
+  update() {
+    this.x += this.dx;
+    this.dx = -gameSpeed;
+  }
 
-    draw () {
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 0, 0, 0)";
-        ctx.fillRect(this.x, this.y, this.w, this.h,);
-        ctx.drawImage(this.roadblockImg, this.x, this.y-(this.h*0.1), this.w, this.h*1.25);
-        ctx.closePath();
-    }
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.drawImage(
+      this.roadblockImg,
+      this.x,
+      this.y - this.h * 0.1,
+      this.w,
+      this.h * 1.25
+    );
+    ctx.closePath();
+  }
 }
 
-class Text{
-    constructor(t, x, y, a, c, s){
-        this.t = t;
-        this.x = x * ratio;
-        this.y = y * ratio;
-        this.a = a;
-        this.c = c;
-        this.s = s * ratio;
-    }
+class Text {
+  constructor(t, x, y, a, c, s) {
+    this.t = t;
+    this.x = x;
+    this.y = y;
+    this.a = a;
+    this.c = c;
+    this.s = s;
+  }
 
-    draw () {
-        ctx.beginPath();
-        ctx.fillStyle = this.c;
-        ctx.font = this.s + "px Courier New";
-        ctx.textAlign = this.a;
-        ctx.fillText(this.t, this.x, this.y);
-        ctx.closePath();
-    }
+  updateRatio(ratio) {
+    this.x = this.x * ratio;
+    this.y = this.y * ratio;
+    this.s = this.s * ratio;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.fillStyle = this.c;
+    ctx.font = this.s + "px Courier New";
+    ctx.textAlign = this.a;
+    ctx.fillText(this.t, this.x, this.y);
+    ctx.closePath();
+  }
 }
 
 function getDistance(player, obstacle) {
@@ -430,10 +469,25 @@ function start () {
     }
 
     player = new Player(playerImg, 100, 0, 50, 1);
-
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", 40);
-    highscoreText = new Text("Highscore: " + highscore, 45,
-    90, "left", "gold", 40);
+    highscoreText = new Text(
+      "Highscore: " + highscore,
+      45,
+      90,
+      "left",
+      "gold",
+      40
+    );
+
+    window.addEventListener("resize", () => {
+      ratio = setPixelToWorldScale();
+      player.updateRatio(ratio);
+      scoreText.updateRatio(ratio);
+      highscoreText.updateRatio(ratio);
+      obstacles.forEach((obstacle) => {
+        obstacle.updateRatio(ratio);
+      });
+    });
     
     window.requestAnimationFrame(update);
 }
