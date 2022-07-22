@@ -27,8 +27,6 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* width: 960px;
-    height: 600px; */
     position: absolute;
     overflow: hidden;
     text-align: center;
@@ -36,8 +34,8 @@ body {
 }
 
 canvas#game {
-    /* width: 100%;
-    height: 100%; */
+    width: 100%;
+    height: 100%;
     background-image: linear-gradient(#DF73FF, #66CCFF);
     position: absolute;
     z-index: 0;

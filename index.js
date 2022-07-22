@@ -20,9 +20,11 @@ let keyPressed;
 let isKeyPressed = false
 let active = true;
 let rotation = 0;
+
 const world_width = 900;
 const world_height = 640;
-const worldElem = document.querySelector('[data-world');
+const worldElem = document.querySelector('[data-world]');
+let ratio = 1;
 
 const obsImg = createImage("img/chatbubble.png");
 const rockImg = createImage("img/rock.png");
@@ -36,15 +38,25 @@ function createImage(path){
 }
 
 setPixelToWorldScale();
-window.onresize = function() { 
+window.addEventListener('resize', () => {
+    ratio = setPixelToWorldScale();
+/*     player.setR(ratio*player.getR());
+ */    /* player.x *= ratio;
+    player.y *= ratio; */
+    /* player.y *= ratio; */
+    /* Player.draw(ratio),
+    Obstacle.draw(ratio),
+    Rock.draw(ratio),
+    Roadblock.draw(ratio) */
+} );
+
+/* window.onresize = function() { 
     const ratio = setPixelToWorldScale(); 
     Player.animate(ratio);
     Obstacle.animate(ratio);
     Rock.animate(ratio);
     Roadblock.animate(ratio);
-}
-
-const scaleRatio = setPixelToWorldScale();
+} */
 
 function setPixelToWorldScale() {
     let worldToPixelScale;
@@ -53,21 +65,21 @@ function setPixelToWorldScale() {
     } else {
         worldToPixelScale = window.innerHeight / world_height;
     }
-
+    
     worldElem.style.width = (world_width * worldToPixelScale)+"px";
     worldElem.style.height = (world_height * worldToPixelScale)+"px";
 
     ctx.canvas.width = document.querySelector(".world").offsetWidth;
     ctx.canvas.height = document.querySelector(".world").offsetHeight;
-
+    
     return worldToPixelScale;
 }
 
-const canvasWidth = ctx.canvas.width;
-const canvasHeight = ctx.canvas.height;
-let scaleX = 1;
-let scaleY = 1;
-let scale = scaleY;
+canvas.width = world_width * ratio;
+canvas.height = world_height * ratio;
+
+const canvasWidth = canvas.width;
+const canvasHeight = canvas.height;
 
 newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
@@ -136,24 +148,25 @@ function randomIntInRange (min, max){
 }
 
 class Player{
-    constructor (x, y, r, playerImg){
+    constructor (playerImg, x, y, r, ratio){
         this.playerImg = playerImg;
-        this.x = x * scaleRatio;
-        this.y = y * scaleRatio;
-        this.r = r * scaleRatio;
+        this.x = x;
+        this.y = y;
+        this.r = r * ratio;
         this.w = r * 2;
         this.h = r * 2;
+        this.ratio = ratio;
 
         this.dy = 0;
-        this.jumpForce = 18 * scaleRatio;
-        this.originalRad = r * scaleRatio;
+        this.jumpForce = 18 * ratio;
+        this.originalRad = r;
         this.grounded = false;
         this.jumpTimer = 0;
         /* this.newRotation = 0; */
     }
 
     animate () {
-        if (['Space', 'KeyW'].includes(keyPressed)) {
+        if (['Space', 'KeyW', 'touchstart'].includes(keyPressed)) {
              this.jump();
         } else{
             this.jumpTimer = 0;
@@ -185,6 +198,14 @@ class Player{
         this.draw();
     }
     
+    getR () {
+        return this.r;
+    }
+
+    setR (newR) {
+        return this.r = newR;
+    }
+
     jump () {
         if (this.r != this.originalRad) return;
 
@@ -202,7 +223,7 @@ class Player{
         ctx.rotate(rotation);
         
         ctx.translate(-(this.x), -(this.y));
-        ctx.drawImage(this.playerImg, (this.x-this.r), (this.y-this.r), this.w, this.h);
+        ctx.drawImage(this.playerImg, (this.x-this.getR()), (this.y-this.getR()), this.w, this.h);
         ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 }
@@ -258,8 +279,8 @@ class Rock {
         this.rockImg = rockImg;
         this.x = x + (w/4),
         this.y = y + (h/1.7),
-        this.w = w*scaleRatio;
-        this.h = h*scaleRatio;
+        this.w = w*ratio;
+        this.h = h*ratio;
 
         this.dx = -gameSpeed;
         rockImg.width = this.w;
@@ -310,11 +331,11 @@ class Roadblock {
 class Text{
     constructor(t, x, y, a, c, s){
         this.t = t;
-        this.x = x * scaleRatio;
-        this.y = y * scaleRatio;
+        this.x = x * ratio;
+        this.y = y * ratio;
         this.a = a;
         this.c = c;
-        this.s = s * scaleRatio;
+        this.s = s * ratio;
     }
 
     draw () {
@@ -358,7 +379,7 @@ function spawnObstacle (){
         );
         
         if (type == 0){
-            sizeX = randomIntInRange(120, 160) * scaleRatio;
+            sizeX = randomIntInRange(120, 160) * ratio;
             sizeY = sizeX / 2;
             obstacle = new Rock(
                 canvasWidth + sizeX, 
@@ -368,7 +389,7 @@ function spawnObstacle (){
                 rockImg  
                 );  
             } else if (type == 1){
-            sizeX = randomIntInRange(80, 160) * scaleRatio;
+            sizeX = randomIntInRange(80, 160) * ratio;
             sizeY = sizeX / 2;
             obstacle = new Obstacle(
                 canvasWidth + sizeX, 
@@ -379,7 +400,7 @@ function spawnObstacle (){
                 );
             obstacle.y -= player.originalRad  + randomIntInRange(sizeX/2, sizeX*2);
         } else if (type == 2){
-            sizeX = 150 * scaleRatio;
+            sizeX = 150 * ratio;
             sizeY = sizeX / 2;
             obstacle = new Roadblock(
                 canvasWidth + sizeX, 
@@ -395,11 +416,11 @@ function spawnObstacle (){
 
 
 function start () {
-    ctx.font = toString(40*scaleRatio) + "px Courier New";
+    ctx.font = toString(40*ratio) + "px Courier New";
 
     active = true;
 
-    gameSpeed = 6 * scaleRatio;
+    gameSpeed = 6 * ratio;
     gravity = 1;
 
     score = 0;
@@ -408,7 +429,7 @@ function start () {
         highscore = localStorage.getItem('highscore');
     }
 
-    player = new Player(100, 0, 50, playerImg);
+    player = new Player(playerImg, 100, 0, 50, 1);
 
     scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", 40);
     highscoreText = new Text("Highscore: " + highscore, 45,
@@ -450,7 +471,7 @@ function update (time) {
             active = false;
             obstacles = [];
             spawnTimer = initialSpawnTimer;
-            gameSpeed = 6 * scaleRatio;    
+            gameSpeed = 6 * ratio;    
             window.localStorage.setItem('highscore', highscore);
             score -= 1;
             highscore -= 1;
@@ -483,6 +504,6 @@ function update (time) {
     
     
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01;
-    gameSpeed += 0.002 * scaleRatio;
+    gameSpeed += 0.002 * ratio;
     
 }
