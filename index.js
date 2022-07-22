@@ -36,9 +36,15 @@ function createImage(path){
 }
 
 setPixelToWorldScale();
-window.onresize = function() { setPixelToWorldScale(); }
+window.onresize = function() { 
+    const ratio = setPixelToWorldScale(); 
+    Player.animate(ratio);
+    Obstacle.animate(ratio);
+    Rock.animate(ratio);
+    Roadblock.animate(ratio);
+}
 
-let scaleRatio = setPixelToWorldScale();
+const scaleRatio = setPixelToWorldScale();
 
 function setPixelToWorldScale() {
     let worldToPixelScale;
@@ -56,15 +62,6 @@ function setPixelToWorldScale() {
 
     return worldToPixelScale;
 }
-
-/* setCanvasToWorldSize();
-window.onresize = function() { setCanvasToWorldSize(); }
-
-function setCanvasToWorldSize() {
-    ctx.canvas.width = document.querySelector(".world").offsetWidth;
-    ctx.canvas.height = document.querySelector(".world").offsetHeight;
-} */
-
 
 const canvasWidth = ctx.canvas.width;
 const canvasHeight = ctx.canvas.height;
@@ -91,7 +88,7 @@ seeInstrBtn.addEventListener('click', function(){
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
-    document.getElementById("backBtn").style.top = "55%";
+    document.getElementById("backBtn").style.top = "63%";
 });
 
 seeHsBtn.addEventListener('click', function(){
@@ -102,7 +99,7 @@ seeHsBtn.addEventListener('click', function(){
     document.getElementById("instr").style.display = "none";
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
-    document.getElementById("backBtn").style.top = "82%";
+    document.getElementById("backBtn").style.top = "80%";
     makeList();
 });
 
@@ -149,7 +146,7 @@ class Player{
 
         this.dy = 0;
         this.jumpForce = 18 * scaleRatio;
-        this.originalRad = r*scaleRatio;
+        this.originalRad = r * scaleRatio;
         this.grounded = false;
         this.jumpTimer = 0;
         /* this.newRotation = 0; */
@@ -207,20 +204,6 @@ class Player{
         ctx.translate(-(this.x), -(this.y));
         ctx.drawImage(this.playerImg, (this.x-this.r), (this.y-this.r), this.w, this.h);
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        /* ctx.save();
-        ctx.rotate(gameSpeed);
-        ctx.drawImage(this.playerImg, this.x-this.r, this.y-this.r, this.w, this.h);
-        ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2);
-        ctx.restore(); */
-
-        /* ctx.beginPath();
-        ctx.rotate(gameSpeed);
-        ctx.drawImage(this.playerImg, this.x-this.r, this.y-this.r, this.w, this.h);
-        ctx.fillStyle = "rgba(0, 0, 0, 0)";
-        ctx.arc(this.x, this.y, this.r, 0, (2 * Math.PI), false);
-        ctx.fill();
-        ctx.rotate(-gameSpeed);
-        ctx.closePath(); */
     }
 }
 
@@ -229,13 +212,12 @@ class Obstacle {
         this.obsImg = obsImg;
         this.x = x,
         this.y = y,
-        this.w = w * scaleRatio;
-        this.h = h * scaleRatio;
+        this.w = w;
+        this.h = h;
 
         this.dx = -gameSpeed;
         obsImg.width = this.w;
         obsImg.height = this.h;
-        
     }
 
     update (){
@@ -245,26 +227,6 @@ class Obstacle {
     
     
     draw () {
-        /* let imgWidth = obsImg.width;
-        let imgHeight = obsImg.height;
-    
-        if (imgWidth > this.w) {
-            scaleX = this.w / imgWidth;
-        } else if (imgHeight > this.h) {
-            scaleY = this.h / imgHeight;
-        }
-    
-        if (scaleX < scaleY) {
-            scale = scaleX;
-        }
-        if (scale < 1) {
-            imgWidth = imgWidth * scale;
-            imgHeight = imgHeight * scale;
-        }
-        this.w = imgWidth;
-        this.h = imgHeight; */
-        
-
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0, 0)";
         ctx.fillRect(this.x, this.y, this.w, this.h);
@@ -380,29 +342,6 @@ function getDistance(player, obstacle) {
     return (dx * dx + dy * dy <= (player.r*player.r));
 }
 
-/* function rockDis(player, rock) {
-    var distX = Math.abs(player.x - (rock.x + rock.w / 2));
-    var distY = Math.abs(player.y - (rock.y + rock.h / 2));
-
-    if (distX > (rock.w / 2 + player.r)) { return false; }
-    if (distY > (rock.h / 2 + player.r)) { return false; }
-
-    if (distX <= (rock.w)) { return true; }
-    if (distY <= (rock.h)) { return true; }
-
-    var dx = distX - rock.w / 2;
-    var dy = distY - rock.h / 2;
-    return (dx * dx + dy * dy <= (player.r*player.r));
-} */
-
-/*function getDistance(x1, y1, x2, y2){
-    let xDis = x2 - x1;
-    let yDis = y2 - y1;
-    
-    //return 
-    return Math.sqrt(Math.pow(xDis, 2) + Math.pow(yDis, 2));
-}*/
-
 let initialSpawnTimer = 200; 
 let spawnTimer = initialSpawnTimer;
 
@@ -456,11 +395,6 @@ function spawnObstacle (){
 
 
 function start () {
-    /* ctx.canvas.width = document.querySelector(".world").offsetWidth;
-    ctx.canvas.height = document.querySelector(".world").offsetHeight; */
-    /* ctx.canvas.width = document.querySelector(".world").width;
-    ctx.canvas.height = document.querySelector(".world").height; */
-    
     ctx.font = toString(40*scaleRatio) + "px Courier New";
 
     active = true;
@@ -492,7 +426,7 @@ function update (time) {
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    spawnTimer--;
+    spawnTimer -= 1;
     if (spawnTimer <= 0){
         spawnObstacle();
         spawnTimer = initialSpawnTimer - gameSpeed * 8;
@@ -534,7 +468,7 @@ function update (time) {
     
     player.animate();
     
-    score++;
+    score += 1;
     scoreText.t = "Score: " + score;
     scoreText.draw();
 
@@ -549,6 +483,6 @@ function update (time) {
     
     
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01;
-    gameSpeed += 0.002*scaleRatio;
+    gameSpeed += 0.002 * scaleRatio;
     
 }
