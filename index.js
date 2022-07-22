@@ -238,6 +238,7 @@ class Player {
       this.h
     );
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    console.log(this.r, this.getR());
   }
 }
 
