@@ -153,8 +153,7 @@ class Player {
     this.playerImg = playerImg;
     this.x = x;
     this.y = y;
-    this.originalR = r;
-    this.r = r * ratio;
+    this.r = r;
     this.w = r * 2;
     this.h = r * 2;
 
@@ -165,14 +164,19 @@ class Player {
     this.grounded = false;
     this.jumpTimer = 0;
     /* this.newRotation = 0; */
+    this.ratio = 1;
   }
 
   updateRatio(ratio) {
-    this.r = this.originalR * ratio;
-    this.jumpForce = 18 * ratio;
+    this.ratio = ratio;
+  }
+
+  getRatioValue(value) {
+    return value * ratio;
   }
 
   animate() {
+    console.log("animate", this.r);
     if (["Space", "KeyW", "touchstart"].includes(keyPressed)) {
       this.jump();
     } else {
@@ -205,14 +209,6 @@ class Player {
     this.draw();
   }
 
-  getR() {
-    return this.r;
-  }
-
-  setR(newR) {
-    return (this.r = newR);
-  }
-
   jump() {
     if (this.r != this.originalRad) return;
 
@@ -232,13 +228,13 @@ class Player {
     ctx.translate(-this.x, -this.y);
     ctx.drawImage(
       this.playerImg,
-      this.x - this.getR(),
-      this.y - this.getR(),
+      this.x - this.getRatioValue(this.r),
+      this.y - this.getRatioValue(this.r),
       this.w,
       this.h
     );
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    console.log(this.r, this.getR());
+    console.log(this.getRatioValue(this.r));
   }
 }
 
