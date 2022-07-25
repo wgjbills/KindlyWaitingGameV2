@@ -7,6 +7,10 @@ const newGameBtn = document.getElementById("newGame");
 const seeInstrBtn = document.getElementById("instrBtn");
 const seeHsBtn = document.getElementById("hsBtn");
 const goBackBtn = document.getElementById("backBtn");
+const music = document.getElementById("music");
+const musicBox = document.getElementById("musicBox");
+const audio = document.getElementById("audio");
+const audioBox = document.getElementById("audioBox");
 
 let score;
 let highscore;
@@ -20,6 +24,9 @@ let keyPressed;
 let isKeyPressed = false
 let active = true;
 let rotation = 0;
+let myMusic;
+let musicEnabled = false;
+let audioEnabled = true;
 
 const world_width = 900;
 const world_height = 640;
@@ -30,6 +37,9 @@ const obsImg = createImage("img/chatbubble.png");
 const rockImg = createImage("img/rock.png");
 const roadblockImg = createImage("img/roadblock.png");
 const playerImg = createImage("img/logoPlayer.png");
+
+/* const musicOn = createImage("img/musicOn.png");
+const musicOff = createImage("img/musicOff.png"); */
 
 function createImage(path){
     let image = new Image();
@@ -130,6 +140,58 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
+music.addEventListener('click', function(){
+    toggleMusic();
+});
+
+function toggleMusic() {
+    if (!musicEnabled) {
+      musicBox.classList.remove("musicOff");
+      musicBox.classList.add("musicOn");
+      musicEnabled = true;
+      music.style.backgroundImage = "url('img/musicOn.png')";
+      musicBox.play();
+      musicBox.volume = 0.7;
+    } else {
+      musicBox.classList.remove("musicOn");
+      musicBox.classList.add("musicOff");
+      musicEnabled = false;
+      music.style.backgroundImage = "url('img/musicOff.png')";
+      musicBox.pause();
+    }
+}
+
+audio.addEventListener('click', function(){
+    toggleAudio();
+});
+
+function toggleAudio() {
+    if (!audioEnabled) {
+     /*  audioBox.classList.remove("audioOff");
+      audioBox.classList.add("audioOn"); */
+      audioEnabled = true;
+      audio.style.backgroundImage = "url('img/audioOn.png')";
+    } else {
+      /* audioBox.classList.remove("audioOn");
+      audioBox.classList.add("audioOff"); */
+      audioEnabled = false;
+      audio.style.backgroundImage = "url('img/audioOff.png')";
+      /* audioBox.pause(); */
+    }
+}
+
+function playJumpAudio () {
+  if (audioEnabled){
+    audioBox.play();
+  }
+}
+
+function playGameOverAudio () {
+  if (audioEnabled){
+    gameOverBox.play();
+  }
+}
+
 document.addEventListener('keydown', function(evt) {
   if (isKeyPressed) return;
   
@@ -176,7 +238,6 @@ class Player {
   }
 
   animate() {
-    console.log("animate", this.r);
     if (["Space", "KeyW", "touchstart"].includes(keyPressed)) {
       this.jump();
     } else {
@@ -215,6 +276,7 @@ class Player {
     if (this.grounded && this.jumpTimer == 0) {
       this.jumpTimer = 1.5;
       this.dy = -this.jumpForce;
+      playJumpAudio();
     } else if (this.jumpTimer > 0 && this.jumpTimer < 15) {
       this.jumpTimer++;
       this.dy = -this.jumpForce - this.jumpTimer / 50;
@@ -234,7 +296,6 @@ class Player {
       this.h
     );
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    console.log(this.getRatioValue(this.r));
   }
 }
 
@@ -318,10 +379,10 @@ class Rock {
     ctx.fillRect(this.x, this.y, this.w, this.h);
     ctx.drawImage(
       this.rockImg,
-      this.x - this.w * 0.4,
-      this.y - this.h * 0.4,
-      this.w + this.w * 0.7,
-      this.h + this.h * 0.5
+      this.x - this.w * 0.7,
+      this.y - this.h * 0.6,
+      this.w + this.w * 1.5,
+      this.h + this.h * 1.1
     );
     ctx.closePath();
   }
@@ -456,7 +517,7 @@ function start () {
 
     active = true;
 
-    gameSpeed = 6 * ratio;
+    gameSpeed = 7 * ratio;
     gravity = 1;
 
     score = 0;
@@ -485,17 +546,32 @@ function start () {
         obstacle.updateRatio(ratio);
       });
     });
+
     
-    window.requestAnimationFrame(update);
+    
+    window.requestAnimationFrame(fpsRate);
 }
 
 
-let lastTime;
+const fps = 60;
+const interval = 1000 / fps;
+let now;
+let then = performance.now();
+let delta;
 
-function update (time) {
-    if (lastTime != null) {
-        const delta = time - lastTime;
+function fpsRate() {
+    now = performance.now();
+    delta = now - then;
+    
+    if (delta > interval){
+      update();
     }
+}
+
+
+
+function update () {
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     spawnTimer -= 1;
@@ -519,6 +595,7 @@ function update (time) {
 
         
         if (getDistance(player, o)) {
+            playGameOverAudio();
             active = false;
             obstacles = [];
             spawnTimer = initialSpawnTimer;
@@ -533,9 +610,8 @@ function update (time) {
         }
     }
 
-    lastTime = time;
     if (active){
-        window.requestAnimationFrame(update);
+        window.requestAnimationFrame(fpsRate);
     }
     
     player.animate();
@@ -556,5 +632,6 @@ function update (time) {
     
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01;
     gameSpeed += 0.002 * ratio;
+
     
 }
