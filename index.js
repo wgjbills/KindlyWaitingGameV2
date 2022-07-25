@@ -7,9 +7,9 @@ const newGameBtn = document.getElementById("newGame");
 const seeInstrBtn = document.getElementById("instrBtn");
 const seeHsBtn = document.getElementById("hsBtn");
 const goBackBtn = document.getElementById("backBtn");
-const music = document.getElementById("music");
+const musicCont = document.getElementById("music");
 const musicElem = document.getElementById("musicBox");
-const audio = document.getElementById("audio");
+const audioCont = document.getElementById("audio");
 const audioElem = document.getElementById("audioBox");
 
 
@@ -93,46 +93,44 @@ function setPixelToWorldScale() {
   const canvasWidth = canvas.width;
   const canvasHeight = canvas.height;
   
-  music.addEventListener('click', function(){
+  musicCont.addEventListener('click', function(){
       toggleMusic();
   });
   
   function toggleMusic() {
       if (!musicEnabled) {
-      /* musicBox.classList.remove("musicOff");
-      musicBox.classList.add("musicOn"); */
+      musicElem.classList.remove("musicOff");
+      musicElem.classList.add("musicOn");
       musicEnabled = true;
-      music.style.backgroundImage = "url('img/musicOn.png')";
+      musicCont.style.backgroundImage = "url('img/musicOn.png')";
       musicElem.muted = false;
       musicElem.volume = 0.7;
-      console.log(musicElem.muted);
-      } else {
-      /* musicBox.classList.remove("musicOn");
-      musicBox.classList.add("musicOff"); */
+    } else {
+      musicElem.classList.remove("musicOn");
+      musicElem.classList.add("musicOff");
       musicEnabled = false;
-      music.style.backgroundImage = "url('img/musicOff.png')";
+      musicCont.style.backgroundImage = "url('img/musicOff.png')";
       musicElem.muted = true;
-      console.log(musicElem.muted);
-      }
+    }
   }
   
-  audio.addEventListener('click', function(){
+audioElem.addEventListener('click', function(){
       toggleAudio();
-  });
+});
   
-  function toggleAudio() {
-      if (!audioEnabled) {
-          audioEnabled = true;
-          audio.style.backgroundImage = "url('img/audioOn.png')";
-      } else {
-          audioEnabled = false;
-          audio.style.backgroundImage = "url('img/audioOff.png')";
-      }
-  }
+function toggleAudio() {
+    if (!audioEnabled) {
+        audioEnabled = true;
+        audioCont.style.backgroundImage = "url('img/audioOn.png')";
+    } else {
+        audioEnabled = false;
+        audioCont.style.backgroundImage = "url('img/audioOff.png')";
+    }
+}
   
   function playJumpAudio () {
     if (audioEnabled){
-        audioBox.play();
+        audioElem.play();
     }
   }
   
@@ -198,6 +196,7 @@ document.addEventListener('keydown', function(evt) {
   keyPressed = evt.code;
 
 });
+
 document.addEventListener('keyup', function(evt) {
     if (evt.code !== keyPressed) return; // only respond to the key already pressed
     
@@ -633,7 +632,7 @@ function update () {
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01;
     gameSpeed += 0.002 * ratio;
 
-	musicBox.playbackRate = defaultPlaybackRate;
+	musicElem.playbackRate = defaultPlaybackRate;
 	defaultPlaybackRate += 0.00003;
 
     
