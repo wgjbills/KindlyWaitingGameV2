@@ -552,7 +552,6 @@ function start () {
     window.requestAnimationFrame(fpsRate);
 }
 
-
 const fps = 60;
 const interval = 1000 / fps;
 let now;
@@ -564,11 +563,10 @@ function fpsRate() {
     delta = now - then;
     
     if (delta > interval){
+		then = now - (delta % interval);
       update();
     }
 }
-
-
 
 function update () {
 
