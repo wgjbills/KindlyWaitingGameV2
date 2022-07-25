@@ -147,18 +147,20 @@ music.addEventListener('click', function(){
 
 function toggleMusic() {
     if (!musicEnabled) {
-		musicBox.classList.remove("musicOff");
-		musicBox.classList.add("musicOn");
+		/* musicBox.classList.remove("musicOff");
+		musicBox.classList.add("musicOn"); */
 		musicEnabled = true;
 		music.style.backgroundImage = "url('img/musicOn.png')";
 		musicBox.muted = false;
 		musicBox.volume = 0.7;
+    console.log(musicBox.muted);
     } else {
-		musicBox.classList.remove("musicOn");
-		musicBox.classList.add("musicOff");
+		/* musicBox.classList.remove("musicOn");
+		musicBox.classList.add("musicOff"); */
 		musicEnabled = false;
 		music.style.backgroundImage = "url('img/musicOff.png')";
 		musicBox.muted = true;
+    console.log(musicBox.muted);
     }
 }
 
