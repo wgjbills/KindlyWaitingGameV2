@@ -12,6 +12,7 @@ const musicBox = document.getElementById("musicBox");
 const audio = document.getElementById("audio");
 const audioBox = document.getElementById("audioBox");
 
+
 let score;
 let highscore;
 let scoreText;
@@ -24,7 +25,6 @@ let keyPressed;
 let isKeyPressed = false
 let active = true;
 let rotation = 0;
-let myMusic;
 let musicEnabled = false;
 let audioEnabled = true;
 
@@ -32,14 +32,15 @@ const world_width = 900;
 const world_height = 640;
 const worldElem = document.querySelector('[data-world]');
 let ratio = 1;
+let defaultPlaybackRate;
 
 const obsImg = createImage("img/chatbubble.png");
 const rockImg = createImage("img/rock.png");
 const roadblockImg = createImage("img/roadblock.png");
 const playerImg = createImage("img/logoPlayer.png");
 
-/* const musicOn = createImage("img/musicOn.png");
-const musicOff = createImage("img/musicOff.png"); */
+
+
 
 function createImage(path){
     let image = new Image();
@@ -146,18 +147,18 @@ music.addEventListener('click', function(){
 
 function toggleMusic() {
     if (!musicEnabled) {
-      musicBox.classList.remove("musicOff");
-      musicBox.classList.add("musicOn");
-      musicEnabled = true;
-      music.style.backgroundImage = "url('img/musicOn.png')";
-      musicBox.play();
-      musicBox.volume = 0.7;
+		musicBox.classList.remove("musicOff");
+		musicBox.classList.add("musicOn");
+		musicEnabled = true;
+		music.style.backgroundImage = "url('img/musicOn.png')";
+		musicBox.muted = false;
+		musicBox.volume = 0.7;
     } else {
-      musicBox.classList.remove("musicOn");
-      musicBox.classList.add("musicOff");
-      musicEnabled = false;
-      music.style.backgroundImage = "url('img/musicOff.png')";
-      musicBox.pause();
+		musicBox.classList.remove("musicOn");
+		musicBox.classList.add("musicOff");
+		musicEnabled = false;
+		music.style.backgroundImage = "url('img/musicOff.png')";
+		musicBox.muted = true;
     }
 }
 
@@ -167,28 +168,23 @@ audio.addEventListener('click', function(){
 
 function toggleAudio() {
     if (!audioEnabled) {
-     /*  audioBox.classList.remove("audioOff");
-      audioBox.classList.add("audioOn"); */
-      audioEnabled = true;
-      audio.style.backgroundImage = "url('img/audioOn.png')";
+      	audioEnabled = true;
+      	audio.style.backgroundImage = "url('img/audioOn.png')";
     } else {
-      /* audioBox.classList.remove("audioOn");
-      audioBox.classList.add("audioOff"); */
-      audioEnabled = false;
-      audio.style.backgroundImage = "url('img/audioOff.png')";
-      /* audioBox.pause(); */
+      	audioEnabled = false;
+      	audio.style.backgroundImage = "url('img/audioOff.png')";
     }
 }
 
 function playJumpAudio () {
   if (audioEnabled){
-    audioBox.play();
+    	audioBox.play();
   }
 }
 
 function playGameOverAudio () {
   if (audioEnabled){
-    gameOverBox.play();
+    	gameOverBox.play();
   }
 }
 
@@ -519,6 +515,7 @@ function start () {
 
     gameSpeed = 7 * ratio;
     gravity = 1;
+	defaultPlaybackRate = 1;
 
     score = 0;
     highscore = 0;
@@ -593,7 +590,7 @@ function update () {
             obstacles.splice(i, 1);
         }
 
-        
+        // WHEN DEAD
         if (getDistance(player, o)) {
             playGameOverAudio();
             active = false;
@@ -632,6 +629,9 @@ function update () {
     
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01;
     gameSpeed += 0.002 * ratio;
+
+	musicBox.playbackRate = defaultPlaybackRate;
+	defaultPlaybackRate += 0.00003;
 
     
 }
