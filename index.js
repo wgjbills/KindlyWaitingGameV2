@@ -564,8 +564,10 @@ function fpsRate() {
     
     if (delta > interval){
 		then = now - (delta % interval);
-      update();
-    }
+        update();
+    } else {
+		window.requestAnimationFrame(fpsRate);
+	}
 }
 
 function update () {
