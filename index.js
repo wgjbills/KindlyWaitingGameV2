@@ -85,15 +85,62 @@ function setPixelToWorldScale() {
     ctx.canvas.height = document.querySelector(".world").offsetHeight;
     
     return worldToPixelScale;
-}
+  }
+  
+  canvas.width = world_width * ratio;
+  canvas.height = world_height * ratio;
+  
+  const canvasWidth = canvas.width;
+  const canvasHeight = canvas.height;
+  
+  music.addEventListener('click', function(){
+      toggleMusic();
+  });
+  
+  function toggleMusic() {
+      if (!musicEnabled) {
+      /* musicBox.classList.remove("musicOff");
+      musicBox.classList.add("musicOn"); */
+      musicEnabled = true;
+      music.style.backgroundImage = "url('img/musicOn.png')";
+      musicBox.muted = false;
+      musicBox.volume = 0.7;
+      } else {
+      /* musicBox.classList.remove("musicOn");
+      musicBox.classList.add("musicOff"); */
+      musicEnabled = false;
+      music.style.backgroundImage = "url('img/musicOff.png')";
+      musicBox.muted = true;
+      }
+  }
+  
+  audio.addEventListener('click', function(){
+      toggleAudio();
+  });
+  
+  function toggleAudio() {
+      if (!audioEnabled) {
+          audioEnabled = true;
+          audio.style.backgroundImage = "url('img/audioOn.png')";
+      } else {
+          audioEnabled = false;
+          audio.style.backgroundImage = "url('img/audioOff.png')";
+      }
+  }
+  
+  function playJumpAudio () {
+    if (audioEnabled){
+        audioBox.play();
+    }
+  }
+  
+  function playGameOverAudio () {
+    if (audioEnabled){
+        gameOverBox.play();
+    }
+  }
 
-canvas.width = world_width * ratio;
-canvas.height = world_height * ratio;
-
-const canvasWidth = canvas.width;
-const canvasHeight = canvas.height;
-
-newGameBtn.addEventListener('click', function() {
+  newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
     document.getElementById("instr").style.display = "none";       
@@ -141,52 +188,6 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
-music.addEventListener('click', function(){
-    toggleMusic();
-});
-
-function toggleMusic() {
-    if (!musicEnabled) {
-		musicBox.classList.remove("musicOff");
-		musicBox.classList.add("musicOn");
-		musicEnabled = true;
-		music.style.backgroundImage = "url('img/musicOn.png')";
-		musicBox.muted = false;
-		musicBox.volume = 0.7;
-    } else {
-		musicBox.classList.remove("musicOn");
-		musicBox.classList.add("musicOff");
-		musicEnabled = false;
-		music.style.backgroundImage = "url('img/musicOff.png')";
-		musicBox.muted = true;
-    }
-}
-
-audio.addEventListener('click', function(){
-    toggleAudio();
-});
-
-function toggleAudio() {
-    if (!audioEnabled) {
-      	audioEnabled = true;
-      	audio.style.backgroundImage = "url('img/audioOn.png')";
-    } else {
-      	audioEnabled = false;
-      	audio.style.backgroundImage = "url('img/audioOff.png')";
-    }
-}
-
-function playJumpAudio () {
-  if (audioEnabled){
-    	audioBox.play();
-  }
-}
-
-function playGameOverAudio () {
-  if (audioEnabled){
-    	gameOverBox.play();
-  }
-}
 
 document.addEventListener('keydown', function(evt) {
   if (isKeyPressed) return;
