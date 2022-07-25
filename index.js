@@ -114,7 +114,7 @@ function setPixelToWorldScale() {
     }
   }
   
-audioElem.addEventListener('click', function(){
+audioCont.addEventListener('click', function(){
       toggleAudio();
 });
   
