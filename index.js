@@ -8,9 +8,9 @@ const seeInstrBtn = document.getElementById("instrBtn");
 const seeHsBtn = document.getElementById("hsBtn");
 const goBackBtn = document.getElementById("backBtn");
 const music = document.getElementById("music");
-const musicBox = document.getElementById("musicBox");
+const musicElem = document.getElementById("musicBox");
 const audio = document.getElementById("audio");
-const audioBox = document.getElementById("audioBox");
+const audioElem = document.getElementById("audioBox");
 
 
 let score;
@@ -103,14 +103,16 @@ function setPixelToWorldScale() {
       musicBox.classList.add("musicOn"); */
       musicEnabled = true;
       music.style.backgroundImage = "url('img/musicOn.png')";
-      musicBox.muted = false;
-      musicBox.volume = 0.7;
+      musicElem.muted = false;
+      musicElem.volume = 0.7;
+      console.log(musicElem.muted);
       } else {
       /* musicBox.classList.remove("musicOn");
       musicBox.classList.add("musicOff"); */
       musicEnabled = false;
       music.style.backgroundImage = "url('img/musicOff.png')";
-      musicBox.muted = true;
+      musicElem.muted = true;
+      console.log(musicElem.muted);
       }
   }
   
