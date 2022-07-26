@@ -30,6 +30,8 @@ let active = true;
 let rotation = 0;
 let musicEnabled = true;
 let audioEnabled = true;
+let touchedLeft = false;
+let touchedRight = false;
 
 const world_width = 900;
 const world_height = 640;
@@ -218,34 +220,37 @@ leftTouch.addEventListener('touchstart', function(evt) {
   /* if (isKeyPressed) return; */
   
 
-  isKeyPressed = true;
-  keyPressed = evt.code;
+  /* isKeyPressed = true;
+  keyPressed = evt.code; */
+  touchedLeft = true;
 
 });
 
 leftTouch.addEventListener('touchend', function(evt) {
     /* if (evt.code !== keyPressed) return; */ // only respond to the key already pressed
     
-    isKeyPressed = false;
-    keyPressed = null;
+    /* isKeyPressed = false;
+    keyPressed = null; */
+    touchedLeft = false;
 });
 
-rightTouch.addEventListener('touchstart', function(evt) {
+rightTouch.addEventListener('touchstart', function() {
   /* if (isKeyPressed) return; */
   
 
-  isKeyPressed = true;
-  keyPressed = evt.code;
-  Player.animate();
+  /* isKeyPressed = true;
+  keyPressed = evt.code; */
+  touchedRight = true;
 
 });
 
-rightTouch.addEventListener('touchend', function(evt) {
+rightTouch.addEventListener('touchend', function() {
     /* if (evt.code !== keyPressed) return; */ // only respond to the key already pressed
     
-    isKeyPressed = false;
-    keyPressed = null;
-});
+    /* isKeyPressed = false;
+    keyPressed = null; */
+    touchedRight = false;
+  });
 
 class Player {
   constructor(playerImg, x, y, r, ratio) {
@@ -275,13 +280,13 @@ class Player {
   }
 
   animate() {
-    if (["Space", "KeyW"].includes(keyPressed)) {
+    if (["Space", "KeyW"].includes(keyPressed) || touchedRight) {
       this.jump();
     } else {
       this.jumpTimer = 0;
     }
 
-    if (["ShiftLeft", "KeyS"].includes(keyPressed)) {
+    if (["ShiftLeft", "KeyS"].includes(keyPressed) || touchedLeft) {
       /* this.newRotation = rotation * 2; */
       this.r = this.originalRad / 2;
       this.w = this.originalRad;
