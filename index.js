@@ -216,39 +216,21 @@ document.addEventListener('keyup', function(evt) {
     keyPressed = null;
 });
 
-leftTouch.addEventListener('touchstart', function(evt) {
-  /* if (isKeyPressed) return; */
-  
-
-  /* isKeyPressed = true;
-  keyPressed = evt.code; */
+leftTouch.addEventListener('touchstart', function() {
   touchedLeft = true;
 
 });
 
-leftTouch.addEventListener('touchend', function(evt) {
-    /* if (evt.code !== keyPressed) return; */ // only respond to the key already pressed
-    
-    /* isKeyPressed = false;
-    keyPressed = null; */
+leftTouch.addEventListener('touchend', function() {
     touchedLeft = false;
 });
 
 rightTouch.addEventListener('touchstart', function() {
-  /* if (isKeyPressed) return; */
-  
-
-  /* isKeyPressed = true;
-  keyPressed = evt.code; */
   touchedRight = true;
 
 });
 
 rightTouch.addEventListener('touchend', function() {
-    /* if (evt.code !== keyPressed) return; */ // only respond to the key already pressed
-    
-    /* isKeyPressed = false;
-    keyPressed = null; */
     touchedRight = false;
   });
 
