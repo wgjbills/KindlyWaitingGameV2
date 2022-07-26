@@ -17,14 +17,14 @@
         <div id="hsBoard" style="display: none">Highscores:</div>
         <div class="btns">
 
-            <div id="newGame" onmouseover="this.style.backgroundColor = 'goldenrod'"
+            <div id="newGame" class="btn" onmouseover="this.style.backgroundColor = 'goldenrod'"
             onmouseout="this.style.backgroundColor= 'gold'">New Game</div>
-            <div id="instrBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
+            <div id="instrBtn" class="btn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
             = 'gold'">Instructions</div>
-            <div id="hsBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
+            <div id="hsBtn" class="btn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
             = 'gold'">Highscores</div>
         </div>
-        <div id="backBtn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor
+        <div id="backBtn" class="btn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor
         = 'gold'">Back</div>
 
 
@@ -52,6 +52,11 @@
         <div id="airplane"></div>
         <div id="ye"></div>
         <canvas id="game"></canvas>
+        <audio id="rolloverBox" src="audio/rolloverSound.mp3"></audio>
+        <div id="touchArea">
+            <div id="leftArea"></div>
+            <div id="rightArea"></div>
+        </div>
     </div>
     
     

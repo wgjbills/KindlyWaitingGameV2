@@ -11,7 +11,10 @@ const musicCont = document.getElementById("music");
 const musicElem = document.getElementById("musicBox");
 const audioCont = document.getElementById("audio");
 const audioElem = document.getElementById("audioBox");
-
+const rolloverElem = document.getElementById("rolloverBox");
+const btns = document.querySelectorAll(".btn");
+const leftTouch = document.getElementById("leftArea");
+const rightTouch = document.getElementById("rightArea");
 
 let score;
 let highscore;
@@ -38,9 +41,6 @@ const obsImg = createImage("img/chatbubble.png");
 const rockImg = createImage("img/rock.png");
 const roadblockImg = createImage("img/roadblock.png");
 const playerImg = createImage("img/logoPlayer.png");
-
-
-
 
 function createImage(path){
     let image = new Image();
@@ -92,28 +92,34 @@ function setPixelToWorldScale() {
   
   const canvasWidth = canvas.width;
   const canvasHeight = canvas.height;
+
   
-  musicCont.addEventListener('click', function(){
+btns.forEach(btn => {
+  btn.addEventListener('mouseover', () => 
+  rolloverElem.play())
+});
+  
+musicCont.addEventListener('click', function(){
       toggleMusic();
   });
   
-  function toggleMusic() {
-      if (!musicEnabled) {
-      musicCont.classList.remove("musicOff");
-      musicCont.classList.add("musicOn");
-      musicEnabled = true;
-      musicCont.style.backgroundImage = "url('img/musicOn.png')";
-      musicElem.muted = false;
-      musicElem.volume = 0.7;
-      musicElem.play();
-    } else {
-      musicCont.classList.remove("musicOn");
-      musicCont.classList.add("musicOff");
-      musicEnabled = false;
-      musicCont.style.backgroundImage = "url('img/musicOff.png')";
-      musicElem.muted = true;
-    }
+function toggleMusic() {
+    if (!musicEnabled) {
+    musicCont.classList.remove("musicOff");
+    musicCont.classList.add("musicOn");
+    musicEnabled = true;
+    musicCont.style.backgroundImage = "url('img/musicOn.png')";
+    musicElem.muted = false;
+    musicElem.volume = 0.7;
+    musicElem.play();
+  } else {
+    musicCont.classList.remove("musicOn");
+    musicCont.classList.add("musicOff");
+    musicEnabled = false;
+    musicCont.style.backgroundImage = "url('img/musicOff.png')";
+    musicElem.muted = true;
   }
+}
   
 audioCont.addEventListener('click', function(){
       toggleAudio();
@@ -189,6 +195,9 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
+function randomIntInRange (min, max){
+    return Math.round(Math.random() * (max - min) + min);
+}
 
 document.addEventListener('keydown', function(evt) {
   if (isKeyPressed) return;
@@ -205,9 +214,38 @@ document.addEventListener('keyup', function(evt) {
     keyPressed = null;
 });
 
-function randomIntInRange (min, max){
-    return Math.round(Math.random() * (max - min) + min);
-}
+leftTouch.addEventListener('touchstart', function(evt) {
+  /* if (isKeyPressed) return; */
+  
+
+  isKeyPressed = true;
+  keyPressed = evt.code;
+
+});
+
+leftTouch.addEventListener('touchend', function(evt) {
+    /* if (evt.code !== keyPressed) return; */ // only respond to the key already pressed
+    
+    isKeyPressed = false;
+    keyPressed = null;
+});
+
+rightTouch.addEventListener('touchstart', function(evt) {
+  /* if (isKeyPressed) return; */
+  
+
+  isKeyPressed = true;
+  keyPressed = evt.code;
+  Player.animate();
+
+});
+
+rightTouch.addEventListener('touchend', function(evt) {
+    /* if (evt.code !== keyPressed) return; */ // only respond to the key already pressed
+    
+    isKeyPressed = false;
+    keyPressed = null;
+});
 
 class Player {
   constructor(playerImg, x, y, r, ratio) {
@@ -237,7 +275,7 @@ class Player {
   }
 
   animate() {
-    if (["Space", "KeyW", "touchstart"].includes(keyPressed)) {
+    if (["Space", "KeyW"].includes(keyPressed)) {
       this.jump();
     } else {
       this.jumpTimer = 0;
