@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
     user-select: none;
-    /* overflow: hidden; */
 }
 
 html {
@@ -38,29 +37,17 @@ canvas#game {
     height: 100%;
     background-image: linear-gradient(#DF73FF, #66CCFF);
     position: absolute;
-    z-index: 1;
     border-radius: 7px;
+    z-index: 0;
 }
 
-
-/* #main {
-    display: none;
-} */
-
 #header {
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     text-align: center;
-    /* margin: auto; */
     color: gold;
     font-size: 5vw;
     font-family: "Courier New";
-    /* display: block; */
     max-height: 30%;
-    /* width: 40%; */
     top: 25%;
-    /* left: 30%; */
     overflow: hidden;
     z-index: 5;
 }
@@ -70,7 +57,7 @@ canvas#game {
     flex-direction: column;
     text-align: center;
     min-width: 30%;
-    z-index: 5;
+    z-index: 6;
     justify-content: space-between;
     justify-self: center;
     height: 20%;
@@ -106,10 +93,8 @@ canvas#game {
 
 #backBtn {
     padding: 2%;
-    /* height: 3%; */
     display: none;
     position: absolute;
-    /* margin-top: 2%; */
 }
 
 #instr {
@@ -164,20 +149,11 @@ ul {
     display: flex;
     justify-content: space-between;
     height: 9%;
-    /* margin-top: 4%; */
 }
 
 #hsBoard p {
-    /* display: inline; */
     padding: 2%;
-   /*  height: 8%; */
 }
-
-/* @media only screen and (min-width: 992px) {
-    #newGame, #instrBtn, #hsBtn, #backBtn {
-        font-size: 1.5vw;
-    }
-} */
 
 #audio {
     position: absolute;
@@ -205,7 +181,7 @@ ul {
     z-index: 6;
 }
 
-@media only screen and (min-width: 901px) {
+@media only screen and (min-width: 901px) and (max-width: 1200px) {
     #header {
         top: 20%;
     }
@@ -222,7 +198,7 @@ ul {
         padding-top: 3%;
         margin-bottom: 5%;
         font-size: 1.8vw;
-        min-height: 45%;
+        min-height: 55%;
         top: 18%;
     }
 }
@@ -308,7 +284,7 @@ ul {
     width: 27%;
     height: 20%;
     position: absolute;
-    z-index: 4;
+    z-index: 1;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
@@ -343,7 +319,7 @@ ul {
     width: 20%;
     height: 12%;
     position: absolute;
-    z-index: 3;
+    z-index: 1;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
@@ -383,7 +359,7 @@ ul {
     width: 12%;
     height: 8%;
     position: absolute;
-    z-index: 0;
+    z-index: 1;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
@@ -418,7 +394,7 @@ ul {
     width: 12%;
     height: 8%;
     position: absolute;
-    z-index: 0;
+    z-index: 1;
 
     background-image: url("img/cloud.png");
     background-repeat: no-repeat;
@@ -449,13 +425,13 @@ ul {
     height: 8%;
     position: absolute;
     top: 27%;
-    z-index: 0;
+    z-index: 1;
 
     background-image: url("img/ufo.png");
     background-repeat: no-repeat;
     background-size: contain;
 
-    animation: ufoFly 150s infinite linear;
+    animation: ufoFly 140s infinite linear;
 }
 
 @keyframes ufoFly{
@@ -465,10 +441,12 @@ ul {
 
     97% {
         left: 100%;
+        top: 30%;
     }
 
     100% {
-        left: -30%
+        left: -30%;
+        top: 30%;
     }
 }
 
@@ -505,7 +483,7 @@ ul {
     height: 30%;
     position: absolute;
     top: 30%;
-    z-index: 2;
+    z-index: 1;
     opacity: 0.1;
     overflow: none;
 

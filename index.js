@@ -25,7 +25,7 @@ let keyPressed;
 let isKeyPressed = false
 let active = true;
 let rotation = 0;
-let musicEnabled = false;
+let musicEnabled = true;
 let audioEnabled = true;
 
 const world_width = 900;
@@ -99,15 +99,16 @@ function setPixelToWorldScale() {
   
   function toggleMusic() {
       if (!musicEnabled) {
-      musicElem.classList.remove("musicOff");
-      musicElem.classList.add("musicOn");
+      musicCont.classList.remove("musicOff");
+      musicCont.classList.add("musicOn");
       musicEnabled = true;
       musicCont.style.backgroundImage = "url('img/musicOn.png')";
       musicElem.muted = false;
       musicElem.volume = 0.7;
+      musicElem.play();
     } else {
-      musicElem.classList.remove("musicOn");
-      musicElem.classList.add("musicOff");
+      musicCont.classList.remove("musicOn");
+      musicCont.classList.add("musicOff");
       musicEnabled = false;
       musicCont.style.backgroundImage = "url('img/musicOff.png')";
       musicElem.muted = true;
