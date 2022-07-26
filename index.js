@@ -29,7 +29,7 @@ let obstacles = [];
 let gameSpeed;
 let keyPressed;
 let isKeyPressed = false
-let active = true;
+let active = false;
 let rotation = 0;
 let musicEnabled = true;
 let audioEnabled = true;
@@ -651,6 +651,11 @@ function update () {
 
     if (active){
         window.requestAnimationFrame(fpsRate);
+        leftTouch.style = "z-index: 7";
+        rightTouch.style = "z-index: 7";
+    } else {
+        leftTouch.style = "z-index: 5";
+        rightTouch.style = "z-index: 5";
     }
     
     player.animate();
