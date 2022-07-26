@@ -15,6 +15,9 @@ const rolloverElem = document.getElementById("rolloverBox");
 const btns = document.querySelectorAll(".btn");
 const leftTouch = document.getElementById("leftArea");
 const rightTouch = document.getElementById("rightArea");
+const leftInstr = document.querySelector(".instrLeft");
+const rightInstr = document.querySelector(".instrRight");
+
 
 let score;
 let highscore;
@@ -107,16 +110,16 @@ musicCont.addEventListener('click', function(){
   
 function toggleMusic() {
     if (!musicEnabled) {
-    musicCont.classList.remove("musicOff");
-    musicCont.classList.add("musicOn");
+    /* musicCont.classList.remove("musicOff");
+    musicCont.classList.add("musicOn"); */
     musicEnabled = true;
     musicCont.style.backgroundImage = "url('img/musicOn.png')";
     musicElem.muted = false;
     musicElem.volume = 0.7;
     musicElem.play();
   } else {
-    musicCont.classList.remove("musicOn");
-    musicCont.classList.add("musicOff");
+    /* musicCont.classList.remove("musicOn");
+    musicCont.classList.add("musicOff"); */
     musicEnabled = false;
     musicCont.style.backgroundImage = "url('img/musicOff.png')";
     musicElem.muted = true;
@@ -156,6 +159,17 @@ function toggleAudio() {
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
+    /* document.getElementById("instrLeft").style.display = "block";
+    document.getElementById("instrRight").style.display = "block"; */
+    /* leftInstr.style.display = "block";
+    rightInstr.style.display = "block"; */
+    leftInstr.classList.add("activeInstr");
+    rightInstr.classList.add("activeInstr");
+    /* document.getElementById("instrLeft").style.transition = "opacity 2s";
+    document.getElementById("instrRight").style.transition = "opacity 2s";
+    document.getElementById("instrLeft").style.opacity = "0";
+    document.getElementById("instrRight").style.opacity = "0"; */
+
     start();
 });
 
@@ -164,7 +178,7 @@ seeInstrBtn.addEventListener('click', function(){
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("newGame").style.display = "none";
     document.getElementById("instr").style.display = "block";
-    document.getElementById("instr").style.visibility = "visible";
+    /* document.getElementById("instr").style.visibility = "visible"; */
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
