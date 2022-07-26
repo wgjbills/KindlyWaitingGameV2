@@ -97,7 +97,7 @@ canvas#game {
     font-weight: bold;
     font-family: "Courier New";
     min-width: 30%;
-    z-index: 6;
+    z-index: 11;
     padding: 5%;
     margin: 2%;
 }
@@ -188,7 +188,7 @@ ul {
     background-repeat: no-repeat;
     background-size: contain;
     text-align: right;
-    z-index: 6;
+    z-index: 11;
 }
 
 #music {
@@ -201,7 +201,7 @@ ul {
     background-repeat: no-repeat;
     background-size: contain;
     text-align: right;
-    z-index: 6;
+    z-index: 11;
 }
 
 @media only screen and (min-width: 901px) and (max-width: 1200px) {
