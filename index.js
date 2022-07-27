@@ -38,8 +38,9 @@ let touchedRight = false;
 
 const world_width = 900;
 const world_height = 640;
+canvas.width = world_width;
+canvas.height = world_height;
 const worldElem = document.querySelector('[data-world]');
-let ratio = 1;
 let defaultPlaybackRate;
 
 const obsImg = createImage("img/chatbubble.png");
@@ -53,9 +54,8 @@ function createImage(path){
     return image;
 }
 
-setPixelToWorldScale();
 // window.addEventListener('resize', () => {
-//     ratio = setPixelToWorldScale();
+  //     ratio = setPixelToWorldScale();
     
 // /*     player.setR(ratio*player.getR());
 //  */    /* player.x *= ratio;
@@ -68,14 +68,21 @@ setPixelToWorldScale();
 // } );
 
 /* window.onresize = function() { 
-    const ratio = setPixelToWorldScale(); 
-    Player.animate(ratio);
-    Obstacle.animate(ratio);
-    Rock.animate(ratio);
-    Roadblock.animate(ratio);
+  const ratio = setPixelToWorldScale(); 
+  Player.animate(ratio);
+  Obstacle.animate(ratio);
+  Rock.animate(ratio);
+  Roadblock.animate(ratio);
 } */
 
 /* SCALING */
+const ratio = setPixelToWorldScale();
+
+setPixelToWorldScale();
+window.addEventListener('resize', () => {
+  setPixelToWorldScale();
+});
+
 function setPixelToWorldScale() {
     let worldToPixelScale;
     if (window.innerWidth / window.innerHeight < world_width / world_height){
@@ -84,20 +91,22 @@ function setPixelToWorldScale() {
         worldToPixelScale = window.innerHeight / world_height;
     }
     
-    worldElem.style.width = (world_width * worldToPixelScale)+"px";
-    worldElem.style.height = (world_height * worldToPixelScale)+"px";
+    /* worldElem.style.width = (world_width * worldToPixelScale)+"px";
+    worldElem.style.height = (world_height * worldToPixelScale)+"px"; */
 
-    ctx.canvas.width = document.querySelector(".world").offsetWidth;
-    ctx.canvas.height = document.querySelector(".world").offsetHeight;
-    
+    worldElem.style.width = `${world_width * worldToPixelScale}px`;
+    worldElem.style.height = `${world_height * worldToPixelScale}px`;
+
+   /*  ctx.canvas.width = document.querySelector(".world").width;
+    ctx.canvas.height = document.querySelector(".world").height; */
+    console.log(worldToPixelScale);
     return worldToPixelScale;
   }
   
-  canvas.width = world_width * ratio;
-  canvas.height = world_height * ratio;
+ /*  canvas.width = getRatioValue(world_width);
+  canvas.height = getRatioValue(world_height); */
   
-  const canvasWidth = canvas.width;
-  const canvasHeight = canvas.height;
+  
 
 /* AUDIO & MUSIC */
 btns.forEach(btn => {
@@ -220,7 +229,7 @@ document.addEventListener('keydown', function(evt) {
 });
 
 document.addEventListener('keyup', function(evt) {
-    if (evt.code !== keyPressed) return; // only respond to the key already pressed
+    if (evt.code !== keyPressed) return; // ONLY RESPOND TO KEY ALREADY PRESSED
     
     isKeyPressed = false;
     keyPressed = null;
@@ -244,34 +253,38 @@ rightTouch.addEventListener('touchend', function() {
     touchedRight = false;
   });
 
+/* function updateRatio(ratio) {
+  ratio = ratio;
+} */
+
 /* PLAYER CLASS */
 class Player {
-  constructor(playerImg, x, y, r, ratio) {
+  constructor(playerImg, x, y, r) {
     this.playerImg = playerImg;
     this.x = x; 
     this.y = y;
     this.r = r;
-    this.w = r * 2;
-    this.h = r * 2;
+    this.w = this.r * 2;
+    this.h = this.r * 2;
 
     this.dy = 0;
     this.originalJumpForce = 18;
-    this.jumpForce = this.originalJumpForce * ratio;
+    this.jumpForce = this.originalJumpForce;
     this.originalRad = r;
     this.grounded = false;
     this.jumpTimer = 0;
     /* this.newRotation = 0; */
-    this.ratio = 1;
+    /* this.ratio = 1; */
   }
 
-  updateRatio(ratio) {
+  /* updateRatio(ratio) {
     this.ratio = ratio;
   }
 
   getRatioValue(value) {
     console.log(ratio);
-    return value * ratio * 4;
-  }
+    return value * ratio;
+  } */
 
   animate() { // IF CLICK/HOLD SPACE/W/TOUCH_RIGHT THEN JUMP
     if (["Space", "KeyW"].includes(keyPressed) || touchedRight) {
@@ -322,17 +335,17 @@ class Player {
   }
 
   draw() {
-    ctx.translate(this.x, this.y);
+    ctx.translate((this.x), (this.y));
     ctx.rotate(rotation);
 
-    ctx.translate(-this.x, -this.y);
+    ctx.translate((-this.x), (-this.y));
     ctx.drawImage(
       this.playerImg,
-      this.x - this.getRatioValue(this.r),
-      this.y - this.getRatioValue(this.r),
-      this.w,
-      this.h
-    );
+      this.x - this.r,
+      this.y - this.r,
+      this.r*2,
+      this.r*2
+      );
     ctx.setTransform(1, 0, 0, 1, 0, 0);
   }
 }
@@ -403,11 +416,11 @@ class Rock {
     rockImg.height = this.h;
   }
 
-  updateRatio(ratio) {
+/*   updateRatio(ratio) {
     this.w = this.originalH * ratio;
     this.h = this.originalW * ratio;
   }
-
+ */
   update() {
     this.x += this.dx;
     this.dx = -gameSpeed;
@@ -420,7 +433,7 @@ class Rock {
     ctx.drawImage(
       this.rockImg,
       this.x - this.w * 0.7, // MULTIPLIERS TO TWEAK COLLISION AREA
-      this.y - this.h * 0.6,
+      this.y - this.h * 0.8,
       this.w + this.w * 1.5,
       this.h + this.h * 1.1
     );
@@ -471,11 +484,11 @@ class Text {
     this.s = s;
   }
 
-  updateRatio(ratio) {
+  /* updateRatio(ratio) {
     this.x = this.x * ratio;
     this.y = this.y * ratio;
     this.s = this.s * ratio;
-  }
+  } */
 
   draw() {
     ctx.beginPath();
@@ -520,32 +533,32 @@ function spawnObstacle (){
         );
         
         if (type == 0){
-            sizeX = randomIntInRange(120, 160) * ratio;
+            sizeX = randomIntInRange(120, 160);
             sizeY = sizeX / 2;
             obstacle = new Rock(
-                canvasWidth + sizeX, 
-                canvasHeight - sizeY, 
+                canvas.width + sizeX, 
+                canvas.height - sizeY, 
                 sizeX,
                 sizeY,
                 rockImg  
                 );  
             } else if (type == 1){
-            sizeX = randomIntInRange(80, 160) * ratio;
+            sizeX = randomIntInRange(80, 160);
             sizeY = sizeX / 2;
             obstacle = new Obstacle(
-                canvasWidth + sizeX, 
-                canvasHeight, 
+                canvas.width + sizeX, 
+                canvas.height, 
                 sizeX,
                 sizeY,
                 obsImg
                 );
             obstacle.y -= player.originalRad  + randomIntInRange(sizeX/2, sizeX*2);
         } else if (type == 2){
-            sizeX = 150 * ratio;
+            sizeX = 150;
             sizeY = sizeX / 2;
             obstacle = new Roadblock(
-                canvasWidth + sizeX, 
-                canvasHeight - sizeY, 
+                canvas.width + sizeX, 
+                canvas.height - sizeY, 
                 sizeX,
                 sizeY,
                 roadblockImg  
@@ -557,11 +570,11 @@ function spawnObstacle (){
 
 /* SETTING START GAME ATTRIBUTES */
 function start () {
-    ctx.font = toString(40*ratio) + "px Courier New";
+    ctx.font = toString(40) + "px Courier New";
 
     active = true;
 
-    gameSpeed = 7 * ratio;
+    gameSpeed = 7;
     gravity = 1;
 	  defaultPlaybackRate = 1;
 
@@ -572,7 +585,13 @@ function start () {
     }
 
     player = new Player(playerImg, 100, 0, 50, 1);
-    scoreText = new Text("Score: " + score, 45, 45, "left", "#212121", 40);
+    scoreText = new Text(
+      "Score: " + score,
+      45,
+      45,
+      "left",
+      "#212121",
+      40);
     highscoreText = new Text(
       "Highscore: " + highscore,
       45,
@@ -634,7 +653,7 @@ function update () {
             active = false;
             obstacles = [];
             spawnTimer = initialSpawnTimer;
-            gameSpeed = 6 * ratio;    
+            gameSpeed = 6;
             window.localStorage.setItem('highscore', highscore);
             score -= 1;
             highscore -= 1;
@@ -667,22 +686,15 @@ function update () {
         
     }
 
-    /* SCALING REALTIME */
-    window.addEventListener("resize", () => {
-      ratio = setPixelToWorldScale();
-      player.updateRatio(ratio);
-      scoreText.updateRatio(ratio);
-      highscoreText.updateRatio(ratio);
-      obstacles.forEach((obstacle) => {
-        obstacle.updateRatio(ratio);
-      });
-    });
-
+/* 
+    updateRatio(ratio);
+ */
+    player.draw();
     highscoreText.draw();
     
     
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01; // ROTATION SPEED INCREASES WITH GAME PROGRESS
-    gameSpeed += 0.0015 * ratio; // GAMESPEED INCREASES WITH GAME PROGRESS
+    gameSpeed += 0.0015; // GAMESPEED INCREASES WITH GAME PROGRESS
 
 	musicElem.playbackRate = defaultPlaybackRate;
 	defaultPlaybackRate += 0.00003; // MUSIC SPEED INCREASES WITH GAME PROGRESS
