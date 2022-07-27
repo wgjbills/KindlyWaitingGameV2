@@ -75,6 +75,7 @@ setPixelToWorldScale();
     Roadblock.animate(ratio);
 } */
 
+/* SCALING */
 function setPixelToWorldScale() {
     let worldToPixelScale;
     if (window.innerWidth / window.innerHeight < world_width / world_height){
@@ -98,7 +99,7 @@ function setPixelToWorldScale() {
   const canvasWidth = canvas.width;
   const canvasHeight = canvas.height;
 
-  
+/* AUDIO & MUSIC */
 btns.forEach(btn => {
   btn.addEventListener('mouseover', () => 
   playRolloverAudio())
@@ -116,16 +117,12 @@ musicCont.addEventListener('click', function(){
   
 function toggleMusic() {
     if (!musicEnabled) {
-    /* musicCont.classList.remove("musicOff");
-    musicCont.classList.add("musicOn"); */
     musicEnabled = true;
     musicCont.style.backgroundImage = "url('img/musicOn.png')";
     musicElem.muted = false;
     musicElem.volume = 0.7;
     musicElem.play();
   } else {
-    /* musicCont.classList.remove("musicOn");
-    musicCont.classList.add("musicOff"); */
     musicEnabled = false;
     musicCont.style.backgroundImage = "url('img/musicOff.png')";
     musicElem.muted = true;
@@ -158,40 +155,31 @@ function playGameOverAudio () {
   }
 }
 
-  newGameBtn.addEventListener('click', function() {
+/* BUTTON FUNCTIONS */
+newGameBtn.addEventListener('click', function() { // HIDE ALL MENU ELEMS, START GAME
     document.getElementById("newGame").style.display = "none";
     document.getElementById("header").style.display = "none";
     document.getElementById("instr").style.display = "none";       
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
-    /* document.getElementById("instrLeft").style.display = "block";
-    document.getElementById("instrRight").style.display = "block"; */
-    /* leftInstr.style.display = "block";
-    rightInstr.style.display = "block"; */
-    leftInstr.classList.add("activeInstr");
+    leftInstr.classList.add("activeInstr"); // APPEND CLASS TO SHOW TOUCH INSTRUCTIONS UPON START GAME
     rightInstr.classList.add("activeInstr");
-    /* document.getElementById("instrLeft").style.transition = "opacity 2s";
-    document.getElementById("instrRight").style.transition = "opacity 2s";
-    document.getElementById("instrLeft").style.opacity = "0";
-    document.getElementById("instrRight").style.opacity = "0"; */
-
     start();
 });
 
-seeInstrBtn.addEventListener('click', function(){
+seeInstrBtn.addEventListener('click', function(){ // HIDE IRRELEVANT, SHOW RELEVANT MENU ELEMS
     document.getElementById("header").style.display = "none";
     document.getElementById("instrBtn").style.display = "none";
     document.getElementById("newGame").style.display = "none";
     document.getElementById("instr").style.display = "block";
-    /* document.getElementById("instr").style.visibility = "visible"; */
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("hsBoard").style.display = "none";
     document.getElementById("backBtn").style.top = "63%";
 });
 
-seeHsBtn.addEventListener('click', function(){
+seeHsBtn.addEventListener('click', function(){ // HIDE IRRELEVANT, SHOW RELEVANT MENU ELEMS
     document.getElementById("header").style.display = "none";
     document.getElementById("hsBtn").style.display = "none";
     document.getElementById("newGame").style.display = "none";
@@ -200,14 +188,14 @@ seeHsBtn.addEventListener('click', function(){
     document.getElementById("hsBoard").style.display = "block";
     document.getElementById("backBtn").style.display = "block";
     document.getElementById("backBtn").style.top = "80%";
-    makeList();
+    makeList(); // GETS HIGHSCORE LIST FROM DB, SHOWS TOP 10
 });
 
 goBackBtn.addEventListener('click', function() {
     goBack();
 });
 
-function goBack() {
+function goBack() { // GO BACK TO MENU HOME
     document.getElementById("backBtn").style.display = "none";
     document.getElementById("instr").style.display = "none";
     document.getElementById("header").style.display = "block";
@@ -217,10 +205,12 @@ function goBack() {
     document.getElementById("hsBoard").style.display = "none";
 };
 
+/* RANDOM NUM GEN */
 function randomIntInRange (min, max){
     return Math.round(Math.random() * (max - min) + min);
 }
 
+/* KEY/TOUCH CONTROLLERS */
 document.addEventListener('keydown', function(evt) {
   if (isKeyPressed) return;
   
@@ -254,10 +244,11 @@ rightTouch.addEventListener('touchend', function() {
     touchedRight = false;
   });
 
+/* PLAYER CLASS */
 class Player {
   constructor(playerImg, x, y, r, ratio) {
     this.playerImg = playerImg;
-    this.x = x;
+    this.x = x; 
     this.y = y;
     this.r = r;
     this.w = r * 2;
@@ -278,16 +269,18 @@ class Player {
   }
 
   getRatioValue(value) {
-    return value * ratio;
+    console.log(ratio);
+    return value * ratio * 4;
   }
 
-  animate() {
+  animate() { // IF CLICK/HOLD SPACE/W/TOUCH_RIGHT THEN JUMP
     if (["Space", "KeyW"].includes(keyPressed) || touchedRight) {
       this.jump();
     } else {
       this.jumpTimer = 0;
     }
 
+    // IF CLICK/HOLD SHIFT_LEFT/S/TOUCH_LEFT THEN SHRINK TO HALF RADIUS
     if (["ShiftLeft", "KeyS"].includes(keyPressed) || touchedLeft) {
       /* this.newRotation = rotation * 2; */
       this.r = this.originalRad / 2;
@@ -300,7 +293,8 @@ class Player {
       this.h = this.r * 2;
     }
 
-    this.y += this.dy;
+    /* GRAVITY */
+    this.y += this.dy; 
 
     if (this.y + this.r < canvas.height) {
       this.dy += gravity;
@@ -317,7 +311,7 @@ class Player {
   jump() {
     if (this.r != this.originalRad) return;
 
-    if (this.grounded && this.jumpTimer == 0) {
+    if (this.grounded && this.jumpTimer == 0) { // CAN JUMP IF GROUNDED
       this.jumpTimer = 1.5;
       this.dy = -this.jumpForce;
       playJumpAudio();
@@ -343,13 +337,14 @@ class Player {
   }
 }
 
+/* CHATBUBBLE OBSTACLE CLASS */
 class Obstacle {
   constructor(x, y, w, h, obsImg) {
     this.obsImg = obsImg;
     (this.x = x), (this.y = y), (this.w = w);
     this.h = h;
 
-    this.dx = -gameSpeed;
+    this.dx = -gameSpeed; // OBSTACLE MOVEMENT 
     obsImg.width = this.w;
     obsImg.height = this.h;
   }
@@ -368,7 +363,7 @@ class Obstacle {
       this.x,
       this.y,
       this.w * 1.1,
-      this.h /* 0, 0, imgWidth, imgHeight */
+      this.h
     );
     ctx.closePath();
   }
@@ -392,6 +387,7 @@ class Obstacle {
     }*/
 }
 
+/* ROCK OBSTACLE CLASS */
 class Rock {
   constructor(x, y, w, h, rockImg) {
     this.rockImg = rockImg;
@@ -423,7 +419,7 @@ class Rock {
     ctx.fillRect(this.x, this.y, this.w, this.h);
     ctx.drawImage(
       this.rockImg,
-      this.x - this.w * 0.7,
+      this.x - this.w * 0.7, // MULTIPLIERS TO TWEAK COLLISION AREA
       this.y - this.h * 0.6,
       this.w + this.w * 1.5,
       this.h + this.h * 1.1
@@ -432,6 +428,7 @@ class Rock {
   }
 }
 
+/* ROADBLOCK OBSTACLE CLASS */
 class Roadblock {
   constructor(x, y, w, h, roadblockImg) {
     this.roadblockImg = roadblockImg;
@@ -463,6 +460,7 @@ class Roadblock {
   }
 }
 
+/* SCORE/HIGHSCORE CLASS */
 class Text {
   constructor(t, x, y, a, c, s) {
     this.t = t;
@@ -489,6 +487,7 @@ class Text {
   }
 }
 
+/* GET DISTANCE BETWEEN PLAYER/OBSTACLE */
 function getDistance(player, obstacle) {
     var distX = Math.abs(player.x - (obstacle.x + obstacle.w / 2));
     var distY = Math.abs(player.y - (obstacle.y + obstacle.h / 2));
@@ -504,13 +503,14 @@ function getDistance(player, obstacle) {
     return (dx * dx + dy * dy <= (player.r*player.r));
 }
 
+/* SPAWN OBSTACLES */
 let initialSpawnTimer = 200; 
 let spawnTimer = initialSpawnTimer;
 
 function spawnObstacle (){
     let sizeX;
     let sizeY;
-    let type = randomIntInRange(0, 2);
+    let type = randomIntInRange(0, 2); // RANDOM GEN OBSTACLE TYPE 0-2
     let obstacle = new Obstacle(
         canvas.width + sizeX, 
         canvas.height - sizeX, 
@@ -555,7 +555,7 @@ function spawnObstacle (){
     obstacles.push(obstacle);
 }
 
-
+/* SETTING START GAME ATTRIBUTES */
 function start () {
     ctx.font = toString(40*ratio) + "px Courier New";
 
@@ -563,7 +563,7 @@ function start () {
 
     gameSpeed = 7 * ratio;
     gravity = 1;
-	defaultPlaybackRate = 1;
+	  defaultPlaybackRate = 1;
 
     score = 0;
     highscore = 0;
@@ -582,21 +582,10 @@ function start () {
       40
     );
 
-    window.addEventListener("resize", () => {
-      ratio = setPixelToWorldScale();
-      player.updateRatio(ratio);
-      scoreText.updateRatio(ratio);
-      highscoreText.updateRatio(ratio);
-      obstacles.forEach((obstacle) => {
-        obstacle.updateRatio(ratio);
-      });
-    });
-
-    
-    
     window.requestAnimationFrame(fpsRate);
 }
 
+/* FPS CONTROLLER */
 const fps = 60;
 const interval = 1000 / fps;
 let now;
@@ -615,9 +604,10 @@ function fpsRate() {
 	}
 }
 
+/* UPDATE CANVAS FUNCTION */
 function update () {
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // CLEAR LAST CANVAS BEFORE DRAWING NEW
 
     spawnTimer -= 1;
     if (spawnTimer <= 0){
@@ -638,7 +628,7 @@ function update () {
             obstacles.splice(i, 1);
         }
 
-        // WHEN DEAD
+        /* WHEN GAME OVER */
         if (getDistance(player, o)) {
             playGameOverAudio();
             active = false;
@@ -651,11 +641,11 @@ function update () {
             if (score >= highscore){
                 registerNewHighscore(highscore+1);
             }
-            goBack();
+            goBack(); // CALLS MENU
         }
     }
 
-    if (active){
+    if (active){ // IF STILL ALIVE
         window.requestAnimationFrame(fpsRate);
         leftTouch.style = "z-index: 7";
         rightTouch.style = "z-index: 7";
@@ -670,21 +660,31 @@ function update () {
     scoreText.t = "Score: " + score;
     scoreText.draw();
 
-
+    /* SET NEW HIGHSCORE */
     if (score > highscore){
         highscore = score;
         highscoreText.t = "Highscore: " + highscore;
         
     }
 
+    /* SCALING REALTIME */
+    window.addEventListener("resize", () => {
+      ratio = setPixelToWorldScale();
+      player.updateRatio(ratio);
+      scoreText.updateRatio(ratio);
+      highscoreText.updateRatio(ratio);
+      obstacles.forEach((obstacle) => {
+        obstacle.updateRatio(ratio);
+      });
+    });
+
     highscoreText.draw();
     
     
-    rotation += Math.PI/180 * 2 + gameSpeed * 0.01;
-    gameSpeed += 0.002 * ratio;
+    rotation += Math.PI/180 * 2 + gameSpeed * 0.01; // ROTATION SPEED INCREASES WITH GAME PROGRESS
+    gameSpeed += 0.0015 * ratio; // GAMESPEED INCREASES WITH GAME PROGRESS
 
 	musicElem.playbackRate = defaultPlaybackRate;
-	defaultPlaybackRate += 0.00003;
+	defaultPlaybackRate += 0.00003; // MUSIC SPEED INCREASES WITH GAME PROGRESS
 
-    
 }

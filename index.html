@@ -15,8 +15,9 @@
         <div id="instr" style="display: none">Avoid the <br>chatbubbles, <br>roadblocks, <br>and rocks!<br><br>
             Instructions: <br>Space/W: Jump <br>ShiftLeft/S: Shrink</div>
         <div id="hsBoard" style="display: none">Highscores:</div>
-        <div class="btns">
 
+        <!-- BUTTONS -->
+        <div class="btns">
             <div id="newGame" class="btn" onmouseover="this.style.backgroundColor = 'goldenrod'"
             onmouseout="this.style.backgroundColor= 'gold'">New Game</div>
             <div id="instrBtn" class="btn" onmouseover="this.style.backgroundColor = 'goldenrod'" onmouseout="this.style.backgroundColor 
@@ -31,6 +32,7 @@
 
         <div id="score"></div>
 
+        <!-- MUSIC/AUDIO ELEMS -->
         <div id="music">
             <audio id="musicBox" class="toggle musicOn" loop muted>
                 <source src="audio/gameMusic.mp3" type="audio/mpeg">
@@ -44,6 +46,7 @@
                 <source src="audio/gameOver.mp3" type="audio/mpeg">
             </audio>
         </div>
+        <!-- BACKGROUND ELEMS -->
         <div id="cloudLarge"></div>
         <div id="cloudMedium"></div>
         <div id="cloudSmall"></div>
@@ -53,6 +56,8 @@
         <div id="ye"></div>
         <canvas id="game"></canvas>
         <audio id="rolloverBox" src="audio/rolloverSound.mp3"></audio>
+
+        <!-- MOBILE TOUCH DETECTION -->
         <div id="touchArea">
             <div id="leftArea">
                 <div class="instrLeft"></div>
