@@ -226,7 +226,7 @@ ul {
     background-repeat: no-repeat;
     background-size: contain;
     text-align: right;
-    z-index: 6;
+    z-index: 8;
 }
 
 #music {
@@ -239,7 +239,7 @@ ul {
     background-repeat: no-repeat;
     background-size: contain;
     text-align: right;
-    z-index: 6;
+    z-index: 8;
 }
 
 /*      MEDIA QUERIES   */

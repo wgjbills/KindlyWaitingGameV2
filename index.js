@@ -11,10 +11,10 @@ const musicCont = document.getElementById("music");
 const musicElem = document.getElementById("musicBox");
 const audioCont = document.getElementById("audio");
 const audioElem = document.getElementById("audioBox");
-const rolloverElem = document.getElementById("rolloverBox");
-const btns = document.querySelectorAll(".btn");
 const leftTouch = document.getElementById("leftArea");
 const rightTouch = document.getElementById("rightArea");
+const rolloverElem = document.getElementById("rolloverBox");
+const btns = document.querySelectorAll(".btn");
 const leftInstr = document.querySelector(".instrLeft");
 const rightInstr = document.querySelector(".instrRight");
 
@@ -101,8 +101,14 @@ function setPixelToWorldScale() {
   
 btns.forEach(btn => {
   btn.addEventListener('mouseover', () => 
-  rolloverElem.play())
+  playRolloverAudio())
 });
+
+function playRolloverAudio () {
+  if (audioEnabled){
+    rolloverElem.play();
+  }
+}
   
 musicCont.addEventListener('click', function(){
       toggleMusic();
@@ -140,17 +146,17 @@ function toggleAudio() {
     }
 }
   
-  function playJumpAudio () {
-    if (audioEnabled){
-        audioElem.play();
-    }
+function playJumpAudio () {
+  if (audioEnabled){
+      audioElem.play();
   }
-  
-  function playGameOverAudio () {
-    if (audioEnabled){
-        gameOverBox.play();
-    }
+}
+
+function playGameOverAudio () {
+  if (audioEnabled){
+      gameOverBox.play();
   }
+}
 
   newGameBtn.addEventListener('click', function() {
     document.getElementById("newGame").style.display = "none";
