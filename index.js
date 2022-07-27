@@ -37,7 +37,7 @@ let touchedLeft = false;
 let touchedRight = false;
 
 const world_width = 900;
-const world_height = 640;
+const world_height = 900;
 canvas.width = world_width;
 canvas.height = world_height;
 const worldElem = document.querySelector('[data-world]');
@@ -54,30 +54,7 @@ function createImage(path){
     return image;
 }
 
-// window.addEventListener('resize', () => {
-  //     ratio = setPixelToWorldScale();
-    
-// /*     player.setR(ratio*player.getR());
-//  */    /* player.x *= ratio;
-//     player.y *= ratio; */
-//     /* player.y *= ratio; */
-//     /* Player.draw(ratio),
-//     Obstacle.draw(ratio),
-//     Rock.draw(ratio),
-//     Roadblock.draw(ratio) */
-// } );
-
-/* window.onresize = function() { 
-  const ratio = setPixelToWorldScale(); 
-  Player.animate(ratio);
-  Obstacle.animate(ratio);
-  Rock.animate(ratio);
-  Roadblock.animate(ratio);
-} */
-
 /* SCALING */
-const ratio = setPixelToWorldScale();
-
 setPixelToWorldScale();
 window.addEventListener('resize', () => {
   setPixelToWorldScale();
@@ -91,22 +68,11 @@ function setPixelToWorldScale() {
         worldToPixelScale = window.innerHeight / world_height;
     }
     
-    /* worldElem.style.width = (world_width * worldToPixelScale)+"px";
-    worldElem.style.height = (world_height * worldToPixelScale)+"px"; */
-
     worldElem.style.width = `${world_width * worldToPixelScale}px`;
     worldElem.style.height = `${world_height * worldToPixelScale}px`;
 
-   /*  ctx.canvas.width = document.querySelector(".world").width;
-    ctx.canvas.height = document.querySelector(".world").height; */
-    console.log(worldToPixelScale);
     return worldToPixelScale;
-  }
-  
- /*  canvas.width = getRatioValue(world_width);
-  canvas.height = getRatioValue(world_height); */
-  
-  
+}
 
 /* AUDIO & MUSIC */
 btns.forEach(btn => {
@@ -253,10 +219,6 @@ rightTouch.addEventListener('touchend', function() {
     touchedRight = false;
   });
 
-/* function updateRatio(ratio) {
-  ratio = ratio;
-} */
-
 /* PLAYER CLASS */
 class Player {
   constructor(playerImg, x, y, r) {
@@ -276,15 +238,6 @@ class Player {
     /* this.newRotation = 0; */
     /* this.ratio = 1; */
   }
-
-  /* updateRatio(ratio) {
-    this.ratio = ratio;
-  }
-
-  getRatioValue(value) {
-    console.log(ratio);
-    return value * ratio;
-  } */
 
   animate() { // IF CLICK/HOLD SPACE/W/TOUCH_RIGHT THEN JUMP
     if (["Space", "KeyW"].includes(keyPressed) || touchedRight) {
@@ -416,11 +369,6 @@ class Rock {
     rockImg.height = this.h;
   }
 
-/*   updateRatio(ratio) {
-    this.w = this.originalH * ratio;
-    this.h = this.originalW * ratio;
-  }
- */
   update() {
     this.x += this.dx;
     this.dx = -gameSpeed;
@@ -483,12 +431,6 @@ class Text {
     this.c = c;
     this.s = s;
   }
-
-  /* updateRatio(ratio) {
-    this.x = this.x * ratio;
-    this.y = this.y * ratio;
-    this.s = this.s * ratio;
-  } */
 
   draw() {
     ctx.beginPath();
@@ -588,14 +530,14 @@ function start () {
     scoreText = new Text(
       "Score: " + score,
       45,
-      45,
+      65,
       "left",
       "#212121",
       40);
     highscoreText = new Text(
       "Highscore: " + highscore,
       45,
-      90,
+      110,
       "left",
       "gold",
       40
@@ -686,12 +628,8 @@ function update () {
         
     }
 
-/* 
-    updateRatio(ratio);
- */
     player.draw();
     highscoreText.draw();
-    
     
     rotation += Math.PI/180 * 2 + gameSpeed * 0.01; // ROTATION SPEED INCREASES WITH GAME PROGRESS
     gameSpeed += 0.0015; // GAMESPEED INCREASES WITH GAME PROGRESS
