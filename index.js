@@ -11,6 +11,7 @@ import { registerNewHighscore, makeList } from './globalHs.js';
 import global from './global.js';
 import { canvas, ctx } from './canvas.js';
 import Text from './text.js';
+import Obstacle from './obstacles/chatbubble.js';
 import Roadblock from './obstacles/roadblock.js';
 import Rock from './obstacles/rock.js';
 /* import { obsImg, rockImg, roadblockImg, playerImg } from './images.js';
@@ -312,7 +313,7 @@ class Player {
 }
 
 /* CHATBUBBLE OBSTACLE CLASS */
-class Obstacle {
+/* class Obstacle {
   constructor(x, y, w, h, obsImg) {
     this.obsImg = obsImg;
     (this.x = x);
@@ -343,7 +344,7 @@ class Obstacle {
     );
     ctx.closePath();
   }
-}
+} */
 
 /* ROCK OBSTACLE CLASS */
 /* class Rock {
