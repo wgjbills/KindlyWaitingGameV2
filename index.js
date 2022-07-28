@@ -14,11 +14,6 @@ import Text from './text.js';
 import Obstacle from './obstacles/chatbubble.js';
 import Roadblock from './obstacles/roadblock.js';
 import Rock from './obstacles/rock.js';
-/* import { obsImg, rockImg, roadblockImg, playerImg } from './images.js';
- */
-
-/* const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d'); */
 
 const newGameBtn = document.getElementById('newGame');
 const seeInstrBtn = document.getElementById('instrBtn');
@@ -36,24 +31,6 @@ const btns = document.querySelectorAll('.btn');
 const leftInstr = document.querySelector('.instrLeft');
 const rightInstr = document.querySelector('.instrRight');
 
-/* let score;
-let highscore;
-let scoreText;
-let highscoreText;
-let player;
-let gravity;
-let obstacles = [];
-let gameSpeed;
-let keyPressed;
-let isKeyPressed = false;
-let active = false;
-let rotation = 0;
-let musicEnabled = true;
-let audioEnabled = true;
-let touchedLeft = false;
-let touchedRight = false;
-let defaultPlaybackRate; */
-
 const worldWidth = 900;
 const worldHeight = 900;
 canvas.width = worldWidth;
@@ -70,7 +47,7 @@ function createImage(path) {
   image.src = path;
   return image;
 }
-
+/* UTILITY FUNCTIONS */
 /* SCALING */
 setPixelToWorldScale();
 window.addEventListener('resize', () => {
@@ -89,6 +66,30 @@ function setPixelToWorldScale() {
   worldElem.style.height = `${worldHeight * worldToPixelScale}px`;
 
   return worldToPixelScale;
+}
+
+/* FPS CONTROLLER */
+const fps = 60;
+const interval = 1000 / fps;
+let now;
+let then = performance.now();
+let delta;
+
+function fpsRate() {
+  now = performance.now();
+  delta = now - then;
+
+  if (delta > interval) {
+    then = now - (delta % interval);
+    update();
+  } else {
+    window.requestAnimationFrame(fpsRate);
+  }
+}
+
+/* RANDOM NUM GEN */
+function randomIntInRange(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
 }
 
 /* AUDIO & MUSIC */
@@ -194,11 +195,6 @@ function goBack() { // GO BACK TO MENU HOME
   document.getElementById('instrBtn').style.display = 'block';
   document.getElementById('hsBtn').style.display = 'block';
   document.getElementById('hsBoard').style.display = 'none';
-}
-
-/* RANDOM NUM GEN */
-function randomIntInRange(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
 }
 
 /* KEY/TOUCH CONTROLLERS */
@@ -312,131 +308,6 @@ class Player {
   }
 }
 
-/* CHATBUBBLE OBSTACLE CLASS */
-/* class Obstacle {
-  constructor(x, y, w, h, obsImg) {
-    this.obsImg = obsImg;
-    (this.x = x);
-    (this.y = y);
-    (this.w = w);
-    (this.h = h);
-
-    this.dx = -global.gameSpeed; // OBSTACLE MOVEMENT
-    obsImg.width = this.w;
-    obsImg.height = this.h;
-  }
-
-  update() {
-    this.x += this.dx;
-    this.dx = -global.gameSpeed;
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-    ctx.fillRect(this.x, this.y, this.w, this.h);
-    ctx.drawImage(
-      this.obsImg,
-      this.x,
-      this.y,
-      this.w * 1.1,
-      this.h,
-    );
-    ctx.closePath();
-  }
-} */
-
-/* ROCK OBSTACLE CLASS */
-/* class Rock {
-  constructor(x, y, w, h, rockImg) {
-    this.rockImg = rockImg;
-    this.x = x + w / 4;
-    this.y = y + h / 1.7;
-    this.originalW = w;
-    this.originalH = h;
-    this.w = w;
-    this.h = h;
-
-    this.dx = -global.gameSpeed;
-    rockImg.width = this.w;
-    rockImg.height = this.h;
-  }
-
-  update() {
-    this.x += this.dx;
-    this.dx = -global.gameSpeed;
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-    ctx.fillRect(this.x, this.y, this.w, this.h);
-    ctx.drawImage(
-      this.rockImg,
-      this.x - this.w * 0.2, // MULTIPLIERS TO TWEAK COLLISION AREA
-      this.y - this.h * 0.5,
-      this.w + this.w * 0.3,
-      this.h + this.h * 0.8,
-    );
-    ctx.closePath();
-  }
-} */
-
-/* ROADBLOCK OBSTACLE CLASS */
-/* class Roadblock {
-  constructor(x, y, w, h, roadblockImg) {
-    this.roadblockImg = roadblockImg;
-    (this.x = x);
-    (this.y = y);
-    (this.w = w);
-    (this.h = h);
-
-    this.dx = -global.gameSpeed;
-    roadblockImg.width = this.w;
-    roadblockImg.height = this.h;
-  }
-
-  update() {
-    this.x += this.dx;
-    this.dx = -global.gameSpeed;
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-    ctx.fillRect(this.x, this.y, this.w, this.h);
-    ctx.drawImage(
-      this.roadblockImg,
-      this.x,
-      this.y - this.h * 0.1,
-      this.w,
-      this.h * 1.25,
-    );
-    ctx.closePath();
-  }
-} */
-
-/* SCORE/HIGHSCORE CLASS */
-/* class Text {
-  constructor(t, x, y, a, c, s) {
-    this.t = t;
-    this.x = x;
-    this.y = y;
-    this.a = a;
-    this.c = c;
-    this.s = s;
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = this.c;
-    ctx.font = `${this.s}px Courier New`;
-    ctx.textAlign = this.a;
-    ctx.fillText(this.t, this.x, this.y);
-    ctx.closePath();
-  }
-} */
-
 /* GET DISTANCE BETWEEN PLAYER/OBSTACLE */
 function getDistance(player, obstacle) {
   const distX = Math.abs(player.x - (obstacle.x + obstacle.w / 2));
@@ -540,25 +411,6 @@ function start() {
   );
 
   window.requestAnimationFrame(fpsRate);
-}
-
-/* FPS CONTROLLER */
-const fps = 60;
-const interval = 1000 / fps;
-let now;
-let then = performance.now();
-let delta;
-
-function fpsRate() {
-  now = performance.now();
-  delta = now - then;
-
-  if (delta > interval) {
-    then = now - (delta % interval);
-    update();
-  } else {
-    window.requestAnimationFrame(fpsRate);
-  }
 }
 
 /* UPDATE CANVAS FUNCTION */
