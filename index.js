@@ -160,7 +160,7 @@ seeInstrBtn.addEventListener('click', () => { // HIDE IRRELEVANT, SHOW RELEVANT 
   document.getElementById('backBtn').style.display = 'block';
   document.getElementById('hsBtn').style.display = 'none';
   document.getElementById('hsBoard').style.display = 'none';
-  document.getElementById('backBtn').style.top = '63%';
+  document.getElementById('backBtn').style.top = '60%';
 });
 
 seeHsBtn.addEventListener('click', () => { // HIDE IRRELEVANT, SHOW RELEVANT MENU ELEMS
@@ -171,7 +171,7 @@ seeHsBtn.addEventListener('click', () => { // HIDE IRRELEVANT, SHOW RELEVANT MEN
   document.getElementById('instr').style.display = 'none';
   document.getElementById('hsBoard').style.display = 'block';
   document.getElementById('backBtn').style.display = 'block';
-  document.getElementById('backBtn').style.top = '80%';
+  document.getElementById('backBtn').style.top = '75%';
   makeList(); // GETS HIGHSCORE LIST FROM DB, SHOWS TOP 10
 });
 
