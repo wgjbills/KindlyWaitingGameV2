@@ -6,7 +6,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/extensions */
 /* eslint-disable no-use-before-define */
-/* eslint-disable max-classes-per-file */
 
 import { registerNewHighscore, makeList } from './globalHs.js';
 import global from './global.js';
