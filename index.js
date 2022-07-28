@@ -6,6 +6,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
 import { registerNewHighscore, makeList } from './globalHs.js';
+import global from './global.js';
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -26,7 +27,7 @@ const btns = document.querySelectorAll('.btn');
 const leftInstr = document.querySelector('.instrLeft');
 const rightInstr = document.querySelector('.instrRight');
 
-let score;
+/* let score;
 let highscore;
 let scoreText;
 let highscoreText;
@@ -42,13 +43,13 @@ let musicEnabled = true;
 let audioEnabled = true;
 let touchedLeft = false;
 let touchedRight = false;
+let defaultPlaybackRate; */
 
 const worldWidth = 900;
 const worldHeight = 900;
 canvas.width = worldWidth;
 canvas.height = worldHeight;
 const worldElem = document.querySelector('[data-world]');
-let defaultPlaybackRate;
 
 const obsImg = createImage('img/chatbubble.png');
 const rockImg = createImage('img/rock.png');
@@ -87,7 +88,7 @@ btns.forEach((btn) => {
 });
 
 function playRolloverAudio() {
-  if (audioEnabled) {
+  if (global.audioEnabled) {
     rolloverElem.play();
   }
 }
@@ -97,14 +98,14 @@ musicCont.addEventListener('click', () => {
 });
 
 function toggleMusic() {
-  if (!musicEnabled) {
-    musicEnabled = true;
+  if (!global.musicEnabled) {
+    global.musicEnabled = true;
     musicCont.style.backgroundImage = "url('img/musicOn.png')";
     musicElem.muted = false;
     musicElem.volume = 0.7;
     musicElem.play();
   } else {
-    musicEnabled = false;
+    global.musicEnabled = false;
     musicCont.style.backgroundImage = "url('img/musicOff.png')";
     musicElem.muted = true;
   }
@@ -115,23 +116,23 @@ audioCont.addEventListener('click', () => {
 });
 
 function toggleAudio() {
-  if (!audioEnabled) {
-    audioEnabled = true;
+  if (!global.audioEnabled) {
+    global.audioEnabled = true;
     audioCont.style.backgroundImage = "url('img/audioOn.png')";
   } else {
-    audioEnabled = false;
+    global.audioEnabled = false;
     audioCont.style.backgroundImage = "url('img/audioOff.png')";
   }
 }
 
 function playJumpAudio() {
-  if (audioEnabled) {
+  if (global.audioEnabled) {
     audioElem.play();
   }
 }
 
 function playGameOverAudio() {
-  if (audioEnabled) {
+  if (global.audioEnabled) {
     gameOverElem.play();
   }
 }
@@ -193,33 +194,33 @@ function randomIntInRange(min, max) {
 
 /* KEY/TOUCH CONTROLLERS */
 document.addEventListener('keydown', (evt) => {
-  if (isKeyPressed) return;
+  if (global.isKeyPressed) return;
 
-  isKeyPressed = true;
-  keyPressed = evt.code;
+  global.isKeyPressed = true;
+  global.keyPressed = evt.code;
 });
 
 document.addEventListener('keyup', (evt) => {
-  if (evt.code !== keyPressed) return; // ONLY RESPOND TO KEY ALREADY PRESSED
+  if (evt.code !== global.keyPressed) return; // ONLY RESPOND TO KEY ALREADY PRESSED
 
-  isKeyPressed = false;
-  keyPressed = null;
+  global.isKeyPressed = false;
+  global.keyPressed = null;
 });
 
 leftTouch.addEventListener('touchstart', () => {
-  touchedLeft = true;
+  global.touchedLeft = true;
 });
 
 leftTouch.addEventListener('touchend', () => {
-  touchedLeft = false;
+  global.touchedLeft = false;
 });
 
 rightTouch.addEventListener('touchstart', () => {
-  touchedRight = true;
+  global.touchedRight = true;
 });
 
 rightTouch.addEventListener('touchend', () => {
-  touchedRight = false;
+  global.touchedRight = false;
 });
 
 /* PLAYER CLASS */
@@ -241,14 +242,14 @@ class Player {
   }
 
   animate() { // IF CLICK/HOLD SPACE/W/TOUCH_RIGHT THEN JUMP
-    if (['Space', 'KeyW'].includes(keyPressed) || touchedRight) {
+    if (['Space', 'KeyW'].includes(global.keyPressed) || global.touchedRight) {
       this.jump();
     } else {
       this.jumpTimer = 0;
     }
 
     // IF CLICK/HOLD SHIFT_LEFT/S/TOUCH_LEFT THEN SHRINK TO HALF RADIUS
-    if (['ShiftLeft', 'KeyS'].includes(keyPressed) || touchedLeft) {
+    if (['ShiftLeft', 'KeyS'].includes(global.keyPressed) || global.touchedLeft) {
       this.r = this.originalRad / 2;
       this.w = this.originalRad;
       this.h = this.originalRad;
@@ -262,7 +263,7 @@ class Player {
     this.y += this.dy;
 
     if (this.y + this.r < canvas.height) {
-      this.dy += gravity;
+      this.dy += global.gravity;
       this.grounded = false;
     } else {
       this.dy = 0;
@@ -288,7 +289,7 @@ class Player {
 
   draw() {
     ctx.translate((this.x), (this.y));
-    ctx.rotate(rotation);
+    ctx.rotate(global.rotation);
 
     ctx.translate((-this.x), (-this.y));
     ctx.drawImage(
@@ -311,14 +312,14 @@ class Obstacle {
     (this.w = w);
     (this.h = h);
 
-    this.dx = -gameSpeed; // OBSTACLE MOVEMENT
+    this.dx = -global.gameSpeed; // OBSTACLE MOVEMENT
     obsImg.width = this.w;
     obsImg.height = this.h;
   }
 
   update() {
     this.x += this.dx;
-    this.dx = -gameSpeed;
+    this.dx = -global.gameSpeed;
   }
 
   draw() {
@@ -347,14 +348,14 @@ class Rock {
     this.w = w;
     this.h = h;
 
-    this.dx = -gameSpeed;
+    this.dx = -global.gameSpeed;
     rockImg.width = this.w;
     rockImg.height = this.h;
   }
 
   update() {
     this.x += this.dx;
-    this.dx = -gameSpeed;
+    this.dx = -global.gameSpeed;
   }
 
   draw() {
@@ -381,14 +382,14 @@ class Roadblock {
     (this.w = w);
     (this.h = h);
 
-    this.dx = -gameSpeed;
+    this.dx = -global.gameSpeed;
     roadblockImg.width = this.w;
     roadblockImg.height = this.h;
   }
 
   update() {
     this.x += this.dx;
-    this.dx = -gameSpeed;
+    this.dx = -global.gameSpeed;
   }
 
   draw() {
@@ -479,7 +480,7 @@ function spawnObstacle() {
       sizeY,
       obsImg,
     );
-    obstacle.y -= player.originalRad + randomIntInRange(sizeX / 2, sizeX * 2);
+    obstacle.y -= global.player.originalRad + randomIntInRange(sizeX / 2, sizeX * 2);
   } else if (type === 2) {
     sizeX = 150;
     sizeY = sizeX / 2;
@@ -492,36 +493,36 @@ function spawnObstacle() {
     );
   }
 
-  obstacles.push(obstacle);
+  global.obstacles.push(obstacle);
 }
 
 /* SETTING START GAME ATTRIBUTES */
 function start() {
   ctx.font = `${toString(40)}px Courier New`;
 
-  active = true;
+  global.active = true;
 
-  gameSpeed = 7;
-  gravity = 1;
-  defaultPlaybackRate = 1;
+  global.gameSpeed = 7;
+  global.gravity = 1;
+  global.defaultPlaybackRate = 1;
 
-  score = 0;
-  highscore = 0;
+  global.score = 0;
+  global.highscore = 0;
   if (localStorage.getItem('highscore')) {
-    highscore = localStorage.getItem('highscore');
+    global.highscore = localStorage.getItem('highscore');
   }
 
-  player = new Player(playerImg, 100, 0, 50, 1);
-  scoreText = new Text(
-    `Score: ${score}`,
+  global.player = new Player(playerImg, 100, 0, 50, 1);
+  global.scoreText = new Text(
+    `Score: ${global.score}`,
     45,
     65,
     'left',
     '#212121',
     40,
   );
-  highscoreText = new Text(
-    `Highscore: ${highscore}`,
+  global.highscoreText = new Text(
+    `Highscore: ${global.highscore}`,
     45,
     110,
     'left',
@@ -558,40 +559,40 @@ function update() {
   spawnTimer -= 1;
   if (spawnTimer <= 0) {
     spawnObstacle();
-    spawnTimer = initialSpawnTimer - gameSpeed * 8;
+    spawnTimer = initialSpawnTimer - global.gameSpeed * 8;
 
     if (spawnTimer < 60) {
       spawnTimer = randomIntInRange(40, 80);
     }
   }
 
-  for (let i = obstacles.length - 1; i >= 0; i -= 1) {
-    const o = obstacles[i];
+  for (let i = global.obstacles.length - 1; i >= 0; i -= 1) {
+    const o = global.obstacles[i];
     o.update();
     o.draw();
 
     if (o.x + o.y < 0) {
-      obstacles.splice(i, 1);
+      global.obstacles.splice(i, 1);
     }
 
     /* WHEN GAME OVER */
-    if (getDistance(player, o)) {
+    if (getDistance(global.player, o)) {
       playGameOverAudio();
-      active = false;
-      obstacles = [];
+      global.active = false;
+      global.obstacles = [];
       spawnTimer = initialSpawnTimer;
-      gameSpeed = 6;
-      window.localStorage.setItem('highscore', highscore);
-      score -= 1;
-      highscore -= 1;
-      if (score >= highscore) {
-        registerNewHighscore(highscore + 1);
+      global.gameSpeed = 6;
+      window.localStorage.setItem('highscore', global.highscore);
+      global.score -= 1;
+      global.highscore -= 1;
+      if (global.score >= global.highscore) {
+        registerNewHighscore(global.highscore + 1);
       }
       goBack(); // CALLS MENU
     }
   }
 
-  if (active) { // IF STILL ALIVE
+  if (global.active) { // IF STILL ALIVE
     window.requestAnimationFrame(fpsRate);
     leftTouch.style = 'z-index: 7';
     rightTouch.style = 'z-index: 7';
@@ -600,24 +601,24 @@ function update() {
     rightTouch.style = 'z-index: 5';
   }
 
-  player.animate();
+  global.player.animate();
 
-  score += 1;
-  scoreText.t = `Score: ${score}`;
-  scoreText.draw();
+  global.score += 1;
+  global.scoreText.t = `Score: ${global.score}`;
+  global.scoreText.draw();
 
   /* SET NEW HIGHSCORE */
-  if (score > highscore) {
-    highscore = score;
-    highscoreText.t = `Highscore: ${highscore}`;
+  if (global.score > global.highscore) {
+    global.highscore = global.score;
+    global.highscoreText.t = `Highscore: ${global.highscore}`;
   }
 
-  player.draw();
-  highscoreText.draw();
+  global.player.draw();
+  global.highscoreText.draw();
 
-  rotation += (Math.PI / 180) * 2 + gameSpeed * 0.01; // ROTATION SPEED INCREASES WITH GAME PROGRESS
-  gameSpeed += 0.0015; // GAMESPEED INCREASES WITH GAME PROGRESS
+  global.rotation += (Math.PI / 180) * 2 + global.gameSpeed * 0.01; // ROTATION SPEED INCREASES WITH GAME PROGRESS
+  global.gameSpeed += 0.0015; // GAMESPEED INCREASES WITH GAME PROGRESS
 
-  musicElem.playbackRate = defaultPlaybackRate;
-  defaultPlaybackRate += 0.00003; // MUSIC SPEED INCREASES WITH GAME PROGRESS
+  musicElem.playbackRate = global.defaultPlaybackRate;
+  global.defaultPlaybackRate += 0.00003; // MUSIC SPEED INCREASES WITH GAME PROGRESS
 }
