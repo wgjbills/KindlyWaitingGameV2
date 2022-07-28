@@ -1,4 +1,6 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable max-len */
+/* eslint-disable linebreak-style */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
@@ -7,9 +9,10 @@
 /* eslint-disable max-classes-per-file */
 import { registerNewHighscore, makeList } from './globalHs.js';
 import global from './global.js';
+import { canvas, ctx } from './canvas.js';
 
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d');
+/* const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d'); */
 
 const newGameBtn = document.getElementById('newGame');
 const seeInstrBtn = document.getElementById('instrBtn');
