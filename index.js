@@ -10,6 +10,11 @@
 import { registerNewHighscore, makeList } from './globalHs.js';
 import global from './global.js';
 import { canvas, ctx } from './canvas.js';
+import Text from './text.js';
+import Roadblock from './obstacles/roadblock.js';
+import Rock from './obstacles/rock.js';
+/* import { obsImg, rockImg, roadblockImg, playerImg } from './images.js';
+ */
 
 /* const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d'); */
@@ -341,7 +346,7 @@ class Obstacle {
 }
 
 /* ROCK OBSTACLE CLASS */
-class Rock {
+/* class Rock {
   constructor(x, y, w, h, rockImg) {
     this.rockImg = rockImg;
     this.x = x + w / 4;
@@ -374,10 +379,10 @@ class Rock {
     );
     ctx.closePath();
   }
-}
+} */
 
 /* ROADBLOCK OBSTACLE CLASS */
-class Roadblock {
+/* class Roadblock {
   constructor(x, y, w, h, roadblockImg) {
     this.roadblockImg = roadblockImg;
     (this.x = x);
@@ -408,10 +413,10 @@ class Roadblock {
     );
     ctx.closePath();
   }
-}
+} */
 
 /* SCORE/HIGHSCORE CLASS */
-class Text {
+/* class Text {
   constructor(t, x, y, a, c, s) {
     this.t = t;
     this.x = x;
@@ -429,7 +434,7 @@ class Text {
     ctx.fillText(this.t, this.x, this.y);
     ctx.closePath();
   }
-}
+} */
 
 /* GET DISTANCE BETWEEN PLAYER/OBSTACLE */
 function getDistance(player, obstacle) {
