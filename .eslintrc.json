@@ -11,5 +11,13 @@
         "sourceType": "module"
     },
     "rules": {
+        "linebreak-style": "off",
+        "no-param-reassign": "off",
+        "import/extensions": "off",
+        "no-tabs": "off",
+        "indent": "off",
+        "no-use-before-define": "off",
+        "no-shadow": "off",
+        "max-len": "off"
     }
 }

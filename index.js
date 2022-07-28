@@ -1,12 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable max-len */
-/* eslint-disable linebreak-style */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
-/* eslint-disable import/extensions */
-/* eslint-disable no-use-before-define */
-
 import { registerNewHighscore, makeList } from './globalHs.js';
 import global from './global.js';
 import { canvas, ctx } from './canvas.js';

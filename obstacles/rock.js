@@ -1,10 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-param-reassign */
-/* eslint-disable import/extensions */
-/* eslint-disable no-tabs */
-/* eslint-disable indent */
-/* eslint-disable linebreak-style */
-
 import { ctx } from '../canvas.js';
 import global from '../global.js';
 
