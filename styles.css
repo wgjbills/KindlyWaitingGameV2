@@ -252,14 +252,14 @@ ul {
 }
 
 /* MEDIA QUERIES */
-@media only screen and (min-width: 901px) and (max-width: 3000px) {
+@media only screen and (min-width: 901px) and (max-width: 1800px) {
     #header {
         top: 20%;
-        font-size: 6vw;
+        font-size: 4vw;
     }
 
     #newGame, #instrBtn, #hsBtn, #backBtn {
-        font-size: 2.5vw;
+        font-size: 2vw;
     }
 
     .btns {
