@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
@@ -362,10 +363,10 @@ class Rock {
     ctx.fillRect(this.x, this.y, this.w, this.h);
     ctx.drawImage(
       this.rockImg,
-      this.x - this.w * 0.7, // MULTIPLIERS TO TWEAK COLLISION AREA
-      this.y - this.h * 0.8,
-      this.w + this.w * 1.5,
-      this.h + this.h * 1.1,
+      this.x - this.w * 0.2, // MULTIPLIERS TO TWEAK COLLISION AREA
+      this.y - this.h * 0.5,
+      this.w + this.w * 0.3,
+      this.h + this.h * 0.8,
     );
     ctx.closePath();
   }
@@ -392,7 +393,7 @@ class Roadblock {
 
   draw() {
     ctx.beginPath();
-    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
     ctx.fillRect(this.x, this.y, this.w, this.h);
     ctx.drawImage(
       this.roadblockImg,
