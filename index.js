@@ -7,6 +7,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-use-before-define */
 /* eslint-disable max-classes-per-file */
+
 import { registerNewHighscore, makeList } from './globalHs.js';
 import global from './global.js';
 import { canvas, ctx } from './canvas.js';
@@ -47,6 +48,7 @@ function createImage(path) {
   image.src = path;
   return image;
 }
+
 /* UTILITY FUNCTIONS */
 /* SCALING */
 setPixelToWorldScale();
