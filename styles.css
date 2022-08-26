@@ -90,7 +90,7 @@ canvas#game {
     .activeInstr {
         display: block;
         opacity: 0;
-        animation: clickAnim 2.5s ease-out;
+        animation: clickAnim 4s ease-out;
         z-index: 7;
     }
     
@@ -255,7 +255,7 @@ ul {
 @media only screen and (min-width: 901px) and (max-width: 1800px) {
     #header {
         top: 20%;
-        font-size: 4vw;
+        font-size: 6vw;
     }
 
     #newGame, #instrBtn, #hsBtn, #backBtn {

@@ -317,13 +317,13 @@ function getDistance(player, obstacle) {
 }
 
 /* SPAWN OBSTACLES */
-const initialSpawnTimer = 200;
+const initialSpawnTimer = 300;
 let spawnTimer = initialSpawnTimer;
 
 function spawnObstacle() {
   let sizeX;
   let sizeY;
-  const type = randomIntInRange(0, 2); // RANDOM GEN OBSTACLE TYPE 0-2
+  const type = randomIntInRange(0, 5); // RANDOM GEN OBSTACLE TYPE 0-2
   let obstacle = new Obstacle(
     canvas.width + sizeX,
     canvas.height - sizeX,
@@ -332,7 +332,7 @@ function spawnObstacle() {
     obsImg,
   );
 
-  if (type === 0) {
+  if (type >= 0 && type < 2) {
     sizeX = randomIntInRange(120, 160);
     sizeY = sizeX / 2;
     obstacle = new Rock(
@@ -342,7 +342,7 @@ function spawnObstacle() {
       sizeY,
       rockImg,
     );
-  } else if (type === 1) {
+  } else if (type === 3) {
     sizeX = randomIntInRange(80, 160);
     sizeY = sizeX / 2;
     obstacle = new Obstacle(
@@ -353,7 +353,7 @@ function spawnObstacle() {
       obsImg,
     );
     obstacle.y -= global.player.originalRad + randomIntInRange(sizeX / 2, sizeX * 2);
-  } else if (type === 2) {
+  } else {
     sizeX = 150;
     sizeY = sizeX / 2;
     obstacle = new Roadblock(
@@ -370,6 +370,7 @@ function spawnObstacle() {
 
 /* SETTING START GAME ATTRIBUTES */
 function start() {
+  global.obstacles = [];
   ctx.font = `${toString(40)}px Courier New`;
 
   global.active = true;
@@ -405,6 +406,8 @@ function start() {
   window.requestAnimationFrame(fpsRate);
 }
 
+window.global = global;
+
 /* UPDATE CANVAS FUNCTION */
 function update() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // CLEAR LAST CANVAS BEFORE DRAWING NEW
@@ -412,11 +415,11 @@ function update() {
   spawnTimer -= 1;
   if (spawnTimer <= 0) {
     spawnObstacle();
-    spawnTimer = initialSpawnTimer - global.gameSpeed * 8;
+    spawnTimer = (initialSpawnTimer - 100) - (global.gameSpeed * 8) - randomIntInRange(0, 30);
 
-    if (spawnTimer < 60) {
+    /* if (spawnTimer < 60) {
       spawnTimer = randomIntInRange(40, 80);
-    }
+    } */
   }
 
   for (let i = global.obstacles.length - 1; i >= 0; i -= 1) {
@@ -432,7 +435,6 @@ function update() {
     if (getDistance(global.player, o)) {
       playGameOverAudio();
       global.active = false;
-      global.obstacles = [];
       spawnTimer = initialSpawnTimer;
       global.gameSpeed = 6;
       window.localStorage.setItem('highscore', global.highscore);

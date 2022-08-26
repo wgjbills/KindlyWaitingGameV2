@@ -23,7 +23,7 @@ export default class Roadblock {
 	draw() {
 		ctx.beginPath();
 		ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-		ctx.fillRect(this.x, this.y, this.w, this.h);
+		ctx.fillRect(this.x, this.y + (this.h / 3), this.w, this.h);
 		ctx.drawImage(
 			this.roadblockImg,
 			this.x,
