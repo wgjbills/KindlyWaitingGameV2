@@ -2,7 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.9.0/firebase-app.js';
 
 import {
-  getDatabase, ref, set, get, child, update, remove, onValue,
+  getDatabase, ref, set, get,
 }
   from 'https://www.gstatic.com/firebasejs/9.9.0/firebase-database.js';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -47,7 +47,7 @@ export async function registerNewHighscore(highscore) {
     alert('No username registered for highscore!');
     newUsername = prompt('Please enter your username', '');
 
-    if (username == undefined || newUsername == undefined) {
+    if (username === undefined || newUsername === undefined) {
       newUsername = 'WhoAmI';
     }
   } else if (username.length > 11) {
@@ -99,7 +99,7 @@ export async function makeList() {
   hsBoardScore.innerHTML = 'LEADERBOARD';
   document.getElementById('hsBoard').appendChild(listElement);
 
-  for (let i = 0; i < 10 && i < listData.length; i++) {
+  for (let i = 0; i < 10 && i < listData.length; i += 1) {
     const listItem = document.createElement('li');
     const listName = document.createElement('p');
     const listScore = document.createElement('p');
